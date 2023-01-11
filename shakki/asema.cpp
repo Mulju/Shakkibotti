@@ -54,8 +54,8 @@ Asema::Asema()
 	_lauta[0][0] = mt;
 	_lauta[0][1] = mr;
 	_lauta[0][2] = ml;
-	_lauta[0][3] = mk;
-	_lauta[0][4] = md;
+	_lauta[0][3] = md;
+	_lauta[0][4] = mk;
 	_lauta[0][5] = ml;
 	_lauta[0][6] = mr;
 	_lauta[0][7] = mt;
@@ -63,8 +63,8 @@ Asema::Asema()
 	_lauta[7][0] = vt;
 	_lauta[7][1] = vr;
 	_lauta[7][2] = vl;
-	_lauta[7][3] = vk;
-	_lauta[7][4] = vd;
+	_lauta[7][3] = vd;
+	_lauta[7][4] = vk;
 	_lauta[7][5] = vl;
 	_lauta[7][6] = vr;
 	_lauta[7][7] = vt;
