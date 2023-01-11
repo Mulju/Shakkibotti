@@ -4,48 +4,11 @@
 #include "nappula.h"
 using namespace std;
 
-Nappula::Nappula()
-{
-	/*
-	Tarkoituksella tyhjä, jotta Asema luokan alustama lauta toimii.
-	*/
-}
-
 Nappula::Nappula(wstring unicode, int vari, int koodi)
 {
 	_unicode = unicode;
 	_vari = vari;
 	_koodi = koodi;
-}
-
-void Nappula::setKoodi(int koodi) 
-{
-	_koodi = koodi;
-}
-
-int Nappula::getKoodi()
-{
-	return _koodi;
-}
-
-void Nappula::setUnicode(wstring unicodeString)
-{
-	_unicode = unicodeString;
-}
-
-wstring Nappula::getUnicode()
-{
-	return _unicode;
-}
-
-void Nappula::setVari(int vari)
-{
-	_vari = vari;
-}
-
-int Nappula::getVari()
-{
-	return _vari;
 }
 
 void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
