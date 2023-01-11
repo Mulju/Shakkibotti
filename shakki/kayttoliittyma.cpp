@@ -37,7 +37,7 @@ void Kayttoliittyma::piirraLauta()
 				// Laittaa numeron laudan vasempaan reunaan valkoisella värillä
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED |
 					BACKGROUND_GREEN | BACKGROUND_BLUE);
-				wcout << 8 - i << " ";
+				wcout << 8 - i << "  ";
 			}
 			
 			if ((i % 2 == 0 &&
@@ -46,7 +46,7 @@ void Kayttoliittyma::piirraLauta()
 				 j % 2 == 0))
 			{
 				// Tuottaa parillisen rivin kuvioinnin laudalle vihreällä värillä
-				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_GREEN);
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | 0x0030);
 			}
 			else
 			{
@@ -69,7 +69,7 @@ void Kayttoliittyma::piirraLauta()
 		wcout << "\n";
 	}
 
-	wcout << "\n  a b c d e f g h\n\n";
+	wcout << "\n    a b c d e f g h\n\n";
 }
 
 
