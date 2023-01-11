@@ -11,7 +11,6 @@ using namespace std;
 
 Kayttoliittyma* Kayttoliittyma::instance = 0;
 
-
 Kayttoliittyma* Kayttoliittyma::getInstance()
 {
 	if (instance == 0)
@@ -22,6 +21,10 @@ Kayttoliittyma* Kayttoliittyma::getInstance()
 
 void Kayttoliittyma::piirraLauta()
 {
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED |
+		BACKGROUND_GREEN | BACKGROUND_BLUE);
+	
+	_setmode(_fileno(stdout), _O_U16TEXT);
 }
 
 
