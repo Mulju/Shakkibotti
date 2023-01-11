@@ -23,7 +23,54 @@ Asema::Asema()
 {
 	// Ensin alustetaan kaikki laudan ruudut nappulla "NULL", koska muuten ruuduissa satunnaista tauhkaa
 
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			_lauta[i][j] = NULL;
+		}
+	}
+
 	// Asetetaan alkuaseman mukaisesti nappulat ruuduille
+
+	_lauta[1][0] = vs;
+	_lauta[1][1] = vs;
+	_lauta[1][2] = vs;
+	_lauta[1][3] = vs;
+	_lauta[1][4] = vs;
+	_lauta[1][5] = vs;
+	_lauta[1][6] = vs;
+	_lauta[1][7] = vs;
+
+	_lauta[6][0] = ms;
+	_lauta[6][1] = ms;
+	_lauta[6][2] = ms;
+	_lauta[6][3] = ms;
+	_lauta[6][4] = ms;
+	_lauta[6][5] = ms;
+	_lauta[6][6] = ms;
+	_lauta[6][7] = ms;
+
+	_lauta[0][0] = vl;
+	_lauta[0][1] = vr;
+	_lauta[0][2] = vt;
+	_lauta[0][3] = vk;
+	_lauta[0][4] = vd;
+	_lauta[0][5] = vt;
+	_lauta[0][6] = vr;
+	_lauta[0][7] = vl;
+
+	_lauta[7][0] = ml;
+	_lauta[7][1] = mr;
+	_lauta[7][2] = mt;
+	_lauta[7][3] = mk;
+	_lauta[7][4] = md;
+	_lauta[7][5] = mt;
+	_lauta[7][6] = mr;
+	_lauta[7][7] = ml;
+
+
+
 	
 }
 
