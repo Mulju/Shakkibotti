@@ -7,12 +7,8 @@ using namespace std;
 Nappula::Nappula()
 {
 	/*
-	T‰h‰n pit‰‰ kirjottaa jotain fiksua,
-	kun tiedet‰‰n mit‰ default constructori haluaa.
+	Tarkoituksella tyhj‰, jotta Asema luokan alustama lauta toimii.
 	*/
-	_unicode = L"0";
-	_vari = 2;
-	_koodi = 2;
 }
 
 Nappula::Nappula(wstring unicode, int vari, int koodi)
