@@ -129,14 +129,14 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 		else if (syote.length() == 3)
 		{
 			Siirto lyhytLinna(true, false);
-			cout << "Lyhyt linna" << endl;
+			cout << "Lyhyt linna" << endl; //Debuggausta
 			return lyhytLinna;
 		}
 		// Pitkä linna
 		else if (syote.length() == 5 && syote[1] == 79)
 		{
 			Siirto pitkaLinna(false, true);
-			cout << "Pitkä linna" << endl;
+			cout << "Pitkä linna" << endl; //Debuggausta
 			return pitkaLinna;
 		}
 		else 
@@ -148,7 +148,7 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 	Ruutu alkuruutu(alkuKirjain, alkuNumero);
 	Ruutu loppuruutu(loppuKirjain, loppuNumero);
 
-	cout << alkuKirjain << alkuNumero << loppuKirjain << loppuNumero << endl;
+	cout << alkuKirjain << alkuNumero << loppuKirjain << loppuNumero << endl; //Debuggausta
 	
 	Siirto siirto(alkuruutu, loppuruutu);
 	return siirto;
