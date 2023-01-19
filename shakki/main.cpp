@@ -21,7 +21,9 @@ int main()
 	// Testausta varten
 	while (true)
 	{
-		Kayttoliittyma::getInstance()->annaVastustajanSiirto();
+		Siirto siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto();
+		asema.paivitaAsema(&siirto);
+		Kayttoliittyma::getInstance()->piirraLauta();
 	}
 	//Testikoodi loppuu
 

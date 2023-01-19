@@ -83,11 +83,50 @@ void Asema::paivitaAsema(Siirto *siirto)
 
 
 	// onko pitk‰ linna
+	if (siirto->onkoLyhytLinna())
+	{
+		if (_siirtovuoro == 0)
+		{
+			_lauta[4][7] = NULL; // Kuninkaan paikalle tyhj‰
+			_lauta[6][7] = vk; // Kuningas uudelle paikalle
+			_lauta[7][7] = NULL; // Tornin paikalle tyhj‰
+			_lauta[5][7] = vt; // Torni uudelle paikalle
+		}
+		if (_siirtovuoro == 1)
+		{
+			_lauta[4][0] = NULL; // Kuninkaan paikalle tyhj‰
+			_lauta[6][0] = mk; // Kuningas uudelle paikalle
+			_lauta[7][0] = NULL; // Tornin paikalle tyhj‰
+			_lauta[5][0] = mt; // Torni uudelle paikalle
+		}
+	}
+	else if (siirto->onkoPitkaLinna())
+	{
+		if (_siirtovuoro == 0)
+		{
+			_lauta[4][7] = NULL; // Kuninkaan paikalle tyhj‰
+			_lauta[2][7] = vk; // Kuningas uudelle paikalle
+			_lauta[0][7] = NULL; // Tornin paikalle tyhj‰
+			_lauta[3][7] = vt; // Torni uudelle paikalle
+		}
+		if (_siirtovuoro == 1)
+		{
+			_lauta[4][0] = NULL; // Kuninkaan paikalle tyhj‰
+			_lauta[2][0] = mk; // Kuningas uudelle paikalle
+			_lauta[0][0] = NULL; // Tornin paikalle tyhj‰
+			_lauta[3][0] = mt; // Torni uudelle paikalle
+		}
+	}
+	else // Kaikki muut siirrot
+	{
+		//Ottaa siirron alkuruudussa olleen nappulan talteen
+		Nappula* nappula = _lauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()];
 
+		//Laittaa talteen otetun nappulan uuteen ruutuun
+		_lauta[siirto->getLoppuruutu().getRivi()][siirto->getLoppuruutu().getSarake()] = nappula;
+		_lauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()] = NULL;
 
-
-	// Kaikki muut siirrot
-
+	}
 
 		//Ottaa siirron alkuruudussa olleen nappulan talteen 
 
@@ -111,6 +150,14 @@ void Asema::paivitaAsema(Siirto *siirto)
 		// katsotaan jos liikkunut nappula on torni niin muutetaan onkoTorniLiikkunut arvo (molemmille v‰reille ja molemmille torneille)
 
 	//p‰ivitet‰‰n _siirtovuoro
+	if (_siirtovuoro == 0)
+	{
+		_siirtovuoro = 1;
+	}
+	else
+	{
+		_siirtovuoro = 0;
+	}
 
 }
 
@@ -316,6 +363,7 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari)
 }
 
 
-void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
+void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista)
+{
 	
 }

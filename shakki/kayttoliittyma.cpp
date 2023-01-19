@@ -89,11 +89,13 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 	
 	while (true)
 	{
-		cout << "Anna siirto:" << "\n";
+		wcout << "Anna siirto:" << "\n";
 		cin >> syote;
+		system("cls");
 
 		// Upseerisiirto
 		if (syote.length() == 6 &&
+			(syote[0] == (75 || 68 || 76 || 82 || 84)) &&
 			(syote[1] > 96 && syote[1] < 105) &&
 			(syote[4] > 96 && syote[4] < 105) &&
 			(syote[2] > 48 && syote[2] < 57) &&
@@ -126,29 +128,25 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 			break;
 		}
 		// Lyhyt linna
-		else if (syote.length() == 3)
+		else if (syote.length() == 3 && syote[0] == 48 && syote[2] == 48)
 		{
 			Siirto lyhytLinna(true, false);
-			cout << "Lyhyt linna" << endl; //Debuggausta
 			return lyhytLinna;
 		}
 		// Pitkä linna
-		else if (syote.length() == 5 && syote[1] == 79)
+		else if (syote.length() == 5 && syote[0] == 48 && syote[2] == 48 && syote[4] == 48)
 		{
 			Siirto pitkaLinna(false, true);
-			cout << "Pitkä linna" << endl; //Debuggausta
 			return pitkaLinna;
 		}
 		else 
 		{
-			cout << "Väärä syöte! Kokeile uudelleen." << endl;
+			wcout << "Väärä syöte! Kokeile uudelleen." << endl;
 		}
 	}
 
 	Ruutu alkuruutu(alkuKirjain, alkuNumero);
 	Ruutu loppuruutu(loppuKirjain, loppuNumero);
-
-	cout << alkuKirjain << alkuNumero << loppuKirjain << loppuNumero << endl; //Debuggausta
 	
 	Siirto siirto(alkuruutu, loppuruutu);
 	return siirto;
