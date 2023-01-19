@@ -18,6 +18,11 @@ int main()
 	Asema asema; 
 	Kayttoliittyma::getInstance()->aseta_asema(&asema);
 
+	while (true)
+	{
+		Kayttoliittyma::getInstance()->annaVastustajanSiirto();
+	}
+
 	Peli peli(Kayttoliittyma::getInstance()->
 		kysyVastustajanVari());
 	std::list<Siirto> lista;

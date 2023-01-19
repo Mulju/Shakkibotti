@@ -69,9 +69,6 @@ Asema::Asema()
 	_lauta[7][6] = vr;
 	_lauta[7][7] = vt;
 
-
-
-	
 }
 
 

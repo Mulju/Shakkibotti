@@ -5,6 +5,7 @@
 #include <io.h>
 #include <iostream>
 #include "kayttoliittyma.h"
+#include "stdlib.h"
 
 using namespace std;
 
@@ -80,7 +81,76 @@ void Kayttoliittyma::piirraLauta()
 */
 Siirto Kayttoliittyma::annaVastustajanSiirto()
 {
-	Siirto siirto;
+	string syote;
+	int alkuKirjain;
+	int alkuNumero;
+	int loppuKirjain;
+	int loppuNumero;
+	
+	while (true)
+	{
+		cout << "Anna siirto:" << "\n";
+		cin >> syote;
+
+		// Upseerisiirto
+		if (syote.length() == 6 &&
+			(syote[1] > 96 && syote[1] < 105) &&
+			(syote[4] > 96 && syote[4] < 105) &&
+			(syote[2] > 47 && syote[2] < 56) &&
+			(syote[5] > 47 && syote[5] < 56))
+		{
+			alkuKirjain = syote[1] - 97;
+			alkuNumero =  syote[2] - 48;
+			loppuKirjain = syote[4] - 97;
+			loppuNumero = syote[5] - 48;
+
+			break;
+		}
+		// Sotilassiirto
+		else if (syote.length() == 5 &&
+			(syote[0] > 96 && syote[0] < 105) &&
+			(syote[3] > 96 && syote[3] < 105) &&
+			(syote[1] > 47 && syote[1] < 56) &&
+			(syote[4] > 47 && syote[4] < 56))
+		{
+			alkuKirjain = syote[0] - 97;
+			alkuNumero = syote[1] - 48;
+			loppuKirjain = syote[3] - 97;
+			loppuNumero = syote[4] - 48;
+
+			if (loppuNumero == 0 || loppuNumero == 7)
+			{
+				// Sotilas on päässyt toiseen päähän. Korotetaan!
+			}
+			
+			break;
+		}
+		// Lyhyt linna
+		else if (syote.length() == 3)
+		{
+			Siirto lyhytLinna(true, false);
+			cout << "Lyhyt linna" << endl;
+			return lyhytLinna;
+		}
+		// Pitkä linna
+		else if (syote.length() == 5 && syote[1] == 79)
+		{
+			Siirto pitkaLinna(false, true);
+			cout << "Pitkä linna" << endl;
+			return pitkaLinna;
+		}
+		else 
+		{
+			cout << "Väärä syöte! Kokeile uudelleen." << endl;
+		}
+	}
+
+	Ruutu alkuruutu(alkuKirjain, alkuNumero);
+	Ruutu loppuruutu(loppuKirjain, loppuNumero);
+
+	cout << alkuKirjain << alkuNumero << loppuKirjain << loppuNumero << endl;
+	
+	Siirto siirto(alkuruutu, loppuruutu);
 	return siirto;
 	
 }
