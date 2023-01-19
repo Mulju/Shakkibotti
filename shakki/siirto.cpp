@@ -10,7 +10,22 @@ Siirto::Siirto(Ruutu alkuRuutu, Ruutu loppuRuutu)
 
 Siirto::Siirto(bool _lyhytLinna, bool _pitkaLinna) 
 {
+	Ruutu alkuRuutuK;
+	Ruutu loppuRuutuK;
+	Ruutu alkuRuutuT;
+	Ruutu loppuRuutuT;
+
+	if (_lyhytLinna)
+	{
+		
+	}
+	else
+	{
+
+	}
 	
+	Siirto(alkuRuutuK, loppuRuutuK);
+	Siirto(alkuRuutuT, loppuRuutuT);
 }
 
 

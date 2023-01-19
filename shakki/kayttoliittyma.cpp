@@ -96,13 +96,13 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 		if (syote.length() == 6 &&
 			(syote[1] > 96 && syote[1] < 105) &&
 			(syote[4] > 96 && syote[4] < 105) &&
-			(syote[2] > 47 && syote[2] < 56) &&
-			(syote[5] > 47 && syote[5] < 56))
+			(syote[2] > 48 && syote[2] < 57) &&
+			(syote[5] > 48 && syote[5] < 57))
 		{
 			alkuKirjain = syote[1] - 97;
-			alkuNumero =  syote[2] - 48;
+			alkuNumero =  syote[2] - 49;
 			loppuKirjain = syote[4] - 97;
-			loppuNumero = syote[5] - 48;
+			loppuNumero = syote[5] - 49;
 
 			break;
 		}
@@ -110,13 +110,13 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 		else if (syote.length() == 5 &&
 			(syote[0] > 96 && syote[0] < 105) &&
 			(syote[3] > 96 && syote[3] < 105) &&
-			(syote[1] > 47 && syote[1] < 56) &&
-			(syote[4] > 47 && syote[4] < 56))
+			(syote[1] > 48 && syote[1] < 57) &&
+			(syote[4] > 48 && syote[4] < 57))
 		{
 			alkuKirjain = syote[0] - 97;
-			alkuNumero = syote[1] - 48;
+			alkuNumero = 7 - (syote[1] - 49);
 			loppuKirjain = syote[3] - 97;
-			loppuNumero = syote[4] - 48;
+			loppuNumero = 7 - (syote[4] - 49);
 
 			if (loppuNumero == 0 || loppuNumero == 7)
 			{
