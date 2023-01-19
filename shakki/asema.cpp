@@ -69,6 +69,13 @@ Asema::Asema()
 	_lauta[7][6] = vr;
 	_lauta[7][7] = vt;
 
+	// Liikkumisflagit asetetaan falseksi
+	_onkoValkeaKuningasLiikkunut = false;
+	_onkoMustaKuningasLiikkunut = false;
+	_onkoValkeaDTliikkunut = false;
+	_onkoValkeaKTliikkunut = false;
+	_onkoMustaDTliikkunut = false;
+	_onkoMustaKTliikkunut = false;
 }
 
 
