@@ -69,6 +69,8 @@ Asema::Asema()
 	_lauta[7][6] = vr;
 	_lauta[7][7] = vt;
 
+	_siirtovuoro = 0;
+
 	// Liikkumisflagit asetetaan falseksi
 	_onkoValkeaKuningasLiikkunut = false;
 	_onkoMustaKuningasLiikkunut = false;
@@ -76,8 +78,6 @@ Asema::Asema()
 	_onkoValkeaKTliikkunut = false;
 	_onkoMustaDTliikkunut = false;
 	_onkoMustaKTliikkunut = false;
-	
-	
 }
 
 
@@ -94,34 +94,34 @@ void Asema::paivitaAsema(Siirto *siirto)
 	{
 		if (_siirtovuoro == 0)
 		{
-			_lauta[4][7] = NULL; // Kuninkaan paikalle tyhjä
-			_lauta[6][7] = vk; // Kuningas uudelle paikalle
+			_lauta[7][4] = NULL; // Kuninkaan paikalle tyhjä
+			_lauta[7][6] = vk; // Kuningas uudelle paikalle
 			_lauta[7][7] = NULL; // Tornin paikalle tyhjä
-			_lauta[5][7] = vt; // Torni uudelle paikalle
+			_lauta[7][5] = vt; // Torni uudelle paikalle
 		}
 		if (_siirtovuoro == 1)
 		{
-			_lauta[4][0] = NULL; // Kuninkaan paikalle tyhjä
-			_lauta[6][0] = mk; // Kuningas uudelle paikalle
-			_lauta[7][0] = NULL; // Tornin paikalle tyhjä
-			_lauta[5][0] = mt; // Torni uudelle paikalle
+			_lauta[0][4] = NULL; // Kuninkaan paikalle tyhjä
+			_lauta[0][6] = mk; // Kuningas uudelle paikalle
+			_lauta[0][7] = NULL; // Tornin paikalle tyhjä
+			_lauta[0][5] = mt; // Torni uudelle paikalle
 		}
 	}
 	else if (siirto->onkoPitkaLinna()) // onko pitkä linna
 	{
 		if (_siirtovuoro == 0)
 		{
-			_lauta[4][7] = NULL; // Kuninkaan paikalle tyhjä
-			_lauta[2][7] = vk; // Kuningas uudelle paikalle
-			_lauta[0][7] = NULL; // Tornin paikalle tyhjä
-			_lauta[3][7] = vt; // Torni uudelle paikalle
+			_lauta[7][4] = NULL; // Kuninkaan paikalle tyhjä
+			_lauta[7][2] = vk; // Kuningas uudelle paikalle
+			_lauta[7][0] = NULL; // Tornin paikalle tyhjä
+			_lauta[7][3] = vt; // Torni uudelle paikalle
 		}
 		if (_siirtovuoro == 1)
 		{
-			_lauta[4][0] = NULL; // Kuninkaan paikalle tyhjä
-			_lauta[2][0] = mk; // Kuningas uudelle paikalle
+			_lauta[0][4] = NULL; // Kuninkaan paikalle tyhjä
+			_lauta[0][2] = mk; // Kuningas uudelle paikalle
 			_lauta[0][0] = NULL; // Tornin paikalle tyhjä
-			_lauta[3][0] = mt; // Torni uudelle paikalle
+			_lauta[0][3] = mt; // Torni uudelle paikalle
 		}
 	}
 	else // Kaikki muut siirrot
@@ -132,29 +132,23 @@ void Asema::paivitaAsema(Siirto *siirto)
 		//Laittaa talteen otetun nappulan uuteen ruutuun
 		_lauta[siirto->getLoppuruutu().getRivi()][siirto->getLoppuruutu().getSarake()] = nappula;
 		_lauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()] = NULL;
-		if (nappula == ms && siirto->getLoppuruutu().getRivi() == 4 && siirto->getAlkuruutu().getRivi() == 6)
-			{
-			  kaksoisaskelSarakkeella = siirto->getLoppuruutu().getSarake();
-
-			}
-
-			else if (nappula == vs && siirto->getLoppuruutu().getRivi() == 3 && siirto->getAlkuruutu().getRivi() == 1)
-
-			{
-			  kaksoisaskelSarakkeella = siirto->getLoppuruutu().getSarake();
-			}
-
-			else
-
-			{
-				kaksoisaskelSarakkeella = -1;
-			}
-	}
-
-	
-
+		
 		// Tarkistetaan oliko sotilaan kaksoisaskel
 		// (asetetaan kaksoisaskel-lippu)
+
+		// Ohestalyönti on tyhjään ruutuun. Vieressä oleva (sotilas) poistetaan.
+		if (nappula == ms && siirto->getLoppuruutu().getRivi() == 4 && siirto->getAlkuruutu().getRivi() == 6)
+		{
+			kaksoisaskelSarakkeella = siirto->getLoppuruutu().getSarake();
+		}
+		else if (nappula == vs && siirto->getLoppuruutu().getRivi() == 3 && siirto->getAlkuruutu().getRivi() == 1)
+		{
+			kaksoisaskelSarakkeella = siirto->getLoppuruutu().getSarake();
+		}
+		else
+		{
+			kaksoisaskelSarakkeella = -1;
+		}
 
 		// Ohestalyönti on tyhjään ruutuun. Vieressä oleva (sotilas) poistetaan.
 
@@ -167,6 +161,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 		// katsotaan jos liikkunut nappula on kuningas niin muutetaan onkoKuningasLiikkunut arvo (molemmille väreille)
 
 		// katsotaan jos liikkunut nappula on torni niin muutetaan onkoTorniLiikkunut arvo (molemmille väreille ja molemmille torneille)
+	}
 
 	//päivitetään _siirtovuoro
 	if (_siirtovuoro == 0)
