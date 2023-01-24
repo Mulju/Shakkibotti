@@ -42,6 +42,9 @@ Sotilas::Sotilas(std::wstring unicode, int vari, int koodi) : Nappula(unicode, v
 
 }
 
+
+
+// Funktiot
 void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
 {
 	
