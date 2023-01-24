@@ -87,9 +87,6 @@ void Asema::paivitaAsema(Siirto *siirto)
 
 
 	//Tarkastetaan on siirto lyhyt linna
-
-
-	// onko pitkä linna
 	if (siirto->onkoLyhytLinna())
 	{
 		if (_siirtovuoro == 0)
@@ -107,7 +104,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 			_lauta[5][0] = mt; // Torni uudelle paikalle
 		}
 	}
-	else if (siirto->onkoPitkaLinna())
+	else if (siirto->onkoPitkaLinna()) // onko pitkä linna
 	{
 		if (_siirtovuoro == 0)
 		{
@@ -134,12 +131,6 @@ void Asema::paivitaAsema(Siirto *siirto)
 		_lauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()] = NULL;
 
 	}
-
-		//Ottaa siirron alkuruudussa olleen nappulan talteen 
-
-
-		//Laittaa talteen otetun nappulan uuteen ruutuun
-
 
 		// Tarkistetaan oliko sotilaan kaksoisaskel
 		// (asetetaan kaksoisaskel-lippu)
@@ -169,7 +160,6 @@ void Asema::paivitaAsema(Siirto *siirto)
 }
 
 
-
 int Asema::getSiirtovuoro() 
 {
 	return _siirtovuoro;
@@ -184,36 +174,54 @@ void Asema::setSiirtovuoro(int vuoro)
 
 bool Asema::getOnkoValkeaKuningasLiikkunut() 
 {
+	if (_lauta[7][4] != vk) {
+		_onkoValkeaKuningasLiikkunut = true;
+	}
 	return _onkoValkeaKuningasLiikkunut;
 }
 
 
 bool Asema::getOnkoMustaKuningasLiikkunut() 
 {
+	if (_lauta[0][4] != vk) {
+		_onkoMustaKuningasLiikkunut = true;
+	}
 	return _onkoMustaKuningasLiikkunut;
 }
 
 
 bool Asema::getOnkoValkeaDTliikkunut() 
 {
+	if (_lauta[7][0] != vk) {
+		_onkoValkeaDTliikkunut = true;
+	}
 	return _onkoValkeaDTliikkunut;
 }
 
 
 bool Asema::getOnkoValkeaKTliikkunut() 
 {
+	if (_lauta[7][7] != vk) {
+		_onkoValkeaKTliikkunut = true;
+	}
 	return _onkoValkeaKTliikkunut;
 }
 
 
 bool Asema::getOnkoMustaDTliikkunut() 
 {
+	if (_lauta[0][0] != vk) {
+		_onkoMustaDTliikkunut = true;
+	}
 	return _onkoMustaDTliikkunut;
 }
 
 
 bool Asema::getOnkoMustaKTliikkunut() 
 {
+	if (_lauta[0][7] != vk) {
+		_onkoMustaKTliikkunut = true;
+	}
 	return _onkoMustaKTliikkunut;
 }
 

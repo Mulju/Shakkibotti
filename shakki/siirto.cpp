@@ -31,25 +31,11 @@ Ruutu Siirto::getLoppuruutu()
 
 bool Siirto::onkoLyhytLinna() 
 {
-	if (_lyhytLinna)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return _lyhytLinna;
 }
 
 
 bool Siirto::onkoPitkaLinna() 
 {
-	if (_pitkaLinna)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return _pitkaLinna;
 }
