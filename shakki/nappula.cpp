@@ -11,6 +11,37 @@ Nappula::Nappula(wstring unicode, int vari, int koodi)
 	_koodi = koodi;
 }
 
+Torni::Torni(std::wstring unicode, int vari, int koodi) : Nappula(unicode, vari, koodi) 
+{
+
+}
+
+Ratsu::Ratsu(std::wstring unicode, int vari, int koodi) : Nappula(unicode, vari, koodi) 
+{
+
+}
+
+Lahetti::Lahetti(std::wstring unicode, int vari, int koodi) : Nappula(unicode, vari, koodi)
+{
+
+}
+
+Daami::Daami(std::wstring unicode, int vari, int koodi) :
+	Nappula(unicode, vari, koodi), Lahetti(unicode, vari, koodi), Torni(unicode, vari, koodi) 
+{
+
+}
+
+Kuningas::Kuningas(std::wstring unicode, int vari, int koodi) : Nappula(unicode, vari, koodi)
+{
+
+}
+
+Sotilas::Sotilas(std::wstring unicode, int vari, int koodi) : Nappula(unicode, vari, koodi) 
+{
+
+}
+
 void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
 {
 	
