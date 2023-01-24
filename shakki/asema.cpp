@@ -76,6 +76,8 @@ Asema::Asema()
 	_onkoValkeaKTliikkunut = false;
 	_onkoMustaDTliikkunut = false;
 	_onkoMustaKTliikkunut = false;
+	
+	
 }
 
 
@@ -84,6 +86,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 
 	// Kaksoisaskel-lippu on oletusarvoisesti pois päältä.
 	// Asetetaan myöhemmin, jos tarvii.
+	kaksoisaskelSarakkeella = -1;
 
 
 	//Tarkastetaan on siirto lyhyt linna
@@ -129,8 +132,26 @@ void Asema::paivitaAsema(Siirto *siirto)
 		//Laittaa talteen otetun nappulan uuteen ruutuun
 		_lauta[siirto->getLoppuruutu().getRivi()][siirto->getLoppuruutu().getSarake()] = nappula;
 		_lauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()] = NULL;
+		if (nappula == ms && siirto->getLoppuruutu().getRivi() == 4 && siirto->getAlkuruutu().getRivi() == 6)
+			{
+			  kaksoisaskelSarakkeella = siirto->getLoppuruutu().getSarake();
 
+			}
+
+			else if (nappula == vs && siirto->getLoppuruutu().getRivi() == 3 && siirto->getAlkuruutu().getRivi() == 1)
+
+			{
+			  kaksoisaskelSarakkeella = siirto->getLoppuruutu().getSarake();
+			}
+
+			else
+
+			{
+				kaksoisaskelSarakkeella = -1;
+			}
 	}
+
+	
 
 		// Tarkistetaan oliko sotilaan kaksoisaskel
 		// (asetetaan kaksoisaskel-lippu)
