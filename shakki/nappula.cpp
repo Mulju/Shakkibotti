@@ -675,7 +675,8 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 
 void Daami::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
 {
-	
+	Torni::annaSiirrot(lista, ruutu, asema, vari);
+	Lahetti::annaSiirrot(lista, ruutu, asema, vari);
 }
 
 
@@ -685,9 +686,163 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 	oman nappulan p‰‰lle ei voi menn‰ ja vastustajan nappulan voi syˆd‰.
 
 	Kaikki muu kuninkaaseen liittyv‰ tarkistus tehd‰‰n eri paikassa*/
+	int aS = ruutu->getSarake();
+	int aR = ruutu->getRivi();
 
+	for (int i = 0; i < 4; i++)
+	{
+		switch (i)
+		{
+		case 0:
+			// Ylˆsp‰in, sek‰ ylˆs viistoon
+			for (int j = -1; j < 2; j++)
+			{
+				if (aR - 1 < 0 || aS + j < 0 || aS + j > 7)
+				{
+					// Jos menn‰‰n ylilaudan niin poistutaan loopista
+					continue;
+				}
+				
+				if (asema->_lauta[aR - 1][aS + j] != NULL)
+				{
+					// Jos vastaan tulee ruutu, jossa on nappula
+					if (vari != asema->_lauta[aR - 1][aS + j]->getVari())
+					{
+						// Nappula tuli vastaan ja se on eri v‰ri‰ kuin liikkuva nappula
+						// Laillinen siirto on nappulan p‰‰lle
+						Ruutu loppuRuutu(aS + j, aR - 1);
+						Siirto uusiSiirto(*ruutu, loppuRuutu);
+					}
+					else
+					{
+						// Nappula tuli vastaan, mutta se on samaa v‰ri‰
+					}
 
-	
+					// Poistutaan loopista, koska ei voida jatkaa nappulan yli
+					break;
+				}
+				else
+				{
+					// Ruudussa ei ollut mit‰‰n, lis‰t‰‰n se laillisten siirtojen listaan
+					Ruutu loppuRuutu(aS + j, aR - 1);
+					Siirto uusiSiirto(*ruutu, loppuRuutu);
+				}
+
+			}
+
+			break;
+
+		case 1:
+			// Oikealle
+			
+			if (aS + 1 > 7)
+			{
+				// Jos menn‰‰n ylilaudan niin ei tehd‰ mit‰‰n
+			}
+			else
+			{
+				if (asema->_lauta[aR][aS + 1] != NULL)
+				{
+					// Jos vastaan tulee ruutu, jossa on nappula
+					if (vari != asema->_lauta[aR][aS + 1]->getVari())
+					{
+						// Nappula tuli vastaan ja se on eri v‰ri‰ kuin liikkuva nappula
+						// Laillinen siirto on nappulan p‰‰lle
+						Ruutu loppuRuutu(aS + 1, aR);
+						Siirto uusiSiirto(*ruutu, loppuRuutu);
+					}
+					else
+					{
+						// Nappula tuli vastaan, mutta se on samaa v‰ri‰
+					}
+				}
+				else
+				{
+					// Ruudussa ei ollut mit‰‰n, lis‰t‰‰n se laillisten siirtojen listaan
+					Ruutu loppuRuutu(aS + 1, aR);
+					Siirto uusiSiirto(*ruutu, loppuRuutu);
+				}
+			}
+
+			break;
+
+		case 2:
+			// Alasp‰in ja alas viistoon
+			for (int j = -1; j < 2; j++)
+			{
+				if (aR + 1 > 7 || aS + j < 0 || aS + j > 7)
+				{
+					// Jos menn‰‰n ylilaudan niin poistutaan loopista
+					continue;
+				}
+
+				if (asema->_lauta[aR + 1][aS + j] != NULL)
+				{
+					// Jos vastaan tulee ruutu, jossa on nappula
+					if (vari != asema->_lauta[aR + 1][aS + j]->getVari())
+					{
+						// Nappula tuli vastaan ja se on eri v‰ri‰ kuin liikkuva nappula
+						// Laillinen siirto on nappulan p‰‰lle
+						Ruutu loppuRuutu(aS + j, aR + 1);
+						Siirto uusiSiirto(*ruutu, loppuRuutu);
+					}
+					else
+					{
+						// Nappula tuli vastaan, mutta se on samaa v‰ri‰
+					}
+
+					// Poistutaan loopista, koska ei voida jatkaa nappulan yli
+					break;
+				}
+				else
+				{
+					// Ruudussa ei ollut mit‰‰n, lis‰t‰‰n se laillisten siirtojen listaan
+					Ruutu loppuRuutu(aS + j, aR + 1);
+					Siirto uusiSiirto(*ruutu, loppuRuutu);
+				}
+
+			}
+
+			break;
+
+		case 3:
+			// Vasemmalle
+
+			if (aS - 1 < 0)
+			{
+				// Jos menn‰‰n ylilaudan niin ei tehd‰ mit‰‰n
+			}
+			else
+			{
+				if (asema->_lauta[aR][aS - 1] != NULL)
+				{
+					// Jos vastaan tulee ruutu, jossa on nappula
+					if (vari != asema->_lauta[aR][aS - 1]->getVari())
+					{
+						// Nappula tuli vastaan ja se on eri v‰ri‰ kuin liikkuva nappula
+						// Laillinen siirto on nappulan p‰‰lle
+						Ruutu loppuRuutu(aS - 1, aR);
+						Siirto uusiSiirto(*ruutu, loppuRuutu);
+					}
+					else
+					{
+						// Nappula tuli vastaan, mutta se on samaa v‰ri‰
+					}
+				}
+				else
+				{
+					// Ruudussa ei ollut mit‰‰n, lis‰t‰‰n se laillisten siirtojen listaan
+					Ruutu loppuRuutu(aS - 1, aR);
+					Siirto uusiSiirto(*ruutu, loppuRuutu);
+				}
+			}
+
+			break;
+
+		default:
+			break;
+		}
+	}
 }
 
 
