@@ -134,8 +134,6 @@ void Asema::paivitaAsema(Siirto *siirto)
 		
 		// Tarkistetaan oliko sotilaan kaksoisaskel
 		// (asetetaan kaksoisaskel-lippu)
-
-		// Ohestalyönti on tyhjään ruutuun. Vieressä oleva (sotilas) poistetaan.
 		if (nappula == ms && siirto->getLoppuruutu().getRivi() == 4 && siirto->getAlkuruutu().getRivi() == 6)
 		{
 			kaksoisaskelSarakkeella = siirto->getLoppuruutu().getSarake();
