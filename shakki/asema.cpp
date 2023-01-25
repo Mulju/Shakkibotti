@@ -131,7 +131,6 @@ void Asema::paivitaAsema(Siirto *siirto)
 
 		//Laittaa talteen otetun nappulan uuteen ruutuun
 		_lauta[siirto->getLoppuruutu().getRivi()][siirto->getLoppuruutu().getSarake()] = nappula;
-		_lauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()] = NULL;
 		
 		// Tarkistetaan oliko sotilaan kaksoisaskel
 		// (asetetaan kaksoisaskel-lippu)
@@ -157,6 +156,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 
 		//
 		////muissa tapauksissa alkuruutuun null ja loppuruutuun sama alkuruudusta lähtenyt nappula
+		_lauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()] = NULL;
 
 		// katsotaan jos liikkunut nappula on kuningas niin muutetaan onkoKuningasLiikkunut arvo (molemmille väreille)
 		if (nappula == mk) {
@@ -396,5 +396,31 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari)
 
 void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista)
 {
+	Ruutu ruutu;
 	
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			// Siirrot valkoisille nappuloille
+			if (_siirtovuoro == 0)
+			{
+				if (_lauta[i][j] == vs || _lauta[i][j] == vt || _lauta[i][j] == vr || _lauta[i][j] == vl || _lauta[i][j] == vd || _lauta[i][j] == vk)
+				{
+					ruutu.setRivi(i);
+					ruutu.setSarake(j);
+					_lauta[i][j]->annaSiirrot(lista, &ruutu, this, _siirtovuoro);
+				}
+			}
+			else // Siirrot mustille nappuloille
+			{
+				if (_lauta[i][j] == ms || _lauta[i][j] == mt || _lauta[i][j] == mr || _lauta[i][j] == ml || _lauta[i][j] == md || _lauta[i][j] == mk)
+				{
+					ruutu.setRivi(i);
+					ruutu.setSarake(j);
+					_lauta[i][j]->annaSiirrot(lista, &ruutu, this, _siirtovuoro);
+				}
+			}
+		}
+	}
 }
