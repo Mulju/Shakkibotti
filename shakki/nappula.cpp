@@ -213,11 +213,11 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 				if (asema->_lauta[aR - j][aS + j] != NULL)
 				{
 					// Jos vastaan tulee ruutu, jossa on nappula
-					if (vari != asema->_lauta[aR - j][aS]->getVari())
+					if (vari != asema->_lauta[aR - j][aS + j]->getVari())
 					{
 						// Nappula tuli vastaan ja se on eri v‰ri‰ kuin liikkuva nappula
 						// Laillinen siirto on nappulan p‰‰lle
-						Ruutu loppuRuutu(aS, aR - j);
+						Ruutu loppuRuutu(aS + j, aR - j);
 						Siirto uusiSiirto(*ruutu, loppuRuutu);
 					}
 					else
@@ -235,7 +235,7 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 					Siirto uusiSiirto(*ruutu, loppuRuutu);
 				}
 
-				if (aR - j == 7 || aS + j == 7)
+				if (aR - j == 0 || aS + j == 7)
 				{
 					// Jos menn‰‰n ylilaudan niin poistutaan loopista
 					break;
@@ -244,17 +244,17 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 			break;
 
 		case 1:
-			// Oikealle
+			// Oikea alas
 			for (int j = 1; j < 8; j++)
 			{
-				if (!(asema->_lauta[aR][aS + j] == NULL))
+				if (!(asema->_lauta[aR + j][aS + j] == NULL))
 				{
 					// Jos vastaan tulee ruutu, jossa on nappula
-					if (vari != asema->_lauta[aR][aS + j]->getVari())
+					if (vari != asema->_lauta[aR + j][aS + j]->getVari())
 					{
 						// Nappula tuli vastaan ja se on eri v‰ri‰ kuin liikkuva nappula
 						// Laillinen siirto on nappulan p‰‰lle
-						Ruutu loppuRuutu(aS + j, aR);
+						Ruutu loppuRuutu(aS + j, aR + j);
 						Siirto uusiSiirto(*ruutu, loppuRuutu);
 					}
 					else
@@ -268,11 +268,11 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 				else
 				{
 					// Ruudussa ei ollut mit‰‰n, lis‰t‰‰n se laillisten siirtojen listaan
-					Ruutu loppuRuutu(aS + j, aR);
+					Ruutu loppuRuutu(aS + j, aR + j);
 					Siirto uusiSiirto(*ruutu, loppuRuutu);
 				}
 
-				if (aS + j == 7)
+				if (aR + j == 7 || aS + j == 7)
 				{
 					// Jos menn‰‰n ylilaudan niin poistutaan loopista
 					break;
@@ -281,21 +281,21 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 			break;
 
 		case 2:
-			// Alasp‰in
+			// Vasen alas
 			for (int j = 1; j < 8; j++)
 			{
 				// for looppi alkaa 1:st‰, koska ei oteta samaa ruutua huomioon miss‰ jo ollaan
 				// for looppi 1-8, koska laudassa on maksimissaan 8 ruutua
 
 
-				if (!(asema->_lauta[aR + j][aS] == NULL))
+				if (!(asema->_lauta[aR + j][aS - j] == NULL))
 				{
 					// Jos vastaan tulee ruutu, jossa on nappula
-					if (vari != asema->_lauta[aR + j][aS]->getVari())
+					if (vari != asema->_lauta[aR + j][aS - j]->getVari())
 					{
 						// Nappula tuli vastaan ja se on eri v‰ri‰ kuin liikkuva nappula
 						// Laillinen siirto on nappulan p‰‰lle
-						Ruutu loppuRuutu(aS, aR + j);
+						Ruutu loppuRuutu(aS - j, aR + j);
 						Siirto uusiSiirto(*ruutu, loppuRuutu);
 					}
 					else
@@ -309,11 +309,11 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 				else
 				{
 					// Ruudussa ei ollut mit‰‰n, lis‰t‰‰n se laillisten siirtojen listaan
-					Ruutu loppuRuutu(aS, aR + j);
+					Ruutu loppuRuutu(aS - j, aR + j);
 					Siirto uusiSiirto(*ruutu, loppuRuutu);
 				}
 
-				if (aR + j == 7)
+				if (aR + j == 7 || aS - j == 0)
 				{
 					// Jos menn‰‰n ylilaudan niin poistutaan loopista
 					break;
@@ -321,17 +321,17 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 			}
 			break;
 		case 3:
-			// Vasemmalle
+			// Vasen ylˆs
 			for (int j = 1; j < 8; j++)
 			{
-				if (!(asema->_lauta[aR][aS - j] == NULL))
+				if (!(asema->_lauta[aR - j][aS - j] == NULL))
 				{
 					// Jos vastaan tulee ruutu, jossa on nappula
-					if (vari != asema->_lauta[aR][aS - j]->getVari())
+					if (vari != asema->_lauta[aR - j][aS - j]->getVari())
 					{
 						// Nappula tuli vastaan ja se on eri v‰ri‰ kuin liikkuva nappula
 						// Laillinen siirto on nappulan p‰‰lle
-						Ruutu loppuRuutu(aS - j, aR);
+						Ruutu loppuRuutu(aS - j, aR - j);
 						Siirto uusiSiirto(*ruutu, loppuRuutu);
 					}
 					else
@@ -345,11 +345,11 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 				else
 				{
 					// Ruudussa ei ollut mit‰‰n, lis‰t‰‰n se laillisten siirtojen listaan
-					Ruutu loppuRuutu(aS - j, aR);
+					Ruutu loppuRuutu(aS - j, aR - j);
 					Siirto uusiSiirto(*ruutu, loppuRuutu);
 				}
 
-				if (aS - j == 7)
+				if (aR - j == 0 || aS - j == 0)
 				{
 					// Jos menn‰‰n ylilaudan niin poistutaan loopista
 					break;
