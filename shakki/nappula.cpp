@@ -46,6 +46,7 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 						// Laillinen siirto on nappulan p‰‰lle
 						Ruutu loppuRuutu(aS, aR - j);
 						Siirto uusiSiirto(*ruutu, loppuRuutu);
+						lista.push_back(uusiSiirto);
 					}
 					else
 					{
@@ -60,6 +61,7 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 					// Ruudussa ei ollut mit‰‰n, lis‰t‰‰n se laillisten siirtojen listaan
 					Ruutu loppuRuutu(aS, aR - j);
 					Siirto uusiSiirto(*ruutu, loppuRuutu);
+					lista.push_back(uusiSiirto);
 				}
 			}
 			break;
@@ -83,6 +85,7 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 						// Laillinen siirto on nappulan p‰‰lle
 						Ruutu loppuRuutu(aS + j, aR);
 						Siirto uusiSiirto(*ruutu, loppuRuutu);
+						lista.push_back(uusiSiirto);
 					}
 					else
 					{
@@ -97,6 +100,7 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 					// Ruudussa ei ollut mit‰‰n, lis‰t‰‰n se laillisten siirtojen listaan
 					Ruutu loppuRuutu(aS + j, aR);
 					Siirto uusiSiirto(*ruutu, loppuRuutu);
+					lista.push_back(uusiSiirto);
 				}
 			}
 			break;
@@ -123,6 +127,7 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 						// Laillinen siirto on nappulan p‰‰lle
 						Ruutu loppuRuutu(aS, aR + j);
 						Siirto uusiSiirto(*ruutu, loppuRuutu);
+						lista.push_back(uusiSiirto);
 					}
 					else
 					{
@@ -137,6 +142,7 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 					// Ruudussa ei ollut mit‰‰n, lis‰t‰‰n se laillisten siirtojen listaan
 					Ruutu loppuRuutu(aS, aR + j);
 					Siirto uusiSiirto(*ruutu, loppuRuutu);
+					lista.push_back(uusiSiirto);
 				}
 
 			}
@@ -160,6 +166,7 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 						// Laillinen siirto on nappulan p‰‰lle
 						Ruutu loppuRuutu(aS - j, aR);
 						Siirto uusiSiirto(*ruutu, loppuRuutu);
+						lista.push_back(uusiSiirto);
 					}
 					else
 					{
@@ -174,6 +181,7 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 					// Ruudussa ei ollut mit‰‰n, lis‰t‰‰n se laillisten siirtojen listaan
 					Ruutu loppuRuutu(aS - j, aR);
 					Siirto uusiSiirto(*ruutu, loppuRuutu);
+					lista.push_back(uusiSiirto);
 				}
 
 			}
@@ -534,6 +542,7 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 						// Laillinen siirto on nappulan p‰‰lle
 						Ruutu loppuRuutu(aS + j, aR - j);
 						Siirto uusiSiirto(*ruutu, loppuRuutu);
+						lista.push_back(uusiSiirto);
 					}
 					else
 					{
@@ -548,6 +557,7 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 					// Ruudussa ei ollut mit‰‰n, lis‰t‰‰n se laillisten siirtojen listaan
 					Ruutu loppuRuutu(aS + j, aR - j);
 					Siirto uusiSiirto(*ruutu, loppuRuutu);
+					lista.push_back(uusiSiirto);
 				}
 
 			}
@@ -572,6 +582,7 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 						// Laillinen siirto on nappulan p‰‰lle
 						Ruutu loppuRuutu(aS + j, aR + j);
 						Siirto uusiSiirto(*ruutu, loppuRuutu);
+						lista.push_back(uusiSiirto);
 					}
 					else
 					{
@@ -586,6 +597,7 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 					// Ruudussa ei ollut mit‰‰n, lis‰t‰‰n se laillisten siirtojen listaan
 					Ruutu loppuRuutu(aS + j, aR + j);
 					Siirto uusiSiirto(*ruutu, loppuRuutu);
+					lista.push_back(uusiSiirto);
 				}
 
 			}
@@ -613,6 +625,7 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 						// Laillinen siirto on nappulan p‰‰lle
 						Ruutu loppuRuutu(aS - j, aR + j);
 						Siirto uusiSiirto(*ruutu, loppuRuutu);
+						lista.push_back(uusiSiirto);
 					}
 					else
 					{
@@ -627,6 +640,7 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 					// Ruudussa ei ollut mit‰‰n, lis‰t‰‰n se laillisten siirtojen listaan
 					Ruutu loppuRuutu(aS - j, aR + j);
 					Siirto uusiSiirto(*ruutu, loppuRuutu);
+					lista.push_back(uusiSiirto);
 				}
 
 			}
@@ -650,6 +664,7 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 						// Laillinen siirto on nappulan p‰‰lle
 						Ruutu loppuRuutu(aS - j, aR - j);
 						Siirto uusiSiirto(*ruutu, loppuRuutu);
+						lista.push_back(uusiSiirto);
 					}
 					else
 					{
@@ -664,6 +679,7 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 					// Ruudussa ei ollut mit‰‰n, lis‰t‰‰n se laillisten siirtojen listaan
 					Ruutu loppuRuutu(aS - j, aR - j);
 					Siirto uusiSiirto(*ruutu, loppuRuutu);
+					lista.push_back(uusiSiirto);
 				}
 
 			}
@@ -714,6 +730,7 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 						// Laillinen siirto on nappulan p‰‰lle
 						Ruutu loppuRuutu(aS + j, aR - 1);
 						Siirto uusiSiirto(*ruutu, loppuRuutu);
+						lista.push_back(uusiSiirto);
 					}
 					else
 					{
@@ -728,6 +745,7 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 					// Ruudussa ei ollut mit‰‰n, lis‰t‰‰n se laillisten siirtojen listaan
 					Ruutu loppuRuutu(aS + j, aR - 1);
 					Siirto uusiSiirto(*ruutu, loppuRuutu);
+					lista.push_back(uusiSiirto);
 				}
 
 			}
@@ -752,6 +770,7 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 						// Laillinen siirto on nappulan p‰‰lle
 						Ruutu loppuRuutu(aS + 1, aR);
 						Siirto uusiSiirto(*ruutu, loppuRuutu);
+						lista.push_back(uusiSiirto);
 					}
 					else
 					{
@@ -763,6 +782,7 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 					// Ruudussa ei ollut mit‰‰n, lis‰t‰‰n se laillisten siirtojen listaan
 					Ruutu loppuRuutu(aS + 1, aR);
 					Siirto uusiSiirto(*ruutu, loppuRuutu);
+					lista.push_back(uusiSiirto);
 				}
 			}
 
@@ -787,6 +807,7 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 						// Laillinen siirto on nappulan p‰‰lle
 						Ruutu loppuRuutu(aS + j, aR + 1);
 						Siirto uusiSiirto(*ruutu, loppuRuutu);
+						lista.push_back(uusiSiirto);
 					}
 					else
 					{
@@ -801,6 +822,7 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 					// Ruudussa ei ollut mit‰‰n, lis‰t‰‰n se laillisten siirtojen listaan
 					Ruutu loppuRuutu(aS + j, aR + 1);
 					Siirto uusiSiirto(*ruutu, loppuRuutu);
+					lista.push_back(uusiSiirto);
 				}
 
 			}
@@ -825,6 +847,7 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 						// Laillinen siirto on nappulan p‰‰lle
 						Ruutu loppuRuutu(aS - 1, aR);
 						Siirto uusiSiirto(*ruutu, loppuRuutu);
+						lista.push_back(uusiSiirto);
 					}
 					else
 					{
@@ -836,6 +859,7 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 					// Ruudussa ei ollut mit‰‰n, lis‰t‰‰n se laillisten siirtojen listaan
 					Ruutu loppuRuutu(aS - 1, aR);
 					Siirto uusiSiirto(*ruutu, loppuRuutu);
+					lista.push_back(uusiSiirto);
 				}
 			}
 
