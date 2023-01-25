@@ -31,6 +31,11 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 				// for looppi alkaa 1:st‰, koska ei oteta samaa ruutua huomioon miss‰ jo ollaan
 				// for looppi 1-8, koska laudassa on maksimissaan 8 ruutua
 				
+				if (aR - j < 0)
+				{
+					// Jos menn‰‰n ylilaudan niin poistutaan loopista
+					break;
+				}
 
 				if (!(asema->_lauta[aR - j][aS] == NULL))
 				{
@@ -56,12 +61,6 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 					Ruutu loppuRuutu(aS, aR - j);
 					Siirto uusiSiirto(*ruutu, loppuRuutu);
 				}
-				
-				if (aR - j == 0)
-				{
-					// Jos menn‰‰n ylilaudan niin poistutaan loopista
-					break;
-				}
 			}
 			break;
 
@@ -69,6 +68,12 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 			// Oikealle
 			for (int j = 1; j < 8; j++)
 			{
+				if (aS + j > 7)
+				{
+					// Jos menn‰‰n ylilaudan niin poistutaan loopista
+					break;
+				}
+				
 				if (!(asema->_lauta[aR][aS + j] == NULL))
 				{
 					// Jos vastaan tulee ruutu, jossa on nappula
@@ -93,12 +98,6 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 					Ruutu loppuRuutu(aS + j, aR);
 					Siirto uusiSiirto(*ruutu, loppuRuutu);
 				}
-
-				if (aS + j == 7)
-				{
-					// Jos menn‰‰n ylilaudan niin poistutaan loopista
-					break;
-				}
 			}
 			break;
 
@@ -109,6 +108,11 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 				// for looppi alkaa 1:st‰, koska ei oteta samaa ruutua huomioon miss‰ jo ollaan
 				// for looppi 1-8, koska laudassa on maksimissaan 8 ruutua
 
+				if (aR + j > 7)
+				{
+					// Jos menn‰‰n ylilaudan niin poistutaan loopista
+					break;
+				}
 
 				if (!(asema->_lauta[aR + j][aS] == NULL))
 				{
@@ -135,17 +139,18 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 					Siirto uusiSiirto(*ruutu, loppuRuutu);
 				}
 
-				if (aR + j == 7)
-				{
-					// Jos menn‰‰n ylilaudan niin poistutaan loopista
-					break;
-				}
 			}
 			break;
 		case 3:
 			// Vasemmalle
 			for (int j = 1; j < 8; j++)
 			{
+				if (aS - j < 0)
+				{
+					// Jos menn‰‰n ylilaudan niin poistutaan loopista
+					break;
+				}
+				
 				if (!(asema->_lauta[aR][aS - j] == NULL))
 				{
 					// Jos vastaan tulee ruutu, jossa on nappula
@@ -171,11 +176,6 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 					Siirto uusiSiirto(*ruutu, loppuRuutu);
 				}
 
-				if (aS - j == 0)
-				{
-					// Jos menn‰‰n ylilaudan niin poistutaan loopista
-					break;
-				}
 			}
 			break;
 		default:
@@ -519,6 +519,11 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 				// for looppi alkaa 1:st‰, koska ei oteta samaa ruutua huomioon miss‰ jo ollaan
 				// for looppi 1-8, koska laudassa on maksimissaan 8 ruutua
 
+				if (aR - j < 0 || aS + j > 7)
+				{
+					// Jos menn‰‰n ylilaudan niin poistutaan loopista
+					break;
+				}
 
 				if (asema->_lauta[aR - j][aS + j] != NULL)
 				{
@@ -545,11 +550,6 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 					Siirto uusiSiirto(*ruutu, loppuRuutu);
 				}
 
-				if (aR - j == 0 || aS + j == 7)
-				{
-					// Jos menn‰‰n ylilaudan niin poistutaan loopista
-					break;
-				}
 			}
 			break;
 
@@ -557,6 +557,12 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 			// Oikea alas
 			for (int j = 1; j < 8; j++)
 			{
+				if (aR + j > 7 || aS + j > 7)
+				{
+					// Jos menn‰‰n ylilaudan niin poistutaan loopista
+					break;
+				}
+				
 				if (!(asema->_lauta[aR + j][aS + j] == NULL))
 				{
 					// Jos vastaan tulee ruutu, jossa on nappula
@@ -582,11 +588,6 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 					Siirto uusiSiirto(*ruutu, loppuRuutu);
 				}
 
-				if (aR + j == 7 || aS + j == 7)
-				{
-					// Jos menn‰‰n ylilaudan niin poistutaan loopista
-					break;
-				}
 			}
 			break;
 
@@ -597,6 +598,11 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 				// for looppi alkaa 1:st‰, koska ei oteta samaa ruutua huomioon miss‰ jo ollaan
 				// for looppi 1-8, koska laudassa on maksimissaan 8 ruutua
 
+				if (aR + j > 7 || aS - j < 0)
+				{
+					// Jos menn‰‰n ylilaudan niin poistutaan loopista
+					break;
+				}
 
 				if (!(asema->_lauta[aR + j][aS - j] == NULL))
 				{
@@ -623,17 +629,18 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 					Siirto uusiSiirto(*ruutu, loppuRuutu);
 				}
 
-				if (aR + j == 7 || aS - j == 0)
-				{
-					// Jos menn‰‰n ylilaudan niin poistutaan loopista
-					break;
-				}
 			}
 			break;
 		case 3:
 			// Vasen ylˆs
 			for (int j = 1; j < 8; j++)
 			{
+				if (aR - j < 0 || aS - j < 0)
+				{
+					// Jos menn‰‰n ylilaudan niin poistutaan loopista
+					break;
+				}
+				
 				if (!(asema->_lauta[aR - j][aS - j] == NULL))
 				{
 					// Jos vastaan tulee ruutu, jossa on nappula
@@ -659,11 +666,6 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 					Siirto uusiSiirto(*ruutu, loppuRuutu);
 				}
 
-				if (aR - j == 0 || aS - j == 0)
-				{
-					// Jos menn‰‰n ylilaudan niin poistutaan loopista
-					break;
-				}
 			}
 			break;
 		default:
