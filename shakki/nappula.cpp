@@ -874,16 +874,122 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 
 void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
 {
+
+	int aS = ruutu->getSarake();
+	int aR = ruutu->getRivi();
 	// Ohestalyönti
+    
+	for (int i = 0; i < 3; i++)
+	{
+		switch (i)
+		{
+        // Normaalisiirto
+		case 0:
+			// Ylöspäin
 
-	// Syönti
+			if (aR - 1 < 0 )
+			{
+				// Jos mennään ylilaudan niin ei tehdä mitään
+			}
+			else
+			{
+				if (asema->_lauta[aR - 1][aS] != NULL)
+				{
+					// Vastaan tuli ruutu jossa on nappula, ei voida liikkua
+				}
+				else
+				{
+					// Ruudussa ei ollut mitään, lisätään se laillisten siirtojen listaan
+					Ruutu loppuRuutu(aR - 1, aS);
+					Siirto uusiSiirto(*ruutu, loppuRuutu);
+					lista.push_back(uusiSiirto);
+				}
+			}
+			break;
+			
+			
 
-	// Tuplahyppy
+		case 1:
+			//ylös oikealle syönti
+			if (aR - 1 < 0 || aS + 1  > 7)
+			{
+				// Jos mennään ylilaudan niin poistutaan loopista
+				continue;
+			}
+			
+			else
+			{
+				if (asema->_lauta[aR - 1][aS + 1] != NULL)
+				{
+					// Jos vastaan tulee ruutu, jossa on nappula
+					if (vari != asema->_lauta[aR - 1][aS + 1]->getVari())
+					{
+						// Nappula tuli vastaan ja se on eri väriä kuin liikkuva nappula
+						Ruutu loppuRuutu(aR - 1, aS + 1);
+						Siirto uusiSiirto(*ruutu, loppuRuutu);
+						lista.push_back(uusiSiirto);
 
-	// Normaalisiirto
+					}
+					else
+					{
+						// Nappula tuli vastaan, mutta se on samaa väriä
+					}
+				}
+				else
+				{
+					// Ruudussa ei ollut mitään
+
+				}
+			}
+			break;
+
+		case 2:
+			//ylös vasemmalle syönti
+			if (aR - 1 < 0 || aS - 1 < 0)
+			{
+				// Jos mennään ylilaudan niin poistutaan loopista
+				continue;
+			}
+
+			else
+			{
+				if (asema->_lauta[aR - 1][aS - 1] != NULL)
+				{
+					// Jos vastaan tulee ruutu, jossa on nappula
+					if (vari != asema->_lauta[aR - 1][aS - 1]->getVari())
+					{
+						// Nappula tuli vastaan ja se on eri väriä kuin liikkuva nappula
+						Ruutu loppuRuutu(aR - 1, aS -1 );
+						Siirto uusiSiirto(*ruutu, loppuRuutu);
+						lista.push_back(uusiSiirto);
+
+					}
+					else
+					{
+						// Nappula tuli vastaan, mutta se on samaa väriä
+					}
+				}
+				else
+				{
+					// Ruudussa ei ollut mitään
+
+				}
+			}
+			break;
+
+		default:
+			break;
+
+			
+			
+
+
+		}
+	}
 }
 
 
-void Sotilas::lisaaSotilaanKorotukset(Siirto* siirto, std::list<Siirto>& lista, Asema* asema) {
+void Sotilas::lisaaSotilaanKorotukset(Siirto* siirto, std::list<Siirto>& lista, Asema* asema) 
+{
 	
 }
