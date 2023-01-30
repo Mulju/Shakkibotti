@@ -19,17 +19,22 @@ int main()
 	Kayttoliittyma::getInstance()->aseta_asema(&asema);
 
 	// Testausta varten
+	std::list<Siirto> lista;
+	Kayttoliittyma::getInstance()->piirraLauta();
+	
 	while (true)
 	{
+		lista.clear();
 		Siirto siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto();
 		asema.paivitaAsema(&siirto);
-		Kayttoliittyma::getInstance()->piirraLauta();
+		asema.annaLaillisetSiirrot(lista);
+		Kayttoliittyma::getInstance()->piirraLauta(lista, lista.size());
 	}
 	//Testikoodi loppuu
 
 	Peli peli(Kayttoliittyma::getInstance()->
 		kysyVastustajanVari());
-	std::list<Siirto> lista;
+	//std::list<Siirto> lista;
 	system("cls");
 	int koneenVari = peli.getKoneenVari();
 
