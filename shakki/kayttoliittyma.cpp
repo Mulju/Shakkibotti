@@ -178,6 +178,50 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 			(syote[2] > 48 && syote[2] < 57) &&
 			(syote[5] > 48 && syote[5] < 57))
 		{
+			switch (syote[0])
+			{
+				case 84: // Tornin tarkistus
+					if ((_asema->getSiirtovuoro() == 0 && _asema->_lauta[syote[2] - 49][syote[1] - 97]->getKoodi() == VT) ||
+						(_asema->getSiirtovuoro() == 1 && _asema->_lauta[syote[2] - 49][syote[1] - 97]->getKoodi() == MT))
+					{
+						// Torni on alkuruudussa
+					}
+					break;
+
+				case 82: // Ratsun tarkistus
+					if ((_asema->getSiirtovuoro() == 0 && _asema->_lauta[syote[2] - 49][syote[1] - 97]->getKoodi() == VR) ||
+						(_asema->getSiirtovuoro() == 1 && _asema->_lauta[syote[2] - 49][syote[1] - 97]->getKoodi() == MR))
+					{
+						// Ratsu on alkuruudussa
+					}
+					break;
+
+				case 76: // Lähetin tarkistus
+					if ((_asema->getSiirtovuoro() == 0 && _asema->_lauta[syote[2] - 49][syote[1] - 97]->getKoodi() == VL) ||
+						(_asema->getSiirtovuoro() == 1 && _asema->_lauta[syote[2] - 49][syote[1] - 97]->getKoodi() == ML))
+					{
+						// Lähetti on alkuruudussa
+					}
+					break;
+
+				case 68: // Daamin tarkistus
+					if ((_asema->getSiirtovuoro() == 0 && _asema->_lauta[syote[2] - 49][syote[1] - 97]->getKoodi() == VD) ||
+						(_asema->getSiirtovuoro() == 1 && _asema->_lauta[syote[2] - 49][syote[1] - 97]->getKoodi() == MD))
+					{
+						// Daami on alkuruudussa
+					}
+					break;
+
+				case 75: // Kuninkaan tarkistus
+					if ((_asema->getSiirtovuoro() == 0 && _asema->_lauta[syote[2] - 49][syote[1] - 97]->getKoodi() == VK) ||
+						(_asema->getSiirtovuoro() == 1 && _asema->_lauta[syote[2] - 49][syote[1] - 97]->getKoodi() == MK))
+					{
+						// Kuningas on alkuruudussa
+					}
+					break;
+				default:
+					break;
+			}
 			alkuKirjain = syote[1] - 97;
 			alkuNumero =  syote[2] - 49;
 			loppuKirjain = syote[4] - 97;
