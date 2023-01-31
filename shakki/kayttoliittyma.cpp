@@ -156,7 +156,7 @@ void Kayttoliittyma::piirraLauta(list<Siirto> &lista, int size)
 	muodollisesti korrekti (ei tarkista aseman laillisuutta)
 	Ottaa irti myös nappulan kirjaimen (K/D/L/R/T), tarkistaa että kirjain korrekti
 */
-Siirto Kayttoliittyma::annaVastustajanSiirto()
+Siirto Kayttoliittyma::annaVastustajanSiirto(list<Siirto>& lista, int size)
 {
 	string syote;
 	int alkuKirjain;
@@ -178,6 +178,8 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 			(syote[2] > 48 && syote[2] < 57) &&
 			(syote[5] > 48 && syote[5] < 57))
 		{
+			bool validoitu = false;
+
 			switch (syote[0])
 			{
 				case 84: // Tornin tarkistus
@@ -185,6 +187,23 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 						(_asema->getSiirtovuoro() == 1 && _asema->_lauta[syote[2] - 49][syote[1] - 97]->getKoodi() == MT))
 					{
 						// Torni on alkuruudussa
+						// Miten tähän saadaan laillisten siirtojen tarkistus???
+						for (int i = 0; i < size; i++)
+						{
+							auto siirto = lista.begin();
+							advance(siirto, i);
+							Ruutu loppuruutu = siirto->getLoppuruutu();
+							int rivi = loppuruutu.getRivi();
+							int sarake = loppuruutu.getSarake();
+							// Tarkistetaan tornin lailliset siirrot
+							if (syote[2] - 49 == rivi && syote[1] - 97 == sarake)
+							{
+								alkuKirjain = syote[1] - 97;
+								alkuNumero = syote[2] - 49;
+								loppuKirjain = syote[4] - 97;
+								loppuNumero = syote[5] - 49;
+							}
+						}
 					}
 					break;
 
@@ -193,6 +212,10 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 						(_asema->getSiirtovuoro() == 1 && _asema->_lauta[syote[2] - 49][syote[1] - 97]->getKoodi() == MR))
 					{
 						// Ratsu on alkuruudussa
+						alkuKirjain = syote[1] - 97;
+						alkuNumero = syote[2] - 49;
+						loppuKirjain = syote[4] - 97;
+						loppuNumero = syote[5] - 49;
 					}
 					break;
 
@@ -201,6 +224,10 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 						(_asema->getSiirtovuoro() == 1 && _asema->_lauta[syote[2] - 49][syote[1] - 97]->getKoodi() == ML))
 					{
 						// Lähetti on alkuruudussa
+						alkuKirjain = syote[1] - 97;
+						alkuNumero = syote[2] - 49;
+						loppuKirjain = syote[4] - 97;
+						loppuNumero = syote[5] - 49;
 					}
 					break;
 
@@ -209,6 +236,10 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 						(_asema->getSiirtovuoro() == 1 && _asema->_lauta[syote[2] - 49][syote[1] - 97]->getKoodi() == MD))
 					{
 						// Daami on alkuruudussa
+						alkuKirjain = syote[1] - 97;
+						alkuNumero = syote[2] - 49;
+						loppuKirjain = syote[4] - 97;
+						loppuNumero = syote[5] - 49;
 					}
 					break;
 
@@ -217,17 +248,20 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 						(_asema->getSiirtovuoro() == 1 && _asema->_lauta[syote[2] - 49][syote[1] - 97]->getKoodi() == MK))
 					{
 						// Kuningas on alkuruudussa
+						alkuKirjain = syote[1] - 97;
+						alkuNumero = syote[2] - 49;
+						loppuKirjain = syote[4] - 97;
+						loppuNumero = syote[5] - 49;
 					}
 					break;
 				default:
 					break;
 			}
-			alkuKirjain = syote[1] - 97;
-			alkuNumero =  syote[2] - 49;
-			loppuKirjain = syote[4] - 97;
-			loppuNumero = syote[5] - 49;
 
-			break;
+			if(validoitu)
+			{
+				break;
+				{
 		}
 		// Sotilassiirto
 		else if (syote.length() == 5 &&
