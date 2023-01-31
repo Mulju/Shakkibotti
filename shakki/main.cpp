@@ -25,10 +25,10 @@ int main()
 	while (true)
 	{
 		lista.clear();
-		Siirto siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto();
-		asema.paivitaAsema(&siirto);
-		asema.annaLaillisetSiirrot(lista);
 		Kayttoliittyma::getInstance()->piirraLauta(lista, lista.size());
+		asema.annaLaillisetSiirrot(lista);
+		Siirto siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto(lista, lista.size());
+		asema.paivitaAsema(&siirto);
 	}
 	//Testikoodi loppuu
 
@@ -62,7 +62,7 @@ int main()
 		}
 		else {
 			siirto = Kayttoliittyma::getInstance()->
-				annaVastustajanSiirto();
+				annaVastustajanSiirto(lista, lista.size());
 		}
 		asema.paivitaAsema(&siirto);
 	}

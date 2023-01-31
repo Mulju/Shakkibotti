@@ -170,7 +170,7 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(list<Siirto>& lista, int size)
 		cin >> syote;
 		system("cls");
 
-		// Upseerisiirto
+		// Upseerisiirto 
 		if (syote.length() == 6 &&
 			(syote[0] == 75 || syote[0] == 68 || syote[0] == 76 || syote[0] == 82 || syote[0] == 84) &&
 			(syote[1] > 96 && syote[1] < 105) &&
@@ -186,22 +186,26 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(list<Siirto>& lista, int size)
 					if ((_asema->getSiirtovuoro() == 0 && _asema->_lauta[syote[2] - 49][syote[1] - 97]->getKoodi() == VT) ||
 						(_asema->getSiirtovuoro() == 1 && _asema->_lauta[syote[2] - 49][syote[1] - 97]->getKoodi() == MT))
 					{
-						// Torni on alkuruudussa
-						// Miten tähän saadaan laillisten siirtojen tarkistus???
+						// Torni on alkuruudussa, haetaan tornin lailliset siirrot ja tarkistetaan
 						for (int i = 0; i < size; i++)
 						{
 							auto siirto = lista.begin();
 							advance(siirto, i);
-							Ruutu loppuruutu = siirto->getLoppuruutu();
-							int rivi = loppuruutu.getRivi();
-							int sarake = loppuruutu.getSarake();
-							// Tarkistetaan tornin lailliset siirrot
-							if (syote[2] - 49 == rivi && syote[1] - 97 == sarake)
-							{
-								alkuKirjain = syote[1] - 97;
-								alkuNumero = syote[2] - 49;
-								loppuKirjain = syote[4] - 97;
-								loppuNumero = syote[5] - 49;
+							Ruutu alkuruutu = siirto->getAlkuruutu();
+							// Haetaan saman alkuruudun lailliset siirrot
+							if (alkuruutu.getRivi() == syote[2] - 49 && alkuruutu.getSarake() == syote[1] - 97) {
+								Ruutu loppuruutu = siirto->getLoppuruutu();
+								int rivi = loppuruutu.getRivi();
+								int sarake = loppuruutu.getSarake();
+								// Tarkistetaan, onko loppuruutu laillinen siirto kyseiselle alkuruudulle
+								if (syote[2] - 49 == rivi && syote[1] - 97 == sarake)
+								{
+									alkuKirjain = syote[1] - 97;
+									alkuNumero = syote[2] - 49;
+									loppuKirjain = syote[4] - 97;
+									loppuNumero = syote[5] - 49;
+									validoitu = true;
+								}
 							}
 						}
 					}
@@ -211,11 +215,28 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(list<Siirto>& lista, int size)
 					if ((_asema->getSiirtovuoro() == 0 && _asema->_lauta[syote[2] - 49][syote[1] - 97]->getKoodi() == VR) ||
 						(_asema->getSiirtovuoro() == 1 && _asema->_lauta[syote[2] - 49][syote[1] - 97]->getKoodi() == MR))
 					{
-						// Ratsu on alkuruudussa
-						alkuKirjain = syote[1] - 97;
-						alkuNumero = syote[2] - 49;
-						loppuKirjain = syote[4] - 97;
-						loppuNumero = syote[5] - 49;
+						// Ratsu on alkuruudussa, haetaan ratsun lailliset siirrot ja tarkistetaan
+						for (int i = 0; i < size; i++)
+						{
+							auto siirto = lista.begin();
+							advance(siirto, i);
+							Ruutu alkuruutu = siirto->getAlkuruutu();
+							// Haetaan saman alkuruudun lailliset siirrot
+							if (alkuruutu.getRivi() == syote[2] - 49 && alkuruutu.getSarake() == syote[1] - 97) {
+								Ruutu loppuruutu = siirto->getLoppuruutu();
+								int rivi = loppuruutu.getRivi();
+								int sarake = loppuruutu.getSarake();
+								// Tarkistetaan, onko loppuruutu laillinen siirto kyseiselle alkuruudulle
+								if (syote[2] - 49 == rivi && syote[1] - 97 == sarake)
+								{
+									alkuKirjain = syote[1] - 97;
+									alkuNumero = syote[2] - 49;
+									loppuKirjain = syote[4] - 97;
+									loppuNumero = syote[5] - 49;
+									validoitu = true;
+								}
+							}
+						}
 					}
 					break;
 
@@ -262,6 +283,10 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(list<Siirto>& lista, int size)
 			{
 				break;
 			}
+			else
+			{
+				wcout << "Laiton siirto! Kokeile uudelleen." << endl;
+			}
 		}
 		// Sotilassiirto
 		else if (syote.length() == 5 &&
@@ -296,7 +321,7 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(list<Siirto>& lista, int size)
 		}
 		else 
 		{
-			wcout << "Väärä syöte! Kokeile uudelleen." << endl;
+			wcout << "Laiton siirto! Kokeile uudelleen." << endl;
 		}
 	}
 
