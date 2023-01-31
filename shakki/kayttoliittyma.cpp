@@ -258,10 +258,10 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(list<Siirto>& lista, int size)
 					break;
 			}
 
-			if(validoitu)
+			if (validoitu)
 			{
 				break;
-				{
+			}
 		}
 		// Sotilassiirto
 		else if (syote.length() == 5 &&
