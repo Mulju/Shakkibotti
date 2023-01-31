@@ -172,7 +172,7 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 
 		// Upseerisiirto
 		if (syote.length() == 6 &&
-			(syote[0] == (75 || 68 || 76 || 82 || 84)) &&
+			(syote[0] == 75 || syote[0] == 68 || syote[0] == 76 || syote[0] == 82 || syote[0] == 84) &&
 			(syote[1] > 96 && syote[1] < 105) &&
 			(syote[4] > 96 && syote[4] < 105) &&
 			(syote[2] > 48 && syote[2] < 57) &&
