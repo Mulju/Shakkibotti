@@ -151,6 +151,17 @@ void Asema::paivitaAsema(Siirto *siirto)
 
 		//// Katsotaan jos nappula on sotilas ja rivi on päätyrivi niin ei vaihdeta nappulaa 
 		////eli alkuruutuun laitetaan null ja loppuruudussa on jo kliittymän laittama nappula MIIKKA, ei taida minmaxin kanssa hehkua?
+		
+		// Maikan ylempi kommentti on hämmentävä. Luullakseni tämä korottaa sotilaan oikein
+		if ((siirto->getLoppuruutu().getRivi() == 7 || siirto->getLoppuruutu().getRivi() == 0) &&
+			(nappula == ms || nappula == vs))
+		{
+			// Siirron loppuruutu on laudan pääty, sekä nappula on sotilas. Siirrolla on korotus arvo
+			// Asetetaan nappula osoitin osoittamaan korotusarvon omaiseen nappulaan
+			nappula = siirto->_miksikorotetaan;
+			// Päivitetään laudalle oikean tyyppinen nappula
+			_lauta[siirto->getLoppuruutu().getRivi()][siirto->getLoppuruutu().getSarake()] = nappula;
+		}
 
 		//
 		////muissa tapauksissa alkuruutuun null ja loppuruutuun sama alkuruudusta lähtenyt nappula

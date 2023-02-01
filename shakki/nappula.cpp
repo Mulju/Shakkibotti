@@ -1136,5 +1136,36 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 
 void Sotilas::lisaaSotilaanKorotukset(Siirto* siirto, std::list<Siirto>& lista, Asema* asema) 
 {
-	
+	Siirto korotus = *siirto;
+	//Valkea korottaa
+	if (korotus.getLoppuruutu().getRivi() == 0)
+	{
+		korotus._miksikorotetaan = asema->vd;
+		lista.push_back(korotus);
+
+		korotus._miksikorotetaan = asema->vt;
+		lista.push_back(korotus);
+
+		korotus._miksikorotetaan = asema->vl;
+		lista.push_back(korotus);
+
+		korotus._miksikorotetaan = asema->vr;
+		lista.push_back(korotus);
+	}
+
+	// Musta korottaa
+	if (korotus.getLoppuruutu().getRivi() == 7)
+	{
+		korotus._miksikorotetaan = asema->md;
+		lista.push_back(korotus);
+
+		korotus._miksikorotetaan = asema->mt;
+		lista.push_back(korotus);
+
+		korotus._miksikorotetaan = asema->ml;
+		lista.push_back(korotus);
+
+		korotus._miksikorotetaan = asema->mr;
+		lista.push_back(korotus);
+	}
 }

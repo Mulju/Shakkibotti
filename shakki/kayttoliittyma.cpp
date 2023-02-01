@@ -397,6 +397,54 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(list<Siirto>& lista, int size)
 							if (loppuNumero == 0 || loppuNumero == 7)
 							{
 								// Sotilas on p‰‰ssyt toiseen p‰‰h‰n. Korotetaan!
+								wcout << "Sotilas korottuu! Miksi korotetaan? (T/R/L/D)\n";
+								string sotilasSyote;
+								cin >> sotilasSyote;
+								if (_asema->getSiirtovuoro() == 0)
+								{
+									// Valkoinen korottaa
+									switch (sotilasSyote[0])
+									{
+										// Tarkistetaan mit‰ pelaaja valitsi
+									case 84: // Torni
+										_asema->_lauta[alkuNumero][alkuKirjain] = Asema::vt;
+										break;
+									case 82: // Ratsu
+										_asema->_lauta[alkuNumero][alkuKirjain] = Asema::vr;
+										break;
+									case 76: // L‰hetti
+										_asema->_lauta[alkuNumero][alkuKirjain] = Asema::vl;
+										break;
+									case 68: // Daami
+										_asema->_lauta[alkuNumero][alkuKirjain] = Asema::vd;
+										break;
+									default:
+										break;
+									}
+								}
+								else
+								{
+									// Musta korottaa
+									switch (sotilasSyote[0])
+									{
+										// Tarkistetaan mit‰ pelaaja valitsi
+									case 84: // Torni
+										_asema->_lauta[alkuNumero][alkuKirjain] = Asema::mt;
+										break;
+									case 82: // Ratsu
+										_asema->_lauta[alkuNumero][alkuKirjain] = Asema::mr;
+										break;
+									case 76: // L‰hetti
+										_asema->_lauta[alkuNumero][alkuKirjain] = Asema::ml;
+										break;
+									case 68: // Daami
+										_asema->_lauta[alkuNumero][alkuKirjain] = Asema::md;
+										break;
+									default:
+										break;
+									}
+								}
+								
 							}
 							validoitu = true;
 							break;
@@ -437,7 +485,6 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(list<Siirto>& lista, int size)
 	
 	Siirto siirto(alkuruutu, loppuruutu);
 	return siirto;
-	
 }
 
 
