@@ -186,8 +186,8 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(list<Siirto>& lista, int size)
 			switch (syote[0])
 			{
 				case 84: // Tornin tarkistus
-					if ((_asema->getSiirtovuoro() == 0 && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == VT) ||
-						(_asema->getSiirtovuoro() == 1 && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == MT))
+					if ((_asema->getSiirtovuoro() == 0 && _asema->_lauta[annettuRivi][annettuSarake] != NULL && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == VT) ||
+						(_asema->getSiirtovuoro() == 1 && _asema->_lauta[annettuRivi][annettuSarake] != NULL && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == MT))
 					{
 						// Torni on alkuruudussa, haetaan tornin lailliset siirrot ja tarkistetaan
 						for (int i = 0; i < size; i++)
@@ -218,8 +218,8 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(list<Siirto>& lista, int size)
 					break;
 
 				case 82: // Ratsun tarkistus
-					if ((_asema->getSiirtovuoro() == 0 && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == VR) ||
-						(_asema->getSiirtovuoro() == 1 && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == MR))
+					if ((_asema->getSiirtovuoro() == 0 && _asema->_lauta[annettuRivi][annettuSarake] != NULL && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == VR) ||
+						(_asema->getSiirtovuoro() == 1 && _asema->_lauta[annettuRivi][annettuSarake] != NULL && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == MR))
 					{
 						// Ratsu on alkuruudussa, haetaan lailliset siirrot ja tarkistetaan
 						for (int i = 0; i < size; i++)
@@ -250,8 +250,8 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(list<Siirto>& lista, int size)
 					break;
 
 				case 76: // Lähetin tarkistus
-					if ((_asema->getSiirtovuoro() == 0 && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == VL) ||
-						(_asema->getSiirtovuoro() == 1 && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == ML))
+					if ((_asema->getSiirtovuoro() == 0 && _asema->_lauta[annettuRivi][annettuSarake] != NULL && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == VL) ||
+						(_asema->getSiirtovuoro() == 1 && _asema->_lauta[annettuRivi][annettuSarake] != NULL && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == ML))
 					{
 						// Lähetti on alkuruudussa, haetaan lailliset siirrot ja tarkistetaan
 						for (int i = 0; i < size; i++)
@@ -282,8 +282,8 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(list<Siirto>& lista, int size)
 					break;
 
 				case 68: // Daamin tarkistus
-					if ((_asema->getSiirtovuoro() == 0 && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == VD) ||
-						(_asema->getSiirtovuoro() == 1 && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == MD))
+					if ((_asema->getSiirtovuoro() == 0 && _asema->_lauta[annettuRivi][annettuSarake] != NULL && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == VD) ||
+						(_asema->getSiirtovuoro() == 1 && _asema->_lauta[annettuRivi][annettuSarake] != NULL && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == MD))
 					{
 						// Daami on alkuruudussa, haetaan lailliset siirrot ja tarkistetaan
 						for (int i = 0; i < size; i++)
@@ -314,8 +314,8 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(list<Siirto>& lista, int size)
 					break;
 
 				case 75: // Kuninkaan tarkistus
-					if ((_asema->getSiirtovuoro() == 0 && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == VK) ||
-						(_asema->getSiirtovuoro() == 1 && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == MK))
+					if ((_asema->getSiirtovuoro() == 0 && _asema->_lauta[annettuRivi][annettuSarake] != NULL && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == VK) ||
+						(_asema->getSiirtovuoro() == 1 && _asema->_lauta[annettuRivi][annettuSarake] != NULL && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == MK))
 					{
 						// Kuningas on alkuruudussa, haetaan lailliset siirrot ja tarkistetaan
 						for (int i = 0; i < size; i++)
@@ -370,8 +370,8 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(list<Siirto>& lista, int size)
 			int annettuSarake = syote[0] - 97;
 
 			// Sotilaan tarkistus
-			if ((_asema->getSiirtovuoro() == 0 && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == VS) ||
-				(_asema->getSiirtovuoro() == 1 && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == MS))
+			if ((_asema->getSiirtovuoro() == 0 && _asema->_lauta[annettuRivi][annettuSarake] != NULL && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == VS) ||
+				(_asema->getSiirtovuoro() == 1 && _asema->_lauta[annettuRivi][annettuSarake] != NULL && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == MS))
 			{
 				// Sotilas on alkuruudussa, haetaan sotilaan lailliset siirrot ja tarkistetaan
 				for (int i = 0; i < size; i++)
