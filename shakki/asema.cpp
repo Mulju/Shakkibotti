@@ -390,7 +390,7 @@ MinMaxPaluu Asema::mini(int syvyys)
 }
 
 
-bool Asema::onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari)
+bool Asema::onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari, Nappula* kopioLauta[])
 {
 
 	return false;
@@ -399,7 +399,58 @@ bool Asema::onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari)
 
 void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari) 
 { 
+	Ruutu kuninkaanRuutu;
+
+	// Haetaan kuninkaan sijainti
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			// Valkoinen kuningas
+			if (_siirtovuoro == 0)
+			{
+				if (_lauta[i][j] == vk)
+				{
+					kuninkaanRuutu.setRivi(i);
+					kuninkaanRuutu.setSarake(j);
+				}
+			}
+			else // Musta kuningas
+			{
+				if (_lauta[i][j] == ms || _lauta[i][j] == mt || _lauta[i][j] == mr || _lauta[i][j] == ml || _lauta[i][j] == md || _lauta[i][j] == mk)
+				{
+					ruutu.setRivi(i);
+					ruutu.setSarake(j);
+					_lauta[i][j]->annaSiirrot(lista, &ruutu, this, _siirtovuoro);
+					if (_lauta[i][j] == mk) {
+						kuninkaanRuutu.setRivi(i);
+						kuninkaanRuutu.setSarake(j);
+					}
+				}
+			}
+		}
+	}
 	
+	// K‰yd‰‰n l‰pi siirtolistan siirrot ja poistetaan sielt‰ kuninkaan shakkiin johtavat siirrot
+	for (int i = 0; i < size; i++)
+	{
+		Nappula* (*kopioLauta)[8] = _lauta;
+
+
+
+		auto siirto = lista.begin();
+		advance(siirto, i);
+
+		// Tehd‰‰n siirto
+		Nappula* haamuNappula = kopioLauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()];
+		kopioLauta[siirto->getLoppuruutu().getRivi()][siirto->getLoppuruutu().getSarake()] = haamuNappula;
+		kopioLauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()] = NULL;
+
+		std::list<Siirto> vastustajanSiirtolista;
+		onkoRuutuUhattu(&kuninkaanRuutu, _siirtovuoro, kopioLauta);
+
+
+	}
 }
 
 
@@ -441,20 +492,6 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista, int size)
 			}
 		}
 	}
-	// K‰yd‰‰n l‰pi siirtolistan siirrot
-	for (int i = 0; i < size; i++)
-	{
-		auto kopioLauta = _lauta; // Voi olla ongelma
-		auto siirto = lista.begin();
-		advance(siirto, i);
-
-		// Tehd‰‰n siirto
-		Nappula* haamuNappula = kopioLauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()];
-		kopioLauta[siirto->getLoppuruutu().getRivi()][siirto->getLoppuruutu().getSarake()] = haamuNappula;
-		kopioLauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()] = NULL;
-
-		std::list<Siirto> vastustajanSiirtolista;
-		annaLaillisetSiirrot(vastustajanSiirtolista, vastustajanSiirtolista.size());
-
-	}
+	annaLinnoitusSiirrot(lista, _siirtovuoro);
+	huolehdiKuninkaanShakeista(lista, _siirtovuoro);
 }

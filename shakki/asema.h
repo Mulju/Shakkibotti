@@ -30,7 +30,6 @@ public:
 	// Ohestalyöntiä varten (-1 = sotilaan kaksoisaskelta ei tapahtunut edellisellä siirrolla).
 	int kaksoisaskelSarakkeella = -1;
 
-
 	Asema();												// Asettaa alkuaseman.
 	void paivitaAsema(Siirto*);								// Päivittää aseman annetulla siirrolla.
 	double evaluoi();										// Aseman numeerinen arviointi.
@@ -63,8 +62,8 @@ private:
 	double nappuloitaKeskella(int);
 	double linjat(int);
 	bool onkoRuutuUhattu(Ruutu*, int vastustajanVari);
-	void annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari);
+	void annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari, int size);
 
 	// Karsii siirrot, jotka jättävät oman K:n shakkiin.
-	void huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari); 
+	void huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari, int size); 
 };
