@@ -895,7 +895,16 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 						// Ruudussa ei ollut mit‰‰n, lis‰t‰‰n se laillisten siirtojen listaan
 						Ruutu loppuRuutu(aS, aR - 1);
 						Siirto uusiSiirto(*ruutu, loppuRuutu);
-						lista.push_back(uusiSiirto);
+
+						if (loppuRuutu.getRivi() == 7 || loppuRuutu.getRivi() == 0)
+						{
+							// Sotilas olisi korottumassa
+							lisaaSotilaanKorotukset(&uusiSiirto, lista, asema);
+						}
+						else
+						{
+							lista.push_back(uusiSiirto);
+						}
 					}
 				}
 				break;
@@ -917,7 +926,16 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 							// Nappula tuli vastaan ja se on eri v‰ri‰ kuin liikkuva nappula
 							Ruutu loppuRuutu(aS + 1, aR - 1);
 							Siirto uusiSiirto(*ruutu, loppuRuutu);
-							lista.push_back(uusiSiirto);
+							
+							if (loppuRuutu.getRivi() == 7 || loppuRuutu.getRivi() == 0)
+							{
+								// Sotilas olisi korottumassa
+								lisaaSotilaanKorotukset(&uusiSiirto, lista, asema);
+							}
+							else
+							{
+								lista.push_back(uusiSiirto);
+							}
 
 						}
 						else
@@ -951,7 +969,16 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 							// Nappula tuli vastaan ja se on eri v‰ri‰ kuin liikkuva nappula
 							Ruutu loppuRuutu(aS - 1, aR - 1);
 							Siirto uusiSiirto(*ruutu, loppuRuutu);
-							lista.push_back(uusiSiirto);
+							
+							if (loppuRuutu.getRivi() == 7 || loppuRuutu.getRivi() == 0)
+							{
+								// Sotilas olisi korottumassa
+								lisaaSotilaanKorotukset(&uusiSiirto, lista, asema);
+							}
+							else
+							{
+								lista.push_back(uusiSiirto);
+							}
 
 						}
 						else
@@ -970,6 +997,7 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 			default:
 				break;
 			}
+		
 		}
 	}
 	else
@@ -998,7 +1026,16 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 						// Ruudussa ei ollut mit‰‰n, lis‰t‰‰n se laillisten siirtojen listaan
 						Ruutu loppuRuutu(aS, aR + 1);
 						Siirto uusiSiirto(*ruutu, loppuRuutu);
-						lista.push_back(uusiSiirto);
+						
+						if (loppuRuutu.getRivi() == 7 || loppuRuutu.getRivi() == 0)
+						{
+							// Sotilas olisi korottumassa
+							lisaaSotilaanKorotukset(&uusiSiirto, lista, asema);
+						}
+						else
+						{
+							lista.push_back(uusiSiirto);
+						}
 					}
 				}
 				break;
@@ -1020,7 +1057,16 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 							// Nappula tuli vastaan ja se on eri v‰ri‰ kuin liikkuva nappula
 							Ruutu loppuRuutu(aS + 1, aR + 1);
 							Siirto uusiSiirto(*ruutu, loppuRuutu);
-							lista.push_back(uusiSiirto);
+
+							if (loppuRuutu.getRivi() == 7 || loppuRuutu.getRivi() == 0)
+							{
+								// Sotilas olisi korottumassa
+								lisaaSotilaanKorotukset(&uusiSiirto, lista, asema);
+							}
+							else
+							{
+								lista.push_back(uusiSiirto);
+							}
 
 						}
 						else
@@ -1054,7 +1100,16 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 							// Nappula tuli vastaan ja se on eri v‰ri‰ kuin liikkuva nappula
 							Ruutu loppuRuutu(aS - 1, aR + 1);
 							Siirto uusiSiirto(*ruutu, loppuRuutu);
-							lista.push_back(uusiSiirto);
+
+							if (loppuRuutu.getRivi() == 7 || loppuRuutu.getRivi() == 0)
+							{
+								// Sotilas olisi korottumassa
+								lisaaSotilaanKorotukset(&uusiSiirto, lista, asema);
+							}
+							else
+							{
+								lista.push_back(uusiSiirto);
+							}
 
 						}
 						else
