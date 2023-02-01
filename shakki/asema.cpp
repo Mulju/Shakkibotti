@@ -433,7 +433,7 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista, int size)
 	// Käydään läpi siirtolistan siirrot
 	for (int i = 0; i < size; i++)
 	{
-		Nappula* kopioLauta = _lauta[8][8];
+		auto kopioLauta = _lauta; // Voi olla ongelma
 		auto siirto = lista.begin();
 		advance(siirto, i);
 
@@ -441,6 +441,9 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista, int size)
 		Nappula* haamuNappula = kopioLauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()];
 		kopioLauta[siirto->getLoppuruutu().getRivi()][siirto->getLoppuruutu().getSarake()] = haamuNappula;
 		kopioLauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()] = NULL;
+
+		std::list<Siirto> vastustajanSiirtolista;
+		annaLaillisetSiirrot(vastustajanSiirtolista, vastustajanSiirtolista.size());
 
 	}
 }
