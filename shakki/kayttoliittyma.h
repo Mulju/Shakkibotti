@@ -14,7 +14,7 @@ public:
 	void aseta_asema(Asema* asema) { this->_asema = asema;  }
 	void piirraLauta();
 	void piirraLauta(std::list<Siirto>& lista, int size);
-	Siirto annaVastustajanSiirto();
+	Siirto annaVastustajanSiirto(std::list<Siirto>& lista, int size);
 	int kysyVastustajanVari();
 
 	static Kayttoliittyma* getInstance();

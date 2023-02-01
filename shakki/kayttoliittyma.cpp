@@ -156,7 +156,7 @@ void Kayttoliittyma::piirraLauta(list<Siirto> &lista, int size)
 	muodollisesti korrekti (ei tarkista aseman laillisuutta)
 	Ottaa irti myˆs nappulan kirjaimen (K/D/L/R/T), tarkistaa ett‰ kirjain korrekti
 */
-Siirto Kayttoliittyma::annaVastustajanSiirto()
+Siirto Kayttoliittyma::annaVastustajanSiirto(list<Siirto>& lista, int size)
 {
 	string syote;
 	int alkuKirjain;
@@ -168,9 +168,9 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 	{
 		wcout << "Anna siirto:" << "\n";
 		cin >> syote;
-		system("cls");
+		//system("cls");
 
-		// Upseerisiirto
+		// Upseerisiirto 
 		if (syote.length() == 6 &&
 			(syote[0] == 75 || syote[0] == 68 || syote[0] == 76 || syote[0] == 82 || syote[0] == 84) &&
 			(syote[1] > 96 && syote[1] < 105) &&
@@ -178,12 +178,185 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 			(syote[2] > 48 && syote[2] < 57) &&
 			(syote[5] > 48 && syote[5] < 57))
 		{
-			alkuKirjain = syote[1] - 97;
-			alkuNumero =  syote[2] - 49;
-			loppuKirjain = syote[4] - 97;
-			loppuNumero = syote[5] - 49;
+			bool validoitu = false;
 
-			break;
+			int annettuRivi = 7 - (syote[2] - 49);
+			int annettuSarake = syote[1] - 97;
+
+			switch (syote[0])
+			{
+				case 84: // Tornin tarkistus
+					if ((_asema->getSiirtovuoro() == 0 && _asema->_lauta[annettuRivi][annettuSarake] != NULL && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == VT) ||
+						(_asema->getSiirtovuoro() == 1 && _asema->_lauta[annettuRivi][annettuSarake] != NULL && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == MT))
+					{
+						// Torni on alkuruudussa, haetaan tornin lailliset siirrot ja tarkistetaan
+						for (int i = 0; i < size; i++)
+						{
+							auto siirto = lista.begin();
+							advance(siirto, i);
+							Ruutu alkuruutu = siirto->getAlkuruutu();
+							// Haetaan saman alkuruudun lailliset siirrot
+							if (alkuruutu.getRivi() == annettuRivi && alkuruutu.getSarake() == annettuSarake) {
+								Ruutu loppuruutu = siirto->getLoppuruutu();
+								int haettuRivi = loppuruutu.getRivi();
+								int haettuSarake = loppuruutu.getSarake();
+								int annettuLoppurivi = 7 - (syote[5] - 49);
+								int annettuLoppusarake = syote[4] - 97;
+								// Tarkistetaan, onko loppuruutu laillinen siirto kyseiselle alkuruudulle
+								if (annettuLoppurivi == haettuRivi && annettuLoppusarake == haettuSarake)
+								{
+									alkuKirjain = syote[1] - 97;
+									alkuNumero = 7 - (syote[2] - 49);
+									loppuKirjain = syote[4] - 97;
+									loppuNumero = 7 - (syote[5] - 49);
+									validoitu = true;
+									break;
+								}
+							}
+						}
+					}
+					break;
+
+				case 82: // Ratsun tarkistus
+					if ((_asema->getSiirtovuoro() == 0 && _asema->_lauta[annettuRivi][annettuSarake] != NULL && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == VR) ||
+						(_asema->getSiirtovuoro() == 1 && _asema->_lauta[annettuRivi][annettuSarake] != NULL && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == MR))
+					{
+						// Ratsu on alkuruudussa, haetaan lailliset siirrot ja tarkistetaan
+						for (int i = 0; i < size; i++)
+						{
+							auto siirto = lista.begin();
+							advance(siirto, i);
+							Ruutu alkuruutu = siirto->getAlkuruutu();
+							// Haetaan saman alkuruudun lailliset siirrot
+							if (alkuruutu.getRivi() == annettuRivi && alkuruutu.getSarake() == annettuSarake) {
+								Ruutu loppuruutu = siirto->getLoppuruutu();
+								int haettuRivi = loppuruutu.getRivi();
+								int haettuSarake = loppuruutu.getSarake();
+								int annettuLoppurivi = 7 - (syote[5] - 49);
+								int annettuLoppusarake = syote[4] - 97;
+								// Tarkistetaan, onko loppuruutu laillinen siirto kyseiselle alkuruudulle
+								if (annettuLoppurivi == haettuRivi && annettuLoppusarake == haettuSarake)
+								{
+									alkuKirjain = syote[1] - 97;
+									alkuNumero = 7 - (syote[2] - 49);
+									loppuKirjain = syote[4] - 97;
+									loppuNumero = 7 - (syote[5] - 49);
+									validoitu = true;
+									break;
+								}
+							}
+						}
+					}
+					break;
+
+				case 76: // L‰hetin tarkistus
+					if ((_asema->getSiirtovuoro() == 0 && _asema->_lauta[annettuRivi][annettuSarake] != NULL && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == VL) ||
+						(_asema->getSiirtovuoro() == 1 && _asema->_lauta[annettuRivi][annettuSarake] != NULL && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == ML))
+					{
+						// L‰hetti on alkuruudussa, haetaan lailliset siirrot ja tarkistetaan
+						for (int i = 0; i < size; i++)
+						{
+							auto siirto = lista.begin();
+							advance(siirto, i);
+							Ruutu alkuruutu = siirto->getAlkuruutu();
+							// Haetaan saman alkuruudun lailliset siirrot
+							if (alkuruutu.getRivi() == annettuRivi && alkuruutu.getSarake() == annettuSarake) {
+								Ruutu loppuruutu = siirto->getLoppuruutu();
+								int haettuRivi = loppuruutu.getRivi();
+								int haettuSarake = loppuruutu.getSarake();
+								int annettuLoppurivi = 7 - (syote[5] - 49);
+								int annettuLoppusarake = syote[4] - 97;
+								// Tarkistetaan, onko loppuruutu laillinen siirto kyseiselle alkuruudulle
+								if (annettuLoppurivi == haettuRivi && annettuLoppusarake == haettuSarake)
+								{
+									alkuKirjain = syote[1] - 97;
+									alkuNumero = 7 - (syote[2] - 49);
+									loppuKirjain = syote[4] - 97;
+									loppuNumero = 7 - (syote[5] - 49);
+									validoitu = true;
+									break;
+								}
+							}
+						}
+					}
+					break;
+
+				case 68: // Daamin tarkistus
+					if ((_asema->getSiirtovuoro() == 0 && _asema->_lauta[annettuRivi][annettuSarake] != NULL && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == VD) ||
+						(_asema->getSiirtovuoro() == 1 && _asema->_lauta[annettuRivi][annettuSarake] != NULL && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == MD))
+					{
+						// Daami on alkuruudussa, haetaan lailliset siirrot ja tarkistetaan
+						for (int i = 0; i < size; i++)
+						{
+							auto siirto = lista.begin();
+							advance(siirto, i);
+							Ruutu alkuruutu = siirto->getAlkuruutu();
+							// Haetaan saman alkuruudun lailliset siirrot
+							if (alkuruutu.getRivi() == annettuRivi && alkuruutu.getSarake() == annettuSarake) {
+								Ruutu loppuruutu = siirto->getLoppuruutu();
+								int haettuRivi = loppuruutu.getRivi();
+								int haettuSarake = loppuruutu.getSarake();
+								int annettuLoppurivi = 7 - (syote[5] - 49);
+								int annettuLoppusarake = syote[4] - 97;
+								// Tarkistetaan, onko loppuruutu laillinen siirto kyseiselle alkuruudulle
+								if (annettuLoppurivi == haettuRivi && annettuLoppusarake == haettuSarake)
+								{
+									alkuKirjain = syote[1] - 97;
+									alkuNumero = 7 - (syote[2] - 49);
+									loppuKirjain = syote[4] - 97;
+									loppuNumero = 7 - (syote[5] - 49);
+									validoitu = true;
+									break;
+								}
+							}
+						}
+					}
+					break;
+
+				case 75: // Kuninkaan tarkistus
+					if ((_asema->getSiirtovuoro() == 0 && _asema->_lauta[annettuRivi][annettuSarake] != NULL && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == VK) ||
+						(_asema->getSiirtovuoro() == 1 && _asema->_lauta[annettuRivi][annettuSarake] != NULL && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == MK))
+					{
+						// Kuningas on alkuruudussa, haetaan lailliset siirrot ja tarkistetaan
+						for (int i = 0; i < size; i++)
+						{
+							auto siirto = lista.begin();
+							advance(siirto, i);
+							Ruutu alkuruutu = siirto->getAlkuruutu();
+							// Haetaan saman alkuruudun lailliset siirrot
+							if (alkuruutu.getRivi() == annettuRivi && alkuruutu.getSarake() == annettuSarake) {
+								Ruutu loppuruutu = siirto->getLoppuruutu();
+								int haettuRivi = loppuruutu.getRivi();
+								int haettuSarake = loppuruutu.getSarake();
+								int annettuLoppurivi = 7 - (syote[5] - 49);
+								int annettuLoppusarake = syote[4] - 97;
+								// Tarkistetaan, onko loppuruutu laillinen siirto kyseiselle alkuruudulle
+								if (annettuLoppurivi == haettuRivi && annettuLoppusarake == haettuSarake)
+								{
+									alkuKirjain = syote[1] - 97;
+									alkuNumero = 7 - (syote[2] - 49);
+									loppuKirjain = syote[4] - 97;
+									loppuNumero = 7 - (syote[5] - 49);
+									validoitu = true;
+									break;
+								}
+							}
+						}
+					}
+					break;
+				default:
+					wcout << "Laiton siirto! Kokeile uudelleen." << endl;
+					break;
+			}
+
+			if (validoitu)
+			{
+				break;
+			}
+			else
+			{
+				wcout << "Laiton siirto! Kokeile uudelleen." << endl;
+			}
 		}
 		// Sotilassiirto
 		else if (syote.length() == 5 &&
@@ -192,17 +365,54 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 			(syote[1] > 48 && syote[1] < 57) &&
 			(syote[4] > 48 && syote[4] < 57))
 		{
-			alkuKirjain = syote[0] - 97;
-			alkuNumero = 7 - (syote[1] - 49);
-			loppuKirjain = syote[3] - 97;
-			loppuNumero = 7 - (syote[4] - 49);
+			bool validoitu = false;
 
-			if (loppuNumero == 0 || loppuNumero == 7)
+			int annettuRivi = 7 - (syote[1] - 49);
+			int annettuSarake = syote[0] - 97;
+
+			// Sotilaan tarkistus
+			if ((_asema->getSiirtovuoro() == 0 && _asema->_lauta[annettuRivi][annettuSarake] != NULL && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == VS) ||
+				(_asema->getSiirtovuoro() == 1 && _asema->_lauta[annettuRivi][annettuSarake] != NULL && _asema->_lauta[annettuRivi][annettuSarake]->getKoodi() == MS))
 			{
-				// Sotilas on p‰‰ssyt toiseen p‰‰h‰n. Korotetaan!
+				// Sotilas on alkuruudussa, haetaan sotilaan lailliset siirrot ja tarkistetaan
+				for (int i = 0; i < size; i++)
+				{
+					auto siirto = lista.begin();
+					advance(siirto, i);
+					Ruutu alkuruutu = siirto->getAlkuruutu();
+					// Haetaan saman alkuruudun lailliset siirrot
+					if (alkuruutu.getRivi() == annettuRivi && alkuruutu.getSarake() == annettuSarake) {
+						Ruutu loppuruutu = siirto->getLoppuruutu();
+						int haettuRivi = loppuruutu.getRivi();
+						int haettuSarake = loppuruutu.getSarake();
+						int annettuLoppurivi = 7 - (syote[4] - 49);
+						int annettuLoppusarake = syote[3] - 97;
+						// Tarkistetaan, onko loppuruutu laillinen siirto kyseiselle alkuruudulle
+						if (annettuLoppurivi == haettuRivi && annettuLoppusarake == haettuSarake)
+						{
+							alkuKirjain = syote[0] - 97;
+							alkuNumero = 7 - (syote[1] - 49);
+							loppuKirjain = syote[3] - 97;
+							loppuNumero = 7 - (syote[4] - 49);
+							if (loppuNumero == 0 || loppuNumero == 7)
+							{
+								// Sotilas on p‰‰ssyt toiseen p‰‰h‰n. Korotetaan!
+							}
+							validoitu = true;
+							break;
+						}
+					}
+				}
 			}
 			
-			break;
+			if (validoitu)
+			{
+				break;
+			}
+			else
+			{
+				wcout << "Laiton siirto! Kokeile uudelleen." << endl;
+			}
 		}
 		// Lyhyt linna
 		else if (syote.length() == 3 && syote[0] == 48 && syote[2] == 48)
@@ -218,7 +428,7 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 		}
 		else 
 		{
-			wcout << "V‰‰r‰ syˆte! Kokeile uudelleen." << endl;
+			wcout << "Laiton siirto! Kokeile uudelleen." << endl;
 		}
 	}
 
