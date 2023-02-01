@@ -871,7 +871,7 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
     
 	if (vari == 0)
 	{
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 4; i++)
 		{
 			switch (i)
 			{
@@ -994,6 +994,28 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 				}
 				break;
 
+			case 3:
+				//Tuplahyppy Ylˆsp‰in
+
+				if (aR == 1)
+				{
+					if (asema->_lauta[aR - 1][aS] != NULL && asema->_lauta[aR - 2][aS] != NULL)
+					{
+						// Vastaan tuli ruutu jossa on nappula, ei voida liikkua
+					}
+
+
+					else
+					{
+						// Ruudussa ei ollut mit‰‰n, lis‰t‰‰n se laillisten siirtojen listaan
+						Ruutu loppuRuutu(aS, aR - 2);
+						Siirto uusiSiirto(*ruutu, loppuRuutu);
+						lista.push_back(uusiSiirto);
+
+					}
+				}
+				break;
+
 			default:
 				break;
 			}
@@ -1002,7 +1024,7 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 	}
 	else
 	{
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 4; i++)
 		{
 			switch (i)
 			{
@@ -1124,7 +1146,27 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 					}
 				}
 				break;
+			case 3:
+				//Tuplahyppy Alasp‰in
+				
+				if(aR == 6)
+				{
+					if (asema->_lauta[aR + 1][aS] != NULL && asema->_lauta[aR + 2][aS] != NULL)
+					{
+						// Vastaan tuli ruutu jossa on nappula, ei voida liikkua
+					}
 
+
+					else
+					{
+						// Ruudussa ei ollut mit‰‰n, lis‰t‰‰n se laillisten siirtojen listaan
+						Ruutu loppuRuutu(aS, aR + 2);
+						Siirto uusiSiirto(*ruutu, loppuRuutu);
+					    lista.push_back(uusiSiirto);
+						
+					}
+				}
+					break;
 			default:
 				break;
 			}
