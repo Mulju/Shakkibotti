@@ -25,7 +25,7 @@ int main()
 	while (true)
 	{
 		lista.clear();
-		asema.annaLaillisetSiirrot(lista);
+		asema.annaLaillisetSiirrot(lista, lista.size());
 		Kayttoliittyma::getInstance()->piirraLauta(lista, lista.size());
 		Siirto siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto(lista, lista.size());
 		asema.paivitaAsema(&siirto);

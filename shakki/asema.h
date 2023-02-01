@@ -37,7 +37,7 @@ public:
 	MinMaxPaluu maxi(int syvyys);							// Minimax (max:n siirtovuoro).
 	MinMaxPaluu mini(int syvyys);							// Minimax (min:n siirtovuoro).
 	MinMaxPaluu minimax(int syvyys);						// Minimax-algoritmi.
-	void annaLaillisetSiirrot(std::list<Siirto>& lista);	// Siirtogeneraattori.
+	void annaLaillisetSiirrot(std::list<Siirto>& lista, int size);	// Siirtogeneraattori.
 	int getSiirtovuoro();									// Palauttaa siirtovuoron.
 	void setSiirtovuoro(int);								// Asettaa siirtovuoron.
 	bool getOnkoValkeaKuningasLiikkunut();					// Linnoittuminen mahdollista?

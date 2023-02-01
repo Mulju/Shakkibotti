@@ -392,9 +392,10 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari)
 }
 
 
-void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista)
+void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista, int size)
 {
 	Ruutu ruutu;
+	Ruutu kuninkaanRuutu;
 	
 	for (int i = 0; i < 8; i++)
 	{
@@ -408,6 +409,10 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista)
 					ruutu.setRivi(i);
 					ruutu.setSarake(j);
 					_lauta[i][j]->annaSiirrot(lista, &ruutu, this, _siirtovuoro);
+					if (_lauta[i][j] == vk) {
+						kuninkaanRuutu.setRivi(i);
+						kuninkaanRuutu.setSarake(j);
+					}
 				}
 			}
 			else // Siirrot mustille nappuloille
@@ -417,8 +422,25 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista)
 					ruutu.setRivi(i);
 					ruutu.setSarake(j);
 					_lauta[i][j]->annaSiirrot(lista, &ruutu, this, _siirtovuoro);
+					if (_lauta[i][j] == mk) {
+						kuninkaanRuutu.setRivi(i);
+						kuninkaanRuutu.setSarake(j);
+					}
 				}
 			}
 		}
+	}
+	// K‰yd‰‰n l‰pi siirtolistan siirrot
+	for (int i = 0; i < size; i++)
+	{
+		Nappula* kopioLauta = _lauta[8][8];
+		auto siirto = lista.begin();
+		advance(siirto, i);
+
+		// Tehd‰‰n siirto
+		Nappula* haamuNappula = kopioLauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()];
+		kopioLauta[siirto->getLoppuruutu().getRivi()][siirto->getLoppuruutu().getSarake()] = haamuNappula;
+		kopioLauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()] = NULL;
+
 	}
 }
