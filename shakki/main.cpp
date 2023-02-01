@@ -43,7 +43,7 @@ int main()
 		Kayttoliittyma::getInstance()->piirraLauta();
 		wcout << "\n";
 		// Tarkasta onko peli loppu?
-		asema.annaLaillisetSiirrot(lista);
+		asema.annaLaillisetSiirrot(lista, lista.size());
 		if (lista.size() == 0) {
 			lopetus = 0;
 			std::wcout << "Peli loppui";
