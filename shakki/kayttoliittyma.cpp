@@ -345,6 +345,7 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(list<Siirto>& lista, int size)
 					}
 					break;
 				default:
+					wcout << "Laiton siirto! Kokeile uudelleen." << endl;
 					break;
 			}
 

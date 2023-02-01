@@ -24,15 +24,9 @@ int main()
 	
 	while (true)
 	{
-		/*lista.clear();
-		Siirto siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto(lista, lista.size());
-		asema.paivitaAsema(&siirto);
-		asema.annaLaillisetSiirrot(lista);
-		Kayttoliittyma::getInstance()->piirraLauta(lista, lista.size());*/
-
 		lista.clear();
-		Kayttoliittyma::getInstance()->piirraLauta(lista, lista.size());
 		asema.annaLaillisetSiirrot(lista);
+		Kayttoliittyma::getInstance()->piirraLauta(lista, lista.size());
 		Siirto siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto(lista, lista.size());
 		asema.paivitaAsema(&siirto);
 	}
