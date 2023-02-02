@@ -25,7 +25,7 @@ int main()
 	while (true)
 	{
 		lista.clear();
-		asema.annaLaillisetSiirrot(lista, lista.size());
+		asema.annaLaillisetSiirrot(lista);
 		Kayttoliittyma::getInstance()->piirraLauta(lista, lista.size());
 		Siirto siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto(lista, lista.size());
 		asema.paivitaAsema(&siirto);
@@ -43,7 +43,7 @@ int main()
 		Kayttoliittyma::getInstance()->piirraLauta();
 		wcout << "\n";
 		// Tarkasta onko peli loppu?
-		asema.annaLaillisetSiirrot(lista, lista.size());
+		asema.annaLaillisetSiirrot(lista);
 		if (lista.size() == 0) {
 			lopetus = 0;
 			std::wcout << "Peli loppui";
