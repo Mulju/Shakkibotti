@@ -30,14 +30,13 @@ public:
 	// Ohestalyöntiä varten (-1 = sotilaan kaksoisaskelta ei tapahtunut edellisellä siirrolla).
 	int kaksoisaskelSarakkeella = -1;
 
-
 	Asema();												// Asettaa alkuaseman.
 	void paivitaAsema(Siirto*);								// Päivittää aseman annetulla siirrolla.
 	double evaluoi();										// Aseman numeerinen arviointi.
 	MinMaxPaluu maxi(int syvyys);							// Minimax (max:n siirtovuoro).
 	MinMaxPaluu mini(int syvyys);							// Minimax (min:n siirtovuoro).
 	MinMaxPaluu minimax(int syvyys);						// Minimax-algoritmi.
-	void annaLaillisetSiirrot(std::list<Siirto>& lista, int size);	// Siirtogeneraattori.
+	void annaLaillisetSiirrot(std::list<Siirto>& lista);	// Siirtogeneraattori.
 	int getSiirtovuoro();									// Palauttaa siirtovuoron.
 	void setSiirtovuoro(int);								// Asettaa siirtovuoron.
 	bool getOnkoValkeaKuningasLiikkunut();					// Linnoittuminen mahdollista?
@@ -62,7 +61,7 @@ private:
 	bool onkoAvausTaiKeskipeli(int);
 	double nappuloitaKeskella(int);
 	double linjat(int);
-	bool onkoRuutuUhattu(Ruutu*, int vastustajanVari);
+	bool onkoRuutuUhattu(Ruutu*, Asema* asema, int vastustajanVari);
 	void annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari);
 
 	// Karsii siirrot, jotka jättävät oman K:n shakkiin.

@@ -493,5 +493,26 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(list<Siirto>& lista, int size)
 
 int Kayttoliittyma::kysyVastustajanVari()
 {
+	wcout << "Kumpaa varia haluat pelata? (V/M)" << endl;
+	string pelaajanVari;
+	
+	while (true)
+	{
+		cin >> pelaajanVari;
+
+		if (pelaajanVari[0] == 'V')
+		{
+			return 0;
+		}
+		else if (pelaajanVari[0] == 'M')
+		{
+			return 1;
+		}
+		else
+		{
+			wcout << "Ei ollut vari! Ei ole vaikeaa. V tai M, kiitos :)" << endl;
+		}
+	}
+
 	return 0;
 }
