@@ -468,14 +468,37 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(list<Siirto>& lista, int size)
 		// Lyhyt linna
 		else if (syote.length() == 3 && syote[0] == 48 && syote[2] == 48)
 		{
-			Siirto lyhytLinna(true, false);
-			return lyhytLinna;
+			if (_asema->getSiirtovuoro() == 0 && !_asema->getOnkoValkeaKTliikkunut() && !_asema->getOnkoValkeaKuningasLiikkunut() && _asema->_lauta[7][6] == NULL && _asema->_lauta[7][5] == NULL)
+			{
+				Siirto lyhytLinna(true, false);
+				return lyhytLinna;
+			}
+
+			if (_asema->getSiirtovuoro() && !_asema->getOnkoMustaKTliikkunut() && !_asema->getOnkoMustaKuningasLiikkunut() && _asema->_lauta[0][6] == NULL && _asema->_lauta[0][5] == NULL)
+			{
+				Siirto lyhytLinna(true, false);
+				return lyhytLinna;
+			}
+			wcout << " päästiin sisään" << endl;
+			wcout << "Laiton siirto! Kokeile uudelleen." << endl;
+
 		}
 		// Pitkä linna
-		else if (syote.length() == 5 && syote[0] == 48 && syote[2] == 48 && syote[4] == 48)
+		else if (syote.length() == 5 && syote[0] == 48 && syote[2] == 48 && syote[4] == 48 )
 		{
-			Siirto pitkaLinna(false, true);
-			return pitkaLinna;
+			if (!_asema->getSiirtovuoro() && !_asema->getOnkoValkeaDTliikkunut() && !_asema->getOnkoValkeaKuningasLiikkunut() && _asema->_lauta[7][1] == NULL && _asema->_lauta[7][2] == NULL && _asema-> _lauta[7][3] == NULL)
+			{
+				Siirto pitkaLinna(false, true);
+				return pitkaLinna;
+			}
+
+			if( _asema->getSiirtovuoro() && !_asema->getOnkoMustaDTliikkunut() && !_asema->getOnkoMustaKuningasLiikkunut() && _asema->_lauta[0][1] == NULL && _asema->_lauta[0][2] == NULL && _asema->_lauta[0][3] == NULL)
+			{
+				Siirto pitkaLinna(false, true);
+				return pitkaLinna;
+			}
+
+			wcout << "Laiton siirto! Kokeile uudelleen." << endl;
 		}
 		else 
 		{

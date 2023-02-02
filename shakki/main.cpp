@@ -18,7 +18,7 @@ int main()
 	Asema asema; 
 	Kayttoliittyma::getInstance()->aseta_asema(&asema);
 
-	/* Testausta varten
+	//Testausta varten
 	std::list<Siirto> lista;
 	Kayttoliittyma::getInstance()->piirraLauta();
 	
@@ -34,7 +34,7 @@ int main()
 
 	Peli peli(Kayttoliittyma::getInstance()->
 		kysyVastustajanVari());
-	std::list<Siirto> lista;
+	//std::list<Siirto> lista;
 	system("cls");
 	int koneenVari = peli.getKoneenVari();
 

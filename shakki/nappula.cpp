@@ -1016,9 +1016,9 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 				break;
 
 			case 4:
-				//Ohestalyönti alas oikealle
+				//Ohestalyönti ylös oikealle
 
-				if (asema->kaksoisaskelSarakkeella = 1 && asema->_lauta[aR][aS + 1] != NULL)
+				if ((asema->kaksoisaskelSarakkeella = aS + 1) && aR == 3)
 				{
 					
 
@@ -1028,15 +1028,15 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 						Ruutu loppuRuutu(aS + 1, aR - 1);
 						Siirto uusiSiirto(*ruutu, loppuRuutu);
 						lista.push_back(uusiSiirto);
-						asema->_lauta[aR + 1][aS] == NULL;
+						asema->_lauta[aR][aS + 1] == NULL;
 
 				}
 				break;
 
 			case 5:
-				//Ohestalyönti alas vasemmalle
+				//Ohestalyönti ylös vasemmalle
 
-				if (asema->kaksoisaskelSarakkeella = 1 && asema->_lauta[aR][aS - 1] != NULL)
+				if ((asema->kaksoisaskelSarakkeella = aS - 1) && aR == 3)
 				{
 				
 
@@ -1046,7 +1046,7 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 						Ruutu loppuRuutu(aS - 1, aR - 1);
 						Siirto uusiSiirto(*ruutu, loppuRuutu);
 						lista.push_back(uusiSiirto);
-						asema->_lauta[aR + 1][aS] == NULL;
+						asema->_lauta[aR][aS - 1] == NULL;
 
 					
 				}
@@ -1205,9 +1205,9 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 					break;
 
 			case 4:
-				//Ohestalyönti ylös oikealle
+				//Ohestalyönti alas oikealle
 
-				if (asema->kaksoisaskelSarakkeella= 1 && asema->_lauta[aR][aS + 1] != NULL)
+				if ((asema->kaksoisaskelSarakkeella= aS + 1) && aR == 4)
 				{
 					
 
@@ -1218,16 +1218,16 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 						Ruutu loppuRuutu(aS + 1, aR + 1);
 						Siirto uusiSiirto(*ruutu, loppuRuutu);
 						lista.push_back(uusiSiirto);
-						asema->_lauta[aR - 1][aS] == NULL;
+						asema->_lauta[aR][aS + 1] == NULL;
 
 					
 				}
 				break;
 
 			case 5:
-				//Ohestalyönti ylös vasemmalle
+				//Ohestalyönti alas vasemmalle
 
-				if (asema->kaksoisaskelSarakkeella = 1 && asema->_lauta[aR][aS - 1] != NULL)
+				if ((asema->kaksoisaskelSarakkeella = aS -1) && aR == 4)
 				{
 				
 
@@ -1238,7 +1238,7 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 						Ruutu loppuRuutu(aS - 1, aR + 1);
 						Siirto uusiSiirto(*ruutu, loppuRuutu);
 						lista.push_back(uusiSiirto);
-						asema->_lauta[aR - 1][aS] == NULL;
+						asema->_lauta[aR][aS - 1] == NULL;
 
 					
 				}

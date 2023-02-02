@@ -86,7 +86,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 
 	// Kaksoisaskel-lippu on oletusarvoisesti pois p‰‰lt‰.
 	// Asetetaan myˆhemmin, jos tarvii.
-	kaksoisaskelSarakkeella = -1;
+	//kaksoisaskelSarakkeella = -1;
 
 
 	//Tarkastetaan on siirto lyhyt linna
@@ -148,6 +148,12 @@ void Asema::paivitaAsema(Siirto *siirto)
 		}
 
 		// Ohestalyˆnti on tyhj‰‰n ruutuun. Vieress‰ oleva (sotilas) poistetaan.
+		/*if (_lauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()] == vs && kaksoisaskelSarakkeella == siirto->getAlkuruutu().getSarake() + 1)
+		{
+			if(siirto->getLoppuruutu().getSarake() == )
+		}
+		*/
+
 
 		//// Katsotaan jos nappula on sotilas ja rivi on p‰‰tyrivi niin ei vaihdeta nappulaa 
 		////eli alkuruutuun laitetaan null ja loppuruudussa on jo kliittym‰n laittama nappula MIIKKA, ei taida minmaxin kanssa hehkua?
@@ -576,13 +582,14 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista)
 			}
 		}
 	}
+	annaLinnoitusSiirrot(lista, _siirtovuoro);
 	huolehdiKuninkaanShakeista(lista, _siirtovuoro);
 }
 void Asema::annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari)
 {
 
 		//pitk‰n valkoisen linnotuksen lis‰‰minen lailliseksi siirroksi
-		if ( vari == 0  && getOnkoValkeaDTliikkunut() && getOnkoValkeaKuningasLiikkunut())
+		if ( vari == 0  && getOnkoValkeaDTliikkunut() && getOnkoValkeaKuningasLiikkunut() && _lauta[7][1] == NULL && _lauta [7][2] == NULL && _lauta [7][3]== NULL)
 		{
 
 			
@@ -593,7 +600,7 @@ void Asema::annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari)
 		}
 
 		//lyhyt valkoisen linnotuksen lis‰‰minen lailliseksi siirroksi
-		if (vari == 0 && getOnkoValkeaKTliikkunut() && getOnkoValkeaKuningasLiikkunut())
+		if (vari == 0 && getOnkoValkeaKTliikkunut() && getOnkoValkeaKuningasLiikkunut() && _lauta[7][6] == NULL && _lauta[7][5] == NULL)
 		{
 
 
@@ -604,7 +611,7 @@ void Asema::annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari)
 		}
 
 		//pitk‰n musta linnotuksen lis‰‰minen lailliseksi siirroksi
-		if (vari == 1 && getOnkoMustaDTliikkunut() && getOnkoMustaKuningasLiikkunut())
+		if (vari == 1 && getOnkoMustaDTliikkunut() && getOnkoMustaKuningasLiikkunut() && _lauta[0][1] == NULL && _lauta[0][2] == NULL && _lauta[0][3] == NULL)
 		{
 
 
@@ -615,7 +622,7 @@ void Asema::annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari)
 		}
 
 		//lyhyt musta linnotuksen lis‰‰minen lailliseksi siirroksi
-		if (vari == 1 && getOnkoMustaKTliikkunut() && getOnkoMustaKuningasLiikkunut())
+		if (vari == 1 && getOnkoMustaKTliikkunut() && getOnkoMustaKuningasLiikkunut() && _lauta[0][6] == NULL && _lauta[0][5] == NULL)
 		{
 
 
