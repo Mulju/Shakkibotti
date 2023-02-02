@@ -390,24 +390,166 @@ MinMaxPaluu Asema::mini(int syvyys)
 	return paluu;
 }
 
-
-bool Asema::onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari)
+// Tarkistaa, onko uudessa asemassa kuningas uhattuna, kun vastustaja pelaa vuoronsa
+bool Asema::onkoRuutuUhattu(Ruutu* kuninkaanRuutu, Asema* uusiAsema, int vastustajanVari)
 {
+	std::list<Siirto> vastustajanSiirtolista;
+	Ruutu ruutu;
+	
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			// Siirrot valkoisille nappuloille
+			if (vastustajanVari == 0)
+			{
+				if (uusiAsema->_lauta[i][j] == vs || uusiAsema->_lauta[i][j] == vt || uusiAsema->_lauta[i][j] == vr 
+					|| uusiAsema->_lauta[i][j] == vl || uusiAsema->_lauta[i][j] == vd || uusiAsema->_lauta[i][j] == vk)
+				{
+					ruutu.setRivi(i);
+					ruutu.setSarake(j);
+					uusiAsema->_lauta[i][j]->annaSiirrot(vastustajanSiirtolista, &ruutu, uusiAsema, vastustajanVari);
+				}
+			}
+			else // Siirrot mustille nappuloille
+			{
+				if (uusiAsema->_lauta[i][j] == ms || uusiAsema->_lauta[i][j] == mt || uusiAsema->_lauta[i][j] == mr
+					|| uusiAsema->_lauta[i][j] == ml || uusiAsema->_lauta[i][j] == md || uusiAsema->_lauta[i][j] == mk)
+				{
+					ruutu.setRivi(i);
+					ruutu.setSarake(j);
+					uusiAsema->_lauta[i][j]->annaSiirrot(vastustajanSiirtolista, &ruutu, uusiAsema, vastustajanVari);
+				}
+			}
+		}
+	}
+	
+	// Käydään vastustajan siirtolista läpi ja tarkistetaan, löytyykö kuninkaan ruutu
+	bool ruutuUhattu = false;
+	for (int i = 0; i < vastustajanSiirtolista.size(); i++)
+	{
+		auto siirto = vastustajanSiirtolista.begin();
+		advance(siirto, i);
 
-	return false;
+		if (kuninkaanRuutu->getSarake() == siirto->getLoppuruutu().getSarake() && kuninkaanRuutu->getRivi() == siirto->getLoppuruutu().getRivi()) {
+			ruutuUhattu = true;
+		}
+	}
+
+	return ruutuUhattu;
 }
 
 
-void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari) 
+void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari) // Tarvitaanko lista.size() parametrina???
 { 
 	
+	// Tehtäisiinkö tämä annaLaillisetSiirrot-funkkarissa?
+	Ruutu kuninkaanRuutu;
+
+	// Haetaan kuninkaan sijainti
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			// Valkoinen kuningas
+			if (vari == 0)
+			{
+				if (_lauta[i][j] == vk)
+				{
+					kuninkaanRuutu.setRivi(i);
+					kuninkaanRuutu.setSarake(j);
+					break;
+				}
+			}
+			else // Musta kuningas
+			{
+				if (_lauta[i][j] == mk)
+				{
+					kuninkaanRuutu.setRivi(i);
+					kuninkaanRuutu.setSarake(j);
+					break;
+				}
+			}
+		}
+	}
+
+	// Tehdään kopioasema, jota voidaan muokata sekoittamatta oikeaa nykyistä asemaa
+	Asema uusiAsema;
+	std::list<Siirto> siivottuSiirtolista;
+	Ruutu ruutu;
+	
+	// Käydään läpi siirtolistan siirrot ja poistetaan sieltä kuninkaan shakkiin johtavat siirrot
+	for (int i = 0; i < lista.size(); i++)
+	{
+		auto siirto = lista.begin(); // auto tekee siirrosta iteraattorin
+		advance(siirto, i);
+
+		uusiAsema = *this;
+		uusiAsema.paivitaAsema(&*siirto); // * dereferoi iteraattorin takaa olion ja & hakee muistipaikan
+
+		// Onko kuninkaan siirto?
+		if (siirto->onkoLyhytLinna())
+		{
+			ruutu.setSarake(6);
+			if (uusiAsema.getSiirtovuoro() == 0) {
+				ruutu.setRivi(7);
+			}
+			else
+			{
+				ruutu.setRivi(0);
+			}
+		}
+		else if(siirto->onkoPitkaLinna())
+		{
+			ruutu.setSarake(2);
+			if (uusiAsema.getSiirtovuoro() == 0) {
+				ruutu.setRivi(7);
+			}
+			else
+			{
+				ruutu.setRivi(0);
+			}
+		}
+		else
+		{
+			// Voi optimoida laittamalla funktiokutsut muuttujiin
+			Nappula* siirtyvaNappula = (*this)._lauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()];
+			if (siirtyvaNappula->getKoodi() == VK || siirtyvaNappula->getKoodi() == MK)
+			{
+				ruutu.setSarake(siirto->getLoppuruutu().getSarake());
+				ruutu.setRivi(siirto->getLoppuruutu().getRivi());
+			}
+			else
+			{
+				// Ei ole kuninkaan siirto, jolloin kuninkaan koordinaatit on samat kuin aiemmin
+				ruutu = kuninkaanRuutu;
+			}
+		}
+
+		int vastustajanVari;
+		if (vari == 0)
+		{
+			vastustajanVari = 1;
+		}
+		else
+		{
+			vastustajanVari = 0;
+		}
+
+		// Jos siirtoruutu ei aiheuta kuninkaalle uhkaa vastustajan vuorolla, se lisätään uuteen siirtolistaan
+		if (!onkoRuutuUhattu(&ruutu, &uusiAsema, vastustajanVari))
+		{
+			siivottuSiirtolista.push_back(*siirto);
+		}
+	}
+
+	lista = siivottuSiirtolista; // !!!Täytyy tarkistaa, toimiiko näin vai antaako tyhjän listan eteenpäin!!!
 }
 
 
-void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista, int size)
+void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista)
 {
 	Ruutu ruutu;
-	Ruutu kuninkaanRuutu;
 	
 	for (int i = 0; i < 8; i++)
 	{
@@ -421,10 +563,6 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista, int size)
 					ruutu.setRivi(i);
 					ruutu.setSarake(j);
 					_lauta[i][j]->annaSiirrot(lista, &ruutu, this, _siirtovuoro);
-					if (_lauta[i][j] == vk) {
-						kuninkaanRuutu.setRivi(i);
-						kuninkaanRuutu.setSarake(j);
-					}
 				}
 			}
 			else // Siirrot mustille nappuloille
@@ -434,30 +572,11 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista, int size)
 					ruutu.setRivi(i);
 					ruutu.setSarake(j);
 					_lauta[i][j]->annaSiirrot(lista, &ruutu, this, _siirtovuoro);
-					if (_lauta[i][j] == mk) {
-						kuninkaanRuutu.setRivi(i);
-						kuninkaanRuutu.setSarake(j);
-					}
 				}
 			}
 		}
 	}
-	// Käydään läpi siirtolistan siirrot
-	for (int i = 0; i < size; i++)
-	{
-		auto kopioLauta = _lauta; // Voi olla ongelma
-		auto siirto = lista.begin();
-		advance(siirto, i);
-
-		// Tehdään siirto
-		Nappula* haamuNappula = kopioLauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()];
-		kopioLauta[siirto->getLoppuruutu().getRivi()][siirto->getLoppuruutu().getSarake()] = haamuNappula;
-		kopioLauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()] = NULL;
-
-		std::list<Siirto> vastustajanSiirtolista;
-		annaLaillisetSiirrot(vastustajanSiirtolista, vastustajanSiirtolista.size());
-
-	}
+	huolehdiKuninkaanShakeista(lista, _siirtovuoro);
 }
 void Asema::annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari)
 {
