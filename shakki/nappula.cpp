@@ -855,6 +855,11 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 
 			break;
 
+		
+
+			
+
+
 		default:
 			break;
 		}
@@ -871,7 +876,7 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
     
 	if (vari == 0)
 	{
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < 6; i++)
 		{
 			switch (i)
 			{
@@ -997,7 +1002,7 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 			case 3:
 				//Tuplahyppy Ylöspäin
 
-				if (aR == 1)
+				if (aR == 6)
 				{
 					if (asema->_lauta[aR - 1][aS] != NULL && asema->_lauta[aR - 2][aS] != NULL)
 					{
@@ -1016,6 +1021,43 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 				}
 				break;
 
+			case 4:
+				//Ohestalyönti alas oikealle
+
+				if (asema->kaksoisaskelSarakkeella = 1 && asema->_lauta[aR][aS + 1] != NULL)
+				{
+					
+
+					
+					
+					// Vieressä on kaksoisaskeleen suorittanut musta sotilas voidaan syödä
+						Ruutu loppuRuutu(aS + 1, aR - 1);
+						Siirto uusiSiirto(*ruutu, loppuRuutu);
+						lista.push_back(uusiSiirto);
+						asema->_lauta[aR + 1][aS] == NULL;
+
+				}
+				break;
+
+			case 5:
+				//Ohestalyönti alas vasemmalle
+
+				if (asema->kaksoisaskelSarakkeella = 1 && asema->_lauta[aR][aS - 1] != NULL)
+				{
+				
+
+
+					
+					// Vieressä on kaksoisaskeleen suorittanut musta sotilas voidaan syödä
+						Ruutu loppuRuutu(aS - 1, aR - 1);
+						Siirto uusiSiirto(*ruutu, loppuRuutu);
+						lista.push_back(uusiSiirto);
+						asema->_lauta[aR + 1][aS] == NULL;
+
+					
+				}
+				break;
+
 			default:
 				break;
 			}
@@ -1024,7 +1066,7 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 	}
 	else
 	{
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < 6; i++)
 		{
 			switch (i)
 			{
@@ -1148,8 +1190,8 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 				break;
 			case 3:
 				//Tuplahyppy Alaspäin
-				
-				if(aR == 6)
+			
+				if(aR == 1)
 				{
 					if (asema->_lauta[aR + 1][aS] != NULL && asema->_lauta[aR + 2][aS] != NULL)
 					{
@@ -1167,6 +1209,50 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 					}
 				}
 					break;
+
+			case 4:
+				//Ohestalyönti ylös oikealle
+
+				if (asema->kaksoisaskelSarakkeella= 1 && asema->_lauta[aR][aS + 1] != NULL)
+				{
+					
+
+
+					
+					
+						// Vieressä on kaksoisaskeleen suorittanut valkoinen sotilas voidaan syödä
+						Ruutu loppuRuutu(aS + 1, aR + 1);
+						Siirto uusiSiirto(*ruutu, loppuRuutu);
+						lista.push_back(uusiSiirto);
+						asema->_lauta[aR - 1][aS] == NULL;
+
+					
+				}
+				break;
+
+			case 5:
+				//Ohestalyönti ylös vasemmalle
+
+				if (asema->kaksoisaskelSarakkeella = 1 && asema->_lauta[aR][aS - 1] != NULL)
+				{
+				
+
+
+					
+					
+					// Vieressä on kaksoisaskeleen suorittanut valkoinen sotilas voidaan syödä
+						Ruutu loppuRuutu(aS - 1, aR + 1);
+						Siirto uusiSiirto(*ruutu, loppuRuutu);
+						lista.push_back(uusiSiirto);
+						asema->_lauta[aR - 1][aS] == NULL;
+
+					
+				}
+				break;
+
+
+
+			
 			default:
 				break;
 			}

@@ -92,14 +92,14 @@ void Asema::paivitaAsema(Siirto *siirto)
 	//Tarkastetaan on siirto lyhyt linna
 	if (siirto->onkoLyhytLinna())
 	{
-		if (_siirtovuoro == 0)
+		if (_siirtovuoro == 0 )
 		{
 			_lauta[7][4] = NULL; // Kuninkaan paikalle tyhj‰
 			_lauta[7][6] = vk; // Kuningas uudelle paikalle
 			_lauta[7][7] = NULL; // Tornin paikalle tyhj‰
 			_lauta[7][5] = vt; // Torni uudelle paikalle
 		}
-		if (_siirtovuoro == 1)
+		if (_siirtovuoro == 1 )
 		{
 			_lauta[0][4] = NULL; // Kuninkaan paikalle tyhj‰
 			_lauta[0][6] = mk; // Kuningas uudelle paikalle
@@ -116,7 +116,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 			_lauta[7][0] = NULL; // Tornin paikalle tyhj‰
 			_lauta[7][3] = vt; // Torni uudelle paikalle
 		}
-		if (_siirtovuoro == 1)
+		if (_siirtovuoro == 1 )
 		{
 			_lauta[0][4] = NULL; // Kuninkaan paikalle tyhj‰
 			_lauta[0][2] = mk; // Kuningas uudelle paikalle
@@ -188,6 +188,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 		if (nappula == mt && _lauta[0][0]) {
 			_onkoMustaKTliikkunut = true;
 		}
+
 	}
 
 	//p‰ivitet‰‰n _siirtovuoro
@@ -457,4 +458,57 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista, int size)
 		annaLaillisetSiirrot(vastustajanSiirtolista, vastustajanSiirtolista.size());
 
 	}
+}
+void Asema::annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari)
+{
+
+		//pitk‰n valkoisen linnotuksen lis‰‰minen lailliseksi siirroksi
+		if ( vari == 0  && getOnkoValkeaDTliikkunut() && getOnkoValkeaKuningasLiikkunut())
+		{
+
+			
+			Siirto uusiSiirto(false, true);
+			lista.push_back(uusiSiirto);
+
+
+		}
+
+		//lyhyt valkoisen linnotuksen lis‰‰minen lailliseksi siirroksi
+		if (vari == 0 && getOnkoValkeaKTliikkunut() && getOnkoValkeaKuningasLiikkunut())
+		{
+
+
+			Siirto uusiSiirto(true, false);
+			lista.push_back(uusiSiirto);
+
+
+		}
+
+		//pitk‰n musta linnotuksen lis‰‰minen lailliseksi siirroksi
+		if (vari == 1 && getOnkoMustaDTliikkunut() && getOnkoMustaKuningasLiikkunut())
+		{
+
+
+			Siirto uusiSiirto(false, true);
+			lista.push_back(uusiSiirto);
+
+
+		}
+
+		//lyhyt musta linnotuksen lis‰‰minen lailliseksi siirroksi
+		if (vari == 1 && getOnkoMustaKTliikkunut() && getOnkoMustaKuningasLiikkunut())
+		{
+
+
+			Siirto uusiSiirto(true, false);
+			lista.push_back(uusiSiirto);
+
+
+		}
+
+		
+		
+
+
+
 }
