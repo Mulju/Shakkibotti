@@ -512,7 +512,7 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari) // Ta
 		else
 		{
 			// Voi optimoida laittamalla funktiokutsut muuttujiin
-			Nappula* siirtyvaNappula = uusiAsema._lauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()];
+			Nappula* siirtyvaNappula = (*this)._lauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()];
 			if (siirtyvaNappula->getKoodi() == VK || siirtyvaNappula->getKoodi() == MK)
 			{
 				ruutu.setSarake(siirto->getLoppuruutu().getSarake());
@@ -575,7 +575,5 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista)
 			}
 		}
 	}
-
-	annaLinnoitusSiirrot(lista, _siirtovuoro);
 	huolehdiKuninkaanShakeista(lista, _siirtovuoro);
 }
