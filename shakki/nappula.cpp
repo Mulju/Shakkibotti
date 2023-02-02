@@ -726,9 +726,6 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 					{
 						// Nappula tuli vastaan, mutta se on samaa väriä
 					}
-
-					// Poistutaan loopista, koska ei voida jatkaa nappulan yli
-					break;
 				}
 				else
 				{
@@ -803,9 +800,6 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 					{
 						// Nappula tuli vastaan, mutta se on samaa väriä
 					}
-
-					// Poistutaan loopista, koska ei voida jatkaa nappulan yli
-					break;
 				}
 				else
 				{
