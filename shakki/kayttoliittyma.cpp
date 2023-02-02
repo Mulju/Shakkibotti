@@ -144,7 +144,10 @@ void Kayttoliittyma::piirraLauta(list<Siirto> &lista, int size)
 				wcout << _asema->_lauta[i][j]->getUnicode() << " ";
 			}
 		}
-		wcout << "\n";
+		// Resettaa värin ja tekee tyhjän välin jotta ei tule tyhmiä värityksiä
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED |
+			BACKGROUND_GREEN | BACKGROUND_BLUE);
+		wcout << " \n";
 	}
 
 	wcout << "\n    a b c d e f g h\n\n";

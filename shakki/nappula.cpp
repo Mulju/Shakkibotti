@@ -696,7 +696,7 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 	Kaikki muu kuninkaaseen liittyvä tarkistus tehdään eri paikassa*/
 	int aS = ruutu->getSarake();
 	int aR = ruutu->getRivi();
-
+	
 	for (int i = 0; i < 4; i++)
 	{
 		switch (i)
