@@ -479,7 +479,6 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(list<Siirto>& lista, int size)
 				Siirto lyhytLinna(true, false);
 				return lyhytLinna;
 			}
-			wcout << " päästiin sisään" << endl;
 			wcout << "Laiton siirto! Kokeile uudelleen." << endl;
 
 		}

@@ -134,11 +134,11 @@ void Asema::paivitaAsema(Siirto *siirto)
 		
 		// Tarkistetaan oliko sotilaan kaksoisaskel
 		// (asetetaan kaksoisaskel-lippu)
-		if (nappula == ms && siirto->getLoppuruutu().getRivi() == 4 && siirto->getAlkuruutu().getRivi() == 6)
+		if (nappula == ms && siirto->getLoppuruutu().getRivi() == 3 && siirto->getAlkuruutu().getRivi() == 1)
 		{
 			kaksoisaskelSarakkeella = siirto->getLoppuruutu().getSarake();
 		}
-		else if (nappula == vs && siirto->getLoppuruutu().getRivi() == 3 && siirto->getAlkuruutu().getRivi() == 1)
+		else if (nappula == vs && siirto->getLoppuruutu().getRivi() == 4 && siirto->getAlkuruutu().getRivi() == 6)
 		{
 			kaksoisaskelSarakkeella = siirto->getLoppuruutu().getSarake();
 		}
@@ -147,13 +147,15 @@ void Asema::paivitaAsema(Siirto *siirto)
 			kaksoisaskelSarakkeella = -1;
 		}
 
-		// Ohestalyˆnti on tyhj‰‰n ruutuun. Vieress‰ oleva (sotilas) poistetaan.
-		/*if (_lauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()] == vs && kaksoisaskelSarakkeella == siirto->getAlkuruutu().getSarake() + 1)
-		{
-			if(siirto->getLoppuruutu().getSarake() == )
-		}
-		*/
+		std::wcout << this << "Kaksoisaskelsarakkeella: " << kaksoisaskelSarakkeella << " nappulalle " << siirto->getAlkuruutu().getRivi() << ", " << siirto->getAlkuruutu().getSarake() << "\n";
 
+		// Ohestalyˆnti on tyhj‰‰n ruutuun. Vieress‰ oleva (sotilas) poistetaan.
+		if (nappula == ms && siirto->getAlkuruutu().getRivi() == 4 && siirto->getLoppuruutu().getSarake() == kaksoisaskelSarakkeella) {
+			_lauta[siirto->getLoppuruutu().getRivi() - 1][siirto->getLoppuruutu().getSarake()] = NULL;
+		}
+		if (nappula == vs && siirto->getAlkuruutu().getRivi() == 3 && siirto->getLoppuruutu().getSarake() == kaksoisaskelSarakkeella) {
+			_lauta[siirto->getLoppuruutu().getRivi() + 1][siirto->getLoppuruutu().getSarake()] = NULL;
+		}
 
 		//// Katsotaan jos nappula on sotilas ja rivi on p‰‰tyrivi niin ei vaihdeta nappulaa 
 		////eli alkuruutuun laitetaan null ja loppuruudussa on jo kliittym‰n laittama nappula MIIKKA, ei taida minmaxin kanssa hehkua?
