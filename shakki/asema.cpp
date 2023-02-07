@@ -587,9 +587,18 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista)
 }
 void Asema::annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari)
 {
+		Asema uusiAsema;
 
 		//pitk‰n valkoisen linnotuksen lis‰‰minen lailliseksi siirroksi
-		if ( vari == 0  && getOnkoValkeaDTliikkunut() && getOnkoValkeaKuningasLiikkunut() && _lauta[7][1] == NULL && _lauta [7][2] == NULL && _lauta [7][3]== NULL)
+		if ( vari == 0  
+			&& getOnkoValkeaDTliikkunut() 
+			&& getOnkoValkeaKuningasLiikkunut() 
+			&& onkoRuutuUhattu(&Ruutu(4, 0), &uusiAsema , 1)
+			&& onkoRuutuUhattu(&Ruutu(2, 0), &uusiAsema , 1)
+			&& onkoRuutuUhattu(&Ruutu(3, 0), &uusiAsema, 1)
+			&& _lauta[7][1] == NULL 
+			&& _lauta [7][2] == NULL 
+			&& _lauta [7][3]== NULL)
 		{
 
 			
@@ -600,7 +609,14 @@ void Asema::annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari)
 		}
 
 		//lyhyt valkoisen linnotuksen lis‰‰minen lailliseksi siirroksi
-		if (vari == 0 && getOnkoValkeaKTliikkunut() && getOnkoValkeaKuningasLiikkunut() && _lauta[7][6] == NULL && _lauta[7][5] == NULL)
+		if (vari == 0 
+			&& !getOnkoValkeaKTliikkunut() 
+			&& !getOnkoValkeaKuningasLiikkunut() 
+			&& !onkoRuutuUhattu(&Ruutu(4, 0), &uusiAsema, 1)
+			&& !onkoRuutuUhattu(&Ruutu(6, 0), &uusiAsema, 1)
+			&& !onkoRuutuUhattu(&Ruutu(5, 0), &uusiAsema, 1)
+			&& _lauta[7][6] == NULL 
+			&& _lauta[7][5] == NULL)
 		{
 
 
@@ -611,7 +627,15 @@ void Asema::annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari)
 		}
 
 		//pitk‰n musta linnotuksen lis‰‰minen lailliseksi siirroksi
-		if (vari == 1 && getOnkoMustaDTliikkunut() && getOnkoMustaKuningasLiikkunut() && _lauta[0][1] == NULL && _lauta[0][2] == NULL && _lauta[0][3] == NULL)
+		if (vari == 1 
+			&& getOnkoMustaDTliikkunut() 
+			&& getOnkoMustaKuningasLiikkunut() 
+			&& onkoRuutuUhattu(&Ruutu(4, 8), &uusiAsema, 0)
+			&& onkoRuutuUhattu(&Ruutu(2, 8), &uusiAsema, 0)
+			&& onkoRuutuUhattu(&Ruutu(3, 8), &uusiAsema, 0)
+			&& _lauta[0][1] == NULL 
+			&& _lauta[0][2] == NULL 
+			&& _lauta[0][3] == NULL)
 		{
 
 
@@ -622,7 +646,14 @@ void Asema::annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari)
 		}
 
 		//lyhyt musta linnotuksen lis‰‰minen lailliseksi siirroksi
-		if (vari == 1 && getOnkoMustaKTliikkunut() && getOnkoMustaKuningasLiikkunut() && _lauta[0][6] == NULL && _lauta[0][5] == NULL)
+		if (vari == 1 
+			&& getOnkoMustaKTliikkunut() 
+			&& getOnkoMustaKuningasLiikkunut() 
+			&& onkoRuutuUhattu(&Ruutu(4, 8), &uusiAsema, 0)
+			&& onkoRuutuUhattu(&Ruutu(6, 8), &uusiAsema, 0)
+			&& onkoRuutuUhattu(&Ruutu(5, 8), &uusiAsema, 0)
+			&& _lauta[0][6] == NULL 
+			&& _lauta[0][5] == NULL)
 		{
 
 

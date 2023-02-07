@@ -26,7 +26,7 @@ int main()
 	{
 		lista.clear();
 		asema.annaLaillisetSiirrot(lista);
-		Kayttoliittyma::getInstance()->piirraLauta(lista, lista.size());
+		Kayttoliittyma::getInstance()->piirraLauta(lista);
 		Siirto siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto(lista, lista.size());
 		asema.paivitaAsema(&siirto);
 	}
@@ -47,7 +47,7 @@ int main()
 			std::wcout << "Peli loppui";
 			continue;
 		}
-		Kayttoliittyma::getInstance()->piirraLauta(lista, lista.size());
+		Kayttoliittyma::getInstance()->piirraLauta(lista);
 		wcout << "\n";
 		Siirto siirto;
 		if (asema.getSiirtovuoro() == koneenVari) {

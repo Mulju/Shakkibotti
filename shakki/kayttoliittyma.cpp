@@ -73,7 +73,7 @@ void Kayttoliittyma::piirraLauta()
 	wcout << "\n    a b c d e f g h\n\n";
 }
 
-void Kayttoliittyma::piirraLauta(list<Siirto> &lista, int size)
+void Kayttoliittyma::piirraLauta(list<Siirto> &lista)
 {
 	bool aputaulukko[8][8];
 
@@ -83,14 +83,17 @@ void Kayttoliittyma::piirraLauta(list<Siirto> &lista, int size)
 		}
 	}
 
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < lista.size(); i++)
 	{
 		auto eka = lista.begin();
 		advance(eka, i);
-		Ruutu loppuruutu = eka->getLoppuruutu();
-		if (!aputaulukko[loppuruutu.getRivi()][loppuruutu.getSarake()])
+		if (!eka->onkoLyhytLinna() || !eka->onkoLyhytLinna())
 		{
-			aputaulukko[loppuruutu.getRivi()][loppuruutu.getSarake()] = true;
+			Ruutu loppuruutu = eka->getLoppuruutu();
+			if (!aputaulukko[loppuruutu.getRivi()][loppuruutu.getSarake()])
+			{
+				aputaulukko[loppuruutu.getRivi()][loppuruutu.getSarake()] = true;
+			}
 		}
 	}
 	
