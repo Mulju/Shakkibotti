@@ -87,7 +87,7 @@ void Kayttoliittyma::piirraLauta(list<Siirto> &lista)
 	{
 		auto eka = lista.begin();
 		advance(eka, i);
-		if (!eka->onkoLyhytLinna() || !eka->onkoLyhytLinna())
+		if (!eka->onkoLyhytLinna() || !eka->onkoPitkaLinna())
 		{
 			Ruutu loppuruutu = eka->getLoppuruutu();
 			if (!aputaulukko[loppuruutu.getRivi()][loppuruutu.getSarake()])
@@ -471,7 +471,19 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(list<Siirto>& lista, int size)
 		// Lyhyt linna
 		else if (syote.length() == 3 && syote[0] == 48 && syote[2] == 48)
 		{
-			if (_asema->getSiirtovuoro() == 0 && !_asema->getOnkoValkeaKTliikkunut() && !_asema->getOnkoValkeaKuningasLiikkunut() && _asema->_lauta[7][6] == NULL && _asema->_lauta[7][5] == NULL)
+			// Annettu lyhyen linnan komento. Tarkistetaan, onko lyhyt linna sallituissa siirroissa
+			for (int i = 0; i < size; i++)
+			{
+				auto siirto = lista.begin();
+				advance(siirto, i);
+				if (siirto->onkoLyhytLinna())
+				{
+					Siirto lyhytLinna(true, false);
+					return lyhytLinna;
+				}
+			}
+			
+			/*if (_asema->getSiirtovuoro() == 0 && !_asema->getOnkoValkeaKTliikkunut() && !_asema->getOnkoValkeaKuningasLiikkunut() && _asema->_lauta[7][6] == NULL && _asema->_lauta[7][5] == NULL)
 			{
 				Siirto lyhytLinna(true, false);
 				return lyhytLinna;
@@ -481,14 +493,26 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(list<Siirto>& lista, int size)
 			{
 				Siirto lyhytLinna(true, false);
 				return lyhytLinna;
-			}
+			}*/
 			wcout << "Laiton siirto! Kokeile uudelleen." << endl;
 
 		}
 		// Pitkä linna
 		else if (syote.length() == 5 && syote[0] == 48 && syote[2] == 48 && syote[4] == 48 )
 		{
-			if (!_asema->getSiirtovuoro() && !_asema->getOnkoValkeaDTliikkunut() && !_asema->getOnkoValkeaKuningasLiikkunut() && _asema->_lauta[7][1] == NULL && _asema->_lauta[7][2] == NULL && _asema-> _lauta[7][3] == NULL)
+			// Annettu pitkän linnan komento. Tarkistetaan, onko pitkä linna sallituissa siirroissa
+			for (int i = 0; i < size; i++)
+			{
+				auto siirto = lista.begin();
+				advance(siirto, i);
+				if (siirto->onkoPitkaLinna())
+				{
+					Siirto pitkaLinna(true, false);
+					return pitkaLinna;
+				}
+			}
+			
+			/*if (!_asema->getSiirtovuoro() && !_asema->getOnkoValkeaDTliikkunut() && !_asema->getOnkoValkeaKuningasLiikkunut() && _asema->_lauta[7][1] == NULL && _asema->_lauta[7][2] == NULL && _asema->_lauta[7][3] == NULL)
 			{
 				Siirto pitkaLinna(false, true);
 				return pitkaLinna;
@@ -498,7 +522,7 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(list<Siirto>& lista, int size)
 			{
 				Siirto pitkaLinna(false, true);
 				return pitkaLinna;
-			}
+			}*/
 
 			wcout << "Laiton siirto! Kokeile uudelleen." << endl;
 		}

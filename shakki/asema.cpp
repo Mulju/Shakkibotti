@@ -589,85 +589,66 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista)
 }
 void Asema::annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari)
 {
-		Asema uusiAsema;
+		Asema uusiAsema = *this;
 
 		//pitk‰n valkoisen linnotuksen lis‰‰minen lailliseksi siirroksi
-		if ( vari == 0  
-			&& getOnkoValkeaDTliikkunut() 
-			&& getOnkoValkeaKuningasLiikkunut() 
-			&& onkoRuutuUhattu(&Ruutu(4, 0), &uusiAsema , 1)
-			&& onkoRuutuUhattu(&Ruutu(2, 0), &uusiAsema , 1)
-			&& onkoRuutuUhattu(&Ruutu(3, 0), &uusiAsema, 1)
+		if (vari == 0  
+			&& !getOnkoValkeaDTliikkunut() 
+			&& !getOnkoValkeaKuningasLiikkunut() 
+			&& !onkoRuutuUhattu(&Ruutu(2, 7), &uusiAsema , 1)
+			&& !onkoRuutuUhattu(&Ruutu(3, 7), &uusiAsema , 1)
+			&& !onkoRuutuUhattu(&Ruutu(4, 7), &uusiAsema, 1)
 			&& _lauta[7][1] == NULL 
 			&& _lauta [7][2] == NULL 
 			&& _lauta [7][3]== NULL)
 		{
-
-			
 			Siirto uusiSiirto(false, true);
 			lista.push_back(uusiSiirto);
-
-
 		}
 
 		//lyhyt valkoisen linnotuksen lis‰‰minen lailliseksi siirroksi
 		if (vari == 0 
 			&& !getOnkoValkeaKTliikkunut() 
 			&& !getOnkoValkeaKuningasLiikkunut() 
-			&& !onkoRuutuUhattu(&Ruutu(4, 0), &uusiAsema, 1)
-			&& !onkoRuutuUhattu(&Ruutu(6, 0), &uusiAsema, 1)
-			&& !onkoRuutuUhattu(&Ruutu(5, 0), &uusiAsema, 1)
+			&& !onkoRuutuUhattu(&Ruutu(4, 7), &uusiAsema, 1)
+			&& !onkoRuutuUhattu(&Ruutu(5, 7), &uusiAsema, 1)
+			&& !onkoRuutuUhattu(&Ruutu(6, 7), &uusiAsema, 1)
 			&& _lauta[7][6] == NULL 
 			&& _lauta[7][5] == NULL)
 		{
-
-
+			bool onko47uhattu = onkoRuutuUhattu(&Ruutu(4, 7), &uusiAsema, 1);
+			bool onko57uhattu = onkoRuutuUhattu(&Ruutu(5, 7), &uusiAsema, 1);
+			bool onko67uhattu = onkoRuutuUhattu(&Ruutu(6, 7), &uusiAsema, 1);
 			Siirto uusiSiirto(true, false);
 			lista.push_back(uusiSiirto);
-
-
 		}
 
 		//pitk‰n musta linnotuksen lis‰‰minen lailliseksi siirroksi
 		if (vari == 1 
-			&& getOnkoMustaDTliikkunut() 
-			&& getOnkoMustaKuningasLiikkunut() 
-			&& onkoRuutuUhattu(&Ruutu(4, 8), &uusiAsema, 0)
-			&& onkoRuutuUhattu(&Ruutu(2, 8), &uusiAsema, 0)
-			&& onkoRuutuUhattu(&Ruutu(3, 8), &uusiAsema, 0)
+			&& !getOnkoMustaDTliikkunut() 
+			&& !getOnkoMustaKuningasLiikkunut() 
+			&& !onkoRuutuUhattu(&Ruutu(2, 0), &uusiAsema, 0)
+			&& !onkoRuutuUhattu(&Ruutu(3, 0), &uusiAsema, 0)
+			&& !onkoRuutuUhattu(&Ruutu(4, 0), &uusiAsema, 0)
 			&& _lauta[0][1] == NULL 
 			&& _lauta[0][2] == NULL 
 			&& _lauta[0][3] == NULL)
 		{
-
-
 			Siirto uusiSiirto(false, true);
 			lista.push_back(uusiSiirto);
-
-
 		}
 
 		//lyhyt musta linnotuksen lis‰‰minen lailliseksi siirroksi
 		if (vari == 1 
-			&& getOnkoMustaKTliikkunut() 
-			&& getOnkoMustaKuningasLiikkunut() 
-			&& onkoRuutuUhattu(&Ruutu(4, 8), &uusiAsema, 0)
-			&& onkoRuutuUhattu(&Ruutu(6, 8), &uusiAsema, 0)
-			&& onkoRuutuUhattu(&Ruutu(5, 8), &uusiAsema, 0)
+			&& !getOnkoMustaKTliikkunut() 
+			&& !getOnkoMustaKuningasLiikkunut() 
+			&& !onkoRuutuUhattu(&Ruutu(4, 0), &uusiAsema, 0)
+			&& !onkoRuutuUhattu(&Ruutu(5, 0), &uusiAsema, 0)
+			&& !onkoRuutuUhattu(&Ruutu(6, 0), &uusiAsema, 0)
 			&& _lauta[0][6] == NULL 
 			&& _lauta[0][5] == NULL)
 		{
-
-
 			Siirto uusiSiirto(true, false);
 			lista.push_back(uusiSiirto);
-
-
 		}
-
-		
-		
-
-
-
 }
