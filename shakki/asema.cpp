@@ -616,9 +616,6 @@ void Asema::annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari)
 			&& _lauta[7][6] == NULL 
 			&& _lauta[7][5] == NULL)
 		{
-			bool onko47uhattu = onkoRuutuUhattu(&Ruutu(4, 7), &uusiAsema, 1);
-			bool onko57uhattu = onkoRuutuUhattu(&Ruutu(5, 7), &uusiAsema, 1);
-			bool onko67uhattu = onkoRuutuUhattu(&Ruutu(6, 7), &uusiAsema, 1);
 			Siirto uusiSiirto(true, false);
 			lista.push_back(uusiSiirto);
 		}
