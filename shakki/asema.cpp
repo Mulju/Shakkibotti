@@ -132,6 +132,16 @@ void Asema::paivitaAsema(Siirto *siirto)
 		//Laittaa talteen otetun nappulan uuteen ruutuun
 		_lauta[siirto->getLoppuruutu().getRivi()][siirto->getLoppuruutu().getSarake()] = nappula;
 		
+		// Tarkistetaan, onko ohestalyˆnti. Ohestalyˆnti on tyhj‰‰n ruutuun. Vieress‰ oleva (sotilas) poistetaan.
+		if (nappula == ms && siirto->getAlkuruutu().getRivi() == 4 && siirto->getLoppuruutu().getSarake() == kaksoisaskelSarakkeella)
+		{
+			_lauta[siirto->getLoppuruutu().getRivi() - 1][siirto->getLoppuruutu().getSarake()] = NULL;
+		}
+		if (nappula == vs && siirto->getAlkuruutu().getRivi() == 3 && siirto->getLoppuruutu().getSarake() == kaksoisaskelSarakkeella)
+		{
+			_lauta[siirto->getLoppuruutu().getRivi() + 1][siirto->getLoppuruutu().getSarake()] = NULL;
+		}
+		
 		// Tarkistetaan oliko sotilaan kaksoisaskel
 		// (asetetaan kaksoisaskel-lippu)
 		if (nappula == ms && siirto->getLoppuruutu().getRivi() == 3 && siirto->getAlkuruutu().getRivi() == 1)
@@ -145,14 +155,6 @@ void Asema::paivitaAsema(Siirto *siirto)
 		else
 		{
 			kaksoisaskelSarakkeella = -1;
-		}
-
-		// Ohestalyˆnti on tyhj‰‰n ruutuun. Vieress‰ oleva (sotilas) poistetaan.
-		if (nappula == ms && siirto->getAlkuruutu().getRivi() == 4 && siirto->getLoppuruutu().getSarake() == kaksoisaskelSarakkeella) {
-			_lauta[siirto->getLoppuruutu().getRivi() - 1][siirto->getLoppuruutu().getSarake()] = NULL;
-		}
-		if (nappula == vs && siirto->getAlkuruutu().getRivi() == 3 && siirto->getLoppuruutu().getSarake() == kaksoisaskelSarakkeella) {
-			_lauta[siirto->getLoppuruutu().getRivi() + 1][siirto->getLoppuruutu().getSarake()] = NULL;
 		}
 
 		//// Katsotaan jos nappula on sotilas ja rivi on p‰‰tyrivi niin ei vaihdeta nappulaa 
