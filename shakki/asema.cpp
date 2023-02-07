@@ -147,8 +147,6 @@ void Asema::paivitaAsema(Siirto *siirto)
 			kaksoisaskelSarakkeella = -1;
 		}
 
-		std::wcout << this << "Kaksoisaskelsarakkeella: " << kaksoisaskelSarakkeella << " nappulalle " << siirto->getAlkuruutu().getRivi() << ", " << siirto->getAlkuruutu().getSarake() << "\n";
-
 		// Ohestalyönti on tyhjään ruutuun. Vieressä oleva (sotilas) poistetaan.
 		if (nappula == ms && siirto->getAlkuruutu().getRivi() == 4 && siirto->getLoppuruutu().getSarake() == kaksoisaskelSarakkeella) {
 			_lauta[siirto->getLoppuruutu().getRivi() - 1][siirto->getLoppuruutu().getSarake()] = NULL;
