@@ -166,6 +166,8 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(list<Siirto>& lista, int size)
 	int alkuNumero;
 	int loppuKirjain;
 	int loppuNumero;
+
+	std::wcout << _asema << "Kaksoisaskelsarakkeella: " << _asema->kaksoisaskelSarakkeella << "\n";
 	
 	while (true)
 	{

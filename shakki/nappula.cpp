@@ -1017,7 +1017,7 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 			case 4:
 				//Ohestalyönti ylös oikealle
 
-				if ((asema->kaksoisaskelSarakkeella = aS + 1) && aR == 3)
+				if ((asema->kaksoisaskelSarakkeella == aS + 1) && aR == 3)
 				{
 					// Vieressä on kaksoisaskeleen suorittanut musta sotilas voidaan syödä
 					Ruutu loppuRuutu(aS + 1, aR - 1);
@@ -1030,7 +1030,7 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 			case 5:
 				//Ohestalyönti ylös vasemmalle
 
-				if ((asema->kaksoisaskelSarakkeella = aS - 1) && aR == 3)
+				if ((asema->kaksoisaskelSarakkeella == aS - 1) && aR == 3)
 				{
 					// Vieressä on kaksoisaskeleen suorittanut musta sotilas voidaan syödä
 					Ruutu loppuRuutu(aS - 1, aR - 1);
@@ -1192,7 +1192,7 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 			case 4:
 				//Ohestalyönti alas oikealle
 
-				if ((asema->kaksoisaskelSarakkeella= aS + 1) && aR == 4)
+				if ((asema->kaksoisaskelSarakkeella == aS + 1) && aR == 4)
 				{
 					// Vieressä on kaksoisaskeleen suorittanut valkoinen sotilas voidaan syödä
 					Ruutu loppuRuutu(aS + 1, aR + 1);
@@ -1205,7 +1205,7 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 			case 5:
 				//Ohestalyönti alas vasemmalle
 
-				if ((asema->kaksoisaskelSarakkeella = aS -1) && aR == 4)
+				if ((asema->kaksoisaskelSarakkeella == aS -1) && aR == 4)
 				{
 					// Vieressä on kaksoisaskeleen suorittanut valkoinen sotilas voidaan syödä
 					Ruutu loppuRuutu(aS - 1, aR + 1);
