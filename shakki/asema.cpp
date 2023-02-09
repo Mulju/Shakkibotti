@@ -451,12 +451,6 @@ MinMaxPaluu Asema::minimax(int syvyys)
 
 MinMaxPaluu Asema::maxi(int syvyys) 
 {
-	if (syvyys == 0)
-	{
-		// Pitää palauttaa jotain??
-		MinMaxPaluu nollaPaluu;
-		nollaPaluu._evaluointiArvo = 0;
-	}
 
 	MinMaxPaluu paluu;
 	double laudanArvo = -10000;
@@ -494,7 +488,7 @@ MinMaxPaluu Asema::maxi(int syvyys)
 		}
 	}
 
-	// Otetaan negaatio siirtovuorosta
+	// Otetaan negaatio siirtovuorosta. Tarvitaan onkoRuutuUhattu funktiolle
 	int vastustajanSiirtoVuoro = getSiirtovuoro();
 	if (vastustajanSiirtoVuoro == 0)
 	{
@@ -518,17 +512,33 @@ MinMaxPaluu Asema::maxi(int syvyys)
 			// Patti
 			laudanArvo = 0;
 		}
+
+		// return tarkalla arvolla
+	
 	}
 	else
 	{
+		if (syvyys == 0)
+		{
+			// Laskenta syvyys saavutettu, kutsutaan evaluointi funktiota ja palautetaan sen antama arvo
+			paluu._evaluointiArvo = evaluoi();
+			// paluu._parasSiirto = ???
+		}
+		
 		MinMaxPaluu miniPaluu;
 
 		// Siirtoja on, käydään kaikki läpi
-		for (auto siirto : siirtoLista)
+		for (auto &siirto : siirtoLista)
 		{
-			miniPaluu = mini(syvyys - 1);
+			// Täytyy luoda for loopissa aina uusi asema, joka syötetään syvemmälle rekursiossa
+			Asema rekursioAsema(*this);
+
+			rekursioAsema.paivitaAsema(&siirto);
+			miniPaluu = rekursioAsema.mini(syvyys - 1);
 			if (miniPaluu._evaluointiArvo > laudanArvo)
 			{
+				// Voisi kirjoittaa myös kopiokonstruktorin MinMaxPaluulle
+				// ja sijoittaa suoraan paluu = miniPaluu
 				laudanArvo = miniPaluu._evaluointiArvo;
 				parasSiirto = miniPaluu._parasSiirto;
 			}
