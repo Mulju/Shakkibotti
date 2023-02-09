@@ -997,7 +997,7 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 
 				if (aR == 6)
 				{
-					if (asema->_lauta[aR - 1][aS] != NULL && asema->_lauta[aR - 2][aS] != NULL)
+					if (asema->_lauta[aR - 1][aS] == NULL && asema->_lauta[aR - 2][aS] == NULL)
 					{
 						// Vastaan tuli ruutu jossa on nappula, ei voida liikkua
 					}
@@ -1175,7 +1175,7 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 			
 				if(aR == 1)
 				{
-					if (asema->_lauta[aR + 1][aS] != NULL && asema->_lauta[aR + 2][aS] != NULL)
+					if (asema->_lauta[aR + 1][aS] == NULL && asema->_lauta[aR + 2][aS] == NULL)
 					{
 						// Vastaan tuli ruutu jossa on nappula, ei voida liikkua
 					}
