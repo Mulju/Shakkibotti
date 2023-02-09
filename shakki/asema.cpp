@@ -763,7 +763,7 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari) // Ta
 		if (siirto->onkoLyhytLinna())
 		{
 			ruutu.setSarake(6);
-			if (uusiAsema.getSiirtovuoro() == 0) {
+			if (vari == 0) {
 				ruutu.setRivi(7);
 			}
 			else
@@ -774,7 +774,7 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari) // Ta
 		else if(siirto->onkoPitkaLinna())
 		{
 			ruutu.setSarake(2);
-			if (uusiAsema.getSiirtovuoro() == 0) {
+			if (vari == 0) {
 				ruutu.setRivi(7);
 			}
 			else
@@ -881,6 +881,14 @@ void Asema::annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari)
 			&& _lauta[7][6] == NULL 
 			&& _lauta[7][5] == NULL)
 		{
+			//Debuggausta
+			bool valkeaKT = getOnkoValkeaKTliikkunut();
+			bool valkeaK = getOnkoValkeaKuningasLiikkunut();
+			bool ruutu47uhattu = onkoRuutuUhattu(&Ruutu(4, 7), &uusiAsema, 1);
+			bool ruutu57uhattu = onkoRuutuUhattu(&Ruutu(5, 7), &uusiAsema, 1);
+			bool ruutu67uhattu = onkoRuutuUhattu(&Ruutu(6, 7), &uusiAsema, 1);
+			
+			
 			Siirto uusiSiirto(true, false);
 			lista.push_back(uusiSiirto);
 		}

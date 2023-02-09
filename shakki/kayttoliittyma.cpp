@@ -87,7 +87,7 @@ void Kayttoliittyma::piirraLauta(list<Siirto> &lista)
 	{
 		auto eka = lista.begin();
 		advance(eka, i);
-		if (!eka->onkoLyhytLinna() || !eka->onkoPitkaLinna())
+		if (!eka->onkoLyhytLinna() && !eka->onkoPitkaLinna())
 		{
 			Ruutu loppuruutu = eka->getLoppuruutu();
 			if (!aputaulukko[loppuruutu.getRivi()][loppuruutu.getSarake()])
@@ -478,22 +478,10 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(list<Siirto>& lista, int size)
 				advance(siirto, i);
 				if (siirto->onkoLyhytLinna())
 				{
-					Siirto lyhytLinna(true, false);
-					return lyhytLinna;
+					return *siirto;
 				}
 			}
-			
-			/*if (_asema->getSiirtovuoro() == 0 && !_asema->getOnkoValkeaKTliikkunut() && !_asema->getOnkoValkeaKuningasLiikkunut() && _asema->_lauta[7][6] == NULL && _asema->_lauta[7][5] == NULL)
-			{
-				Siirto lyhytLinna(true, false);
-				return lyhytLinna;
-			}
 
-			if (_asema->getSiirtovuoro() && !_asema->getOnkoMustaKTliikkunut() && !_asema->getOnkoMustaKuningasLiikkunut() && _asema->_lauta[0][6] == NULL && _asema->_lauta[0][5] == NULL)
-			{
-				Siirto lyhytLinna(true, false);
-				return lyhytLinna;
-			}*/
 			wcout << "Laiton siirto! Kokeile uudelleen." << endl;
 
 		}
@@ -507,22 +495,9 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(list<Siirto>& lista, int size)
 				advance(siirto, i);
 				if (siirto->onkoPitkaLinna())
 				{
-					Siirto pitkaLinna(true, false);
-					return pitkaLinna;
+					return *siirto;
 				}
 			}
-			
-			/*if (!_asema->getSiirtovuoro() && !_asema->getOnkoValkeaDTliikkunut() && !_asema->getOnkoValkeaKuningasLiikkunut() && _asema->_lauta[7][1] == NULL && _asema->_lauta[7][2] == NULL && _asema->_lauta[7][3] == NULL)
-			{
-				Siirto pitkaLinna(false, true);
-				return pitkaLinna;
-			}
-
-			if( _asema->getSiirtovuoro() && !_asema->getOnkoMustaDTliikkunut() && !_asema->getOnkoMustaKuningasLiikkunut() && _asema->_lauta[0][1] == NULL && _asema->_lauta[0][2] == NULL && _asema->_lauta[0][3] == NULL)
-			{
-				Siirto pitkaLinna(false, true);
-				return pitkaLinna;
-			}*/
 
 			wcout << "Laiton siirto! Kokeile uudelleen." << endl;
 		}
