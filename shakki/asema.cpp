@@ -524,48 +524,61 @@ double Asema::nappuloitaKeskella(int vari)
 
 
 	double summa = 0;
-	for (int i = 0; i < 64; i++) {
-		int ruutu = i / 8, sarake = i % 8;
-		Nappula* nappula = this->_lauta[ruutu][sarake];
 
-		if (nappula == vs) {
-			summa += keskipelisotilas[i];
-		}
-		else if (nappula == ms) {
-			summa += -1*keskipelisotilas[i];
-		}
-		else if (nappula == vr) {
-			summa += keskipeliratsu[i];
-		}
-		else if (nappula == mr) {
-			summa += -1 * keskipeliratsu[i];
-		}
-		else if (nappula == vl) {
-			summa += keskipelilähetti[i];
-		}
-		else if (nappula == ml) {
-			summa += -1 * keskipelilähetti[i];
-		}
-		else if (nappula == vt) {
-			summa += keskipelitorni[i];
-		}
-		else if (nappula == mt) {
-			summa += -1 * keskipelitorni[i];
-		}
-		else if (nappula == vk) {
-			summa += keskipelikuningas[i];
-		}
-		else if (nappula == mk) {
-			summa += -1 * keskipelikuningas[i];
-		}
-		else if (nappula == vd) {
-			summa += keskipelidaami[i];
-		}
-		else if (nappula == md) {
-			summa += -1 * keskipelidaami[i];
-		}
+	if (vari == 0) {
+		for (int i = 0; i < 64; i++) {
+			int ruutu = floor((float)i / 8), sarake = i % 8;
+			Nappula* nappula = this->_lauta[ruutu][sarake];
+
+			if (nappula == vs) {
+				summa += keskipelisotilas[i];
+			}
+			else if (nappula == vr) {
+				summa += keskipeliratsu[i];
+			}
+			else if (nappula == vl) {
+				summa += keskipelilähetti[i];
+			}
+			else if (nappula == vt) {
+				summa += keskipelitorni[i];
+			}			
+			else if (nappula == vk) {
+				summa += keskipelikuningas[i];
+			}			
+			else if (nappula == vd) {
+				summa += keskipelidaami[i];
+			}
 		
 		
+		}
+
+	}
+	else 
+	{
+		for (int i = 63; i >= 0; i--) {
+			int ruutu = floor((float)i / 8), sarake = i % 8;
+			Nappula* nappula = this->_lauta[ruutu][sarake];
+
+			if (nappula == ms) {
+				summa += -1 * keskipelisotilas[i];
+			}
+			else if (nappula == mr) {
+				summa += -1 * keskipeliratsu[i];
+			}
+			else if (nappula == ml) {
+				summa += -1 * keskipelilähetti[i];
+			}
+			else if (nappula == mt) {
+				summa += -1 * keskipelitorni[i];
+			}			
+			else if (nappula == mk) {
+				summa += -1 * keskipelikuningas[i];
+			}			
+			else if (nappula == md) {
+				summa += -1 * keskipelidaami[i];
+			}
+		}
+
 	}
 	
 	return summa;
