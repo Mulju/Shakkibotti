@@ -999,16 +999,16 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 				{
 					if (asema->_lauta[aR - 1][aS] == NULL && asema->_lauta[aR - 2][aS] == NULL)
 					{
-						// Vastaan tuli ruutu jossa on nappula, ei voida liikkua
+						// Ruudussa ei ollut mit‰‰n, lis‰t‰‰n se laillisten siirtojen listaan
+						Ruutu loppuRuutu(aS, aR - 2);
+						Siirto uusiSiirto(*ruutu, loppuRuutu);
+						lista.push_back(uusiSiirto);
 					}
 
 
 					else
 					{
-						// Ruudussa ei ollut mit‰‰n, lis‰t‰‰n se laillisten siirtojen listaan
-						Ruutu loppuRuutu(aS, aR - 2);
-						Siirto uusiSiirto(*ruutu, loppuRuutu);
-						lista.push_back(uusiSiirto);
+						// Vastaan tuli ruutu jossa on nappula, ei voida liikkua
 
 					}
 				}
@@ -1176,15 +1176,15 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 				if(aR == 1)
 				{
 					if (asema->_lauta[aR + 1][aS] == NULL && asema->_lauta[aR + 2][aS] == NULL)
-					{
-						// Vastaan tuli ruutu jossa on nappula, ei voida liikkua
-					}
-					else
-					{
+					{						
 						// Ruudussa ei ollut mit‰‰n, lis‰t‰‰n se laillisten siirtojen listaan
 						Ruutu loppuRuutu(aS, aR + 2);
 						Siirto uusiSiirto(*ruutu, loppuRuutu);
-					    lista.push_back(uusiSiirto);
+						lista.push_back(uusiSiirto);
+					}
+					else
+					{
+						// Vastaan tuli ruutu jossa on nappula, ei voida liikkua
 					}
 				}
 				break;
