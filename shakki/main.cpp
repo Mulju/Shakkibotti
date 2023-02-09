@@ -18,7 +18,7 @@ int main()
 	Asema asema; 
 	Kayttoliittyma::getInstance()->aseta_asema(&asema);
 
-	//Testausta varten
+	/*//Testausta varten
 	std::list<Siirto> lista;
 	Kayttoliittyma::getInstance()->piirraLauta();
 	
@@ -30,11 +30,11 @@ int main()
 		Siirto siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto(lista, lista.size());
 		asema.paivitaAsema(&siirto);
 	}
-	//Testikoodi loppuu*/
+	Testikoodi loppuu*/
 
 	Peli peli(Kayttoliittyma::getInstance()->
 		kysyVastustajanVari());
-	//std::list<Siirto> lista;
+	std::list<Siirto> lista;
 	system("cls");
 	int koneenVari = peli.getKoneenVari();
 
@@ -51,19 +51,22 @@ int main()
 		wcout << "\n";
 		Siirto siirto;
 		if (asema.getSiirtovuoro() == koneenVari) {
-			/*MinMaxPaluu paluu;
+			MinMaxPaluu paluu;
 			if (koneenVari == 0) {
-				paluu = asema.maxi(3);
+				paluu = asema.maxi(2);
 			}
 			else {
-				paluu = asema.mini(3);
+				paluu = asema.mini(2);
 			}
-			siirto = paluu._parasSiirto;*/
+			siirto = paluu._parasSiirto;
 
+			/*
+			// Random siirto testausta varten
 			int randomIndex = rand() % lista.size();
 			auto siirtoTemp = lista.begin();
 			advance(siirtoTemp, randomIndex);
 			siirto = *siirtoTemp;
+			*/
 		}
 		else {
 			siirto = Kayttoliittyma::getInstance()->

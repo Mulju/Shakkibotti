@@ -276,11 +276,11 @@ vai olla est‰m‰ss‰ vastustajan korotusta siksi ei oteta kantaa
 */
 double Asema::evaluoi() 
 {
-	return 0;
+	double laudanArvo = 0;
+	// Heinin kommentti: kertoimet asetettu sen takia ett‰ niiden avulla asioiden painoarvoa voidaan s‰‰t‰‰ helposti yhdest‰ paikasta
 
-	//kertoimet asetettu sen takia ett‰ niiden avulla asioiden painoarvoa voidaan s‰‰t‰‰ helposti yhdest‰ paikasta
-	
 	//1. Nappuloiden arvo
+	laudanArvo += laskeNappuloidenArvo(getSiirtovuoro());
 	
 	//2. Kuningas turvassa
 	
@@ -288,13 +288,81 @@ double Asema::evaluoi()
 	
 	// 4. Arvosta linjoja
 	
+	return laudanArvo;
 }
 
 
 double Asema::laskeNappuloidenArvo(int vari) 
 {
-	return 0;
-	
+	double nappuloidenArvo = 0;
+
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			// Loopataan koko lauta
+			
+			if (_lauta[i][j] != nullptr)
+			{
+				// Jos ruudussa on nappula..
+				switch (_lauta[i][j]->getKoodi())
+				{
+				case 0:
+					// VT
+					nappuloidenArvo += 5;
+					break;
+				case 1:
+					// VR
+					nappuloidenArvo += 3;
+					break;
+				case 2:
+					// VL
+					nappuloidenArvo += 3.25;
+					break;
+				case 3:
+					// VD
+					nappuloidenArvo += 9;
+					break;
+				case 4:
+					// VK
+					nappuloidenArvo += 0;
+					break;
+				case 5:
+					// VS
+					nappuloidenArvo += 1;
+					break;
+				case 6:
+					// MT
+					nappuloidenArvo -= 5;
+					break;
+				case 7:
+					// MR
+					nappuloidenArvo -= 3;
+					break;
+				case 8:
+					// ML
+					nappuloidenArvo -= 3.25;
+					break;
+				case 9:
+					// MD
+					nappuloidenArvo -= 9;
+					break;
+				case 10:
+					// MK
+					nappuloidenArvo -= 0;
+					break;
+				case 11:
+					// MS
+					nappuloidenArvo -= 1;
+					break;
+				default:
+					break;
+				}
+			}
+		}
+	}
+
+	return nappuloidenArvo;
 }
 
 
@@ -388,6 +456,104 @@ MinMaxPaluu Asema::minimax(int syvyys)
 MinMaxPaluu Asema::maxi(int syvyys) 
 {
 	MinMaxPaluu paluu;
+	double laudanArvo = -10000;
+	Siirto parasSiirto;
+	std::list<Siirto> siirtoLista;
+	Asema uusiAsema = *this;
+
+	annaLaillisetSiirrot(siirtoLista);
+	Ruutu kuninkaanRuutu;
+
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			if (getSiirtovuoro())
+			{
+				// Valkoisen vuoro
+				
+				if (_lauta[i][j] == vk)
+				{
+					kuninkaanRuutu.setRivi(i);
+					kuninkaanRuutu.setSarake(j);
+				}
+			}
+			else
+			{
+				// Mustan vuoro
+
+				if (_lauta[i][j] == mk)
+				{
+					kuninkaanRuutu.setRivi(i);
+					kuninkaanRuutu.setSarake(j);
+				}
+			}
+		}
+	}
+
+	// Otetaan negaatio siirtovuorosta. Tarvitaan onkoRuutuUhattu funktiolle
+	int vastustajanSiirtoVuoro = getSiirtovuoro();
+	if (vastustajanSiirtoVuoro == 0)
+	{
+		vastustajanSiirtoVuoro = 1;
+	}
+	else
+	{
+		vastustajanSiirtoVuoro = 0;
+	}
+
+	if (siirtoLista.empty())
+	{
+		// Siirtolista on tyhj‰, tilanne on joko matti tai patti
+		if (onkoRuutuUhattu(&kuninkaanRuutu, &uusiAsema, vastustajanSiirtoVuoro))
+		{
+			// Matti
+			laudanArvo = -10000;
+		}
+		else
+		{
+			// Patti
+			laudanArvo = 0;
+		}
+
+		// return tarkalla arvolla
+		paluu._evaluointiArvo = laudanArvo;
+		// paluu._parasSiirto on alustamaton tarkoituksella
+		return paluu;
+	}
+	else
+	{
+		if (syvyys == 0)
+		{
+			// Laskenta syvyys saavutettu, kutsutaan evaluointi funktiota ja palautetaan sen antama arvo
+			paluu._evaluointiArvo = evaluoi();
+			// paluu._parasSiirto on alustamaton tarkoituksella
+
+			return paluu;
+		}
+		
+		MinMaxPaluu miniPaluu;
+
+		// Siirtoja on, k‰yd‰‰n kaikki l‰pi
+		for (auto &siirto : siirtoLista)
+		{
+			// T‰ytyy luoda for loopissa aina uusi asema, joka syˆtet‰‰n syvemm‰lle rekursiossa
+			Asema rekursioAsema(*this);
+
+			rekursioAsema.paivitaAsema(&siirto);
+			miniPaluu = rekursioAsema.mini(syvyys - 1);
+			if (miniPaluu._evaluointiArvo > laudanArvo)
+			{
+				// Voisi kirjoittaa myˆs kopiokonstruktorin MinMaxPaluulle
+				// ja sijoittaa suoraan paluu = miniPaluu
+				laudanArvo = miniPaluu._evaluointiArvo;
+				parasSiirto = siirto;
+			}
+		}
+	}
+
+	paluu._evaluointiArvo = laudanArvo;
+	paluu._parasSiirto = parasSiirto;
 	return paluu;
 }
 
@@ -395,6 +561,104 @@ MinMaxPaluu Asema::maxi(int syvyys)
 MinMaxPaluu Asema::mini(int syvyys) 
 {
 	MinMaxPaluu paluu;
+	double laudanArvo = 10000;
+	Siirto parasSiirto;
+	std::list<Siirto> siirtoLista;
+	Asema uusiAsema = *this;
+
+	annaLaillisetSiirrot(siirtoLista);
+	Ruutu kuninkaanRuutu;
+
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			if (getSiirtovuoro())
+			{
+				// Valkoisen vuoro
+
+				if (_lauta[i][j] == vk)
+				{
+					kuninkaanRuutu.setRivi(i);
+					kuninkaanRuutu.setSarake(j);
+				}
+			}
+			else
+			{
+				// Mustan vuoro
+
+				if (_lauta[i][j] == mk)
+				{
+					kuninkaanRuutu.setRivi(i);
+					kuninkaanRuutu.setSarake(j);
+				}
+			}
+		}
+	}
+
+	// Otetaan negaatio siirtovuorosta. Tarvitaan onkoRuutuUhattu funktiolle
+	int vastustajanSiirtoVuoro = getSiirtovuoro();
+	if (vastustajanSiirtoVuoro == 0)
+	{
+		vastustajanSiirtoVuoro = 1;
+	}
+	else
+	{
+		vastustajanSiirtoVuoro = 0;
+	}
+
+	if (siirtoLista.empty())
+	{
+		// Siirtolista on tyhj‰, tilanne on joko matti tai patti
+		if (onkoRuutuUhattu(&kuninkaanRuutu, &uusiAsema, vastustajanSiirtoVuoro))
+		{
+			// Matti
+			laudanArvo = 10000;
+		}
+		else
+		{
+			// Patti
+			laudanArvo = 0;
+		}
+
+		// return tarkalla arvolla
+		paluu._evaluointiArvo = laudanArvo;
+		// paluu._parasSiirto on alustamaton tarkoituksella
+		return paluu;
+	}
+	else
+	{
+		if (syvyys == 0)
+		{
+			// Laskenta syvyys saavutettu, kutsutaan evaluointi funktiota ja palautetaan sen antama arvo
+			paluu._evaluointiArvo = evaluoi();
+			// paluu._parasSiirto on alustamaton tarkoituksella
+
+			return paluu;
+		}
+
+		MinMaxPaluu maxiPaluu;
+
+		// Siirtoja on, k‰yd‰‰n kaikki l‰pi
+		for (auto& siirto : siirtoLista)
+		{
+			// T‰ytyy luoda for loopissa aina uusi asema, joka syˆtet‰‰n syvemm‰lle rekursiossa
+			Asema rekursioAsema(*this);
+
+			rekursioAsema.paivitaAsema(&siirto);
+			maxiPaluu = rekursioAsema.maxi(syvyys - 1);
+			if (maxiPaluu._evaluointiArvo < laudanArvo)
+			{
+				// Voisi kirjoittaa myˆs kopiokonstruktorin MinMaxPaluulle
+				// ja sijoittaa suoraan paluu = miniPaluu
+				laudanArvo = maxiPaluu._evaluointiArvo;
+				parasSiirto = siirto;
+			}
+		}
+	}
+
+	paluu._evaluointiArvo = laudanArvo;
+	paluu._parasSiirto = parasSiirto;
 	return paluu;
 }
 
@@ -587,6 +851,7 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista)
 	annaLinnoitusSiirrot(lista, _siirtovuoro);
 	huolehdiKuninkaanShakeista(lista, _siirtovuoro);
 }
+
 void Asema::annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari)
 {
 		Asema uusiAsema = *this;
