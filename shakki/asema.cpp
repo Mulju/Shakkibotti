@@ -789,7 +789,7 @@ MinMaxPaluu Asema::minimax(int syvyys)
 }
 
 
-MinMaxPaluu Asema::maxi(int syvyys) 
+MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys) 
 {
 	MinMaxPaluu paluu;
 	double laudanArvo = -10000;
@@ -877,7 +877,16 @@ MinMaxPaluu Asema::maxi(int syvyys)
 			Asema rekursioAsema(*this);
 
 			rekursioAsema.paivitaAsema(&siirto);
-			miniPaluu = rekursioAsema.mini(syvyys - 1);
+			miniPaluu = rekursioAsema.alphaBetaMini(alpha, beta, syvyys - 1);
+
+			// Beta leikkaus
+			// Tulee ehkä ongelma ettei palauta siirtoa..?
+			if (miniPaluu._evaluointiArvo >= beta)
+			{
+				miniPaluu._evaluointiArvo = beta;
+				return miniPaluu;
+			}
+
 			if (miniPaluu._evaluointiArvo > laudanArvo)
 			{
 				// Voisi kirjoittaa myös kopiokonstruktorin MinMaxPaluulle
@@ -894,7 +903,7 @@ MinMaxPaluu Asema::maxi(int syvyys)
 }
 
 
-MinMaxPaluu Asema::mini(int syvyys) 
+MinMaxPaluu Asema::alphaBetaMini(int alpha, int beta, int syvyys) 
 {
 	MinMaxPaluu paluu;
 	double laudanArvo = 10000;
@@ -982,7 +991,15 @@ MinMaxPaluu Asema::mini(int syvyys)
 			Asema rekursioAsema(*this);
 
 			rekursioAsema.paivitaAsema(&siirto);
-			maxiPaluu = rekursioAsema.maxi(syvyys - 1);
+			maxiPaluu = rekursioAsema.alphaBetaMaxi(alpha, beta, syvyys - 1);
+
+			// Alpha leikkaus, sama ongelma kuin Maxissa (ehkä)
+			if (maxiPaluu._evaluointiArvo <= alpha)
+			{
+				maxiPaluu._evaluointiArvo = alpha;
+				return maxiPaluu;
+			}
+
 			if (maxiPaluu._evaluointiArvo < laudanArvo)
 			{
 				// Voisi kirjoittaa myös kopiokonstruktorin MinMaxPaluulle
