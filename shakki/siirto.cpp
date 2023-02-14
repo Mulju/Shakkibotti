@@ -39,3 +39,8 @@ bool Siirto::onkoPitkaLinna()
 {
 	return _pitkaLinna;
 }
+
+bool Siirto::operator<(const Siirto* rhs)
+{
+	if()
+}
