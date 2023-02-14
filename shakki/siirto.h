@@ -11,7 +11,7 @@ class Nappula;
 class Siirto
 {
 public:
-	Siirto(Ruutu, Ruutu);
+	Siirto(Ruutu, Ruutu, bool);
 	Siirto(){}
 	Siirto(bool, bool); // Linnoitus lyhesti (K-siipi) tai pitkästi (D-siipi?
 	Ruutu getAlkuruutu();
@@ -25,4 +25,5 @@ private:
 	Ruutu _loppuRuutu;
 	bool _lyhytLinna;
 	bool _pitkaLinna;
+	bool _onSyonti;
 };

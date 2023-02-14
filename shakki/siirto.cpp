@@ -1,12 +1,13 @@
 #include "siirto.h"
 
 
-Siirto::Siirto(Ruutu alkuRuutu, Ruutu loppuRuutu)
+Siirto::Siirto(Ruutu alkuRuutu, Ruutu loppuRuutu, bool onSyonti)
 {
 	_alkuRuutu = alkuRuutu;
 	_loppuRuutu = loppuRuutu;
 	_lyhytLinna = false;
 	_pitkaLinna = false;
+	_onSyonti = onSyonti;
 }
 
 
@@ -14,6 +15,7 @@ Siirto::Siirto(bool lyhytLinna, bool pitkaLinna)
 {
 	_lyhytLinna = lyhytLinna;
 	_pitkaLinna = pitkaLinna;
+	_onSyonti = true;
 }
 
 
