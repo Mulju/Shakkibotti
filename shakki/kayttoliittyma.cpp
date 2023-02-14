@@ -510,7 +510,7 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(list<Siirto>& lista, int size)
 	Ruutu alkuruutu(alkuKirjain, alkuNumero);
 	Ruutu loppuruutu(loppuKirjain, loppuNumero);
 	
-	Siirto siirto(alkuruutu, loppuruutu);
+	Siirto siirto(alkuruutu, loppuruutu, false);
 	return siirto;
 }
 

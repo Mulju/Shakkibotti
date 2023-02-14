@@ -1188,6 +1188,7 @@ MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys)
 	Asema uusiAsema = *this;
 
 	annaLaillisetSiirrot(siirtoLista);
+	//siirtoLista.sort();
 	Ruutu kuninkaanRuutu;
 
 	for (int i = 0; i < 8; i++)
@@ -1302,6 +1303,7 @@ MinMaxPaluu Asema::alphaBetaMini(int alpha, int beta, int syvyys)
 	Asema uusiAsema = *this;
 
 	annaLaillisetSiirrot(siirtoLista);
+	//siirtoLista.sort();
 	Ruutu kuninkaanRuutu;
 
 	for (int i = 0; i < 8; i++)
