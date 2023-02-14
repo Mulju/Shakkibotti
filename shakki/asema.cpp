@@ -340,7 +340,7 @@ Asema::Asema()
 
 	_siirtovuoro = 0;
 
-	// Liikkumisflagit asetetaan falseksi
+	// Liikkumisflagit asetetaan falseksi ja asetetaan upseerien m‰‰r‰ ja onko daamit laudalla
 	_onkoValkeaKuningasLiikkunut = false;
 	_onkoMustaKuningasLiikkunut = false;
 	_onkoValkeaDTliikkunut = false;
@@ -350,6 +350,7 @@ Asema::Asema()
 	_valkoisetUpseerit = 8;
 	_mustatUpseerit = 8;
 	_onkoValkeaDLaudalla = true;
+	_onkoMustaDLaudalla = true;
 }
 
 
@@ -469,6 +470,35 @@ void Asema::paivitaAsema(Siirto *siirto)
 			_onkoMustaKTliikkunut = true;
 		}
 
+	}
+
+	//katsotaan onko daamit laudalla
+	_onkoValkeaDLaudalla = false;
+	_onkoMustaDLaudalla = false;
+	_valkoisetUpseerit = 0;
+	_mustatUpseerit = 0;
+
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++) 
+		{
+			if (_lauta[i][j] == vd) 
+			{
+				_onkoValkeaDLaudalla = true;
+			}
+			if (_lauta[i][j] == md)
+			{
+				_onkoMustaDLaudalla = true;
+			}
+			if (_lauta[i][j] == vt || _lauta[i][j] == vr || _lauta[i][j] == vl || _lauta[i][j] == vk || _lauta[i][j] == vd) 
+			{
+				_valkoisetUpseerit++;
+			}
+			if (_lauta[i][j] == mt || _lauta[i][j] == mr || _lauta[i][j] == ml || _lauta[i][j] == mk || _lauta[i][j] == md)
+			{
+				_mustatUpseerit++;
+			}
+		}
 	}
 
 	//p‰ivitet‰‰n _siirtovuoro
@@ -644,36 +674,36 @@ double Asema::laskeNappuloidenArvo(int vari)
 }
 
 
-bool Asema::onkoAvausTaiKeskipeli(int vari) 
+bool Asema::onkoKeskiVaiLoppupeli(int vari) 
 {
 
 	bool keskipeli = true;
-	bool loppupeli = false;
 
-	for (int i = 0; i < 8; i++)
+	if (vari == 0) 
 	{
-		for (int j = 0; j < 8; j++)
+		if (_onkoValkeaDLaudalla == false && _valkoisetUpseerit <= 3) 
 		{
-			// Loopataan koko lauta
-
-			if (_lauta[i][j] != nullptr)
-			{
-				// Jos ruudussa on nappula..
-				if (_lauta[i][j]->getKoodi())
-				{
-					
-				}
-			}
+			keskipeli = false;
+		}
+		else if (_onkoValkeaDLaudalla == true && _valkoisetUpseerit == 1)
+		{
+			keskipeli = false;
+		}
+	}
+	else 
+	{
+		if (_onkoMustaDLaudalla == false && _mustatUpseerit <= 3)
+		{
+			keskipeli = false;
+		}
+		else if (_onkoMustaDLaudalla == true && _mustatUpseerit == 1)
+		{
+			keskipeli = false;
 		}
 	}
 
-	return keskipeli, loppupeli;
+	return keskipeli;
 
-
-
-
-
-	return 0;
 	// Jos upseereita 3 tai v‰hemm‰n on loppupeli
 	// mutta jos daami laudalla on loppueli vasta kun kuin vain daami j‰ljell‰
 	
@@ -958,60 +988,120 @@ double Asema::nappuloitaKeskella(int vari)
 
 	double summa = 0;
 
-	if (vari == 0) {
-		for (int i = 0; i < 64; i++) {
-			int ruutu = floor((float)i / 8), sarake = i % 8;
-			Nappula* nappula = this->_lauta[ruutu][sarake];
+	if (vari == 0) 
+	{
+		if (onkoKeskiVaiLoppupeli(vari))
+		{
+			for (int i = 0; i < 64; i++) {
+				int ruutu = floor((float)i / 8), sarake = i % 8;
+				Nappula* nappula = this->_lauta[ruutu][sarake];
 
-			if (nappula == vs) {
-				summa += keskipelisotilasV[i];
+				if (nappula == vs) {
+					summa += keskipelisotilasV[i];
+				}
+				else if (nappula == vr) {
+					summa += keskipeliratsuV[i];
+				}
+				else if (nappula == vl) {
+					summa += keskipelil‰hettiV[i];
+				}
+				else if (nappula == vt) {
+					summa += keskipelitorniV[i];
+				}
+				else if (nappula == vk) {
+					summa += keskipelikuningasV[i];
+				}
+				else if (nappula == vd) {
+					summa += keskipelidaamiV[i];
+				}
+
 			}
-			else if (nappula == vr) {
-				summa += keskipeliratsuV[i];
-			}
-			else if (nappula == vl) {
-				summa += keskipelil‰hettiV[i];
-			}
-			else if (nappula == vt) {
-				summa += keskipelitorniV[i];
-			}			
-			else if (nappula == vk) {
-				summa += keskipelikuningasV[i];
-			}			
-			else if (nappula == vd) {
-				summa += keskipelidaamiV[i];
-			}
-		
-		
 		}
+		else 
+		{
+			for (int i = 0; i < 64; i++) {
+				int ruutu = floor((float)i / 8), sarake = i % 8;
+				Nappula* nappula = this->_lauta[ruutu][sarake];
 
+				if (nappula == vs) {
+					summa += loppupelisotilasV[i];
+				}
+				else if (nappula == vr) {
+					summa += loppupeliratsuV[i];
+				}
+				else if (nappula == vl) {
+					summa += loppupelil‰hettiV[i];
+				}
+				else if (nappula == vt) {
+					summa += loppupelitorniV[i];
+				}
+				else if (nappula == vk) {
+					summa += loppupelikuningasV[i];
+				}
+				else if (nappula == vd) {
+					summa += loppupelidaamiV[i];
+				}
+
+			}
+		}
+			
 	}
 	else 
 	{
-		for (int i = 0; i < 64; i++) {
-			int ruutu = floor((float)i / 8), sarake = i % 8;
-			Nappula* nappula = this->_lauta[ruutu][sarake];
+		if (onkoKeskiVaiLoppupeli(vari))
+		{
+			for (int i = 0; i < 64; i++) {
+				int ruutu = floor((float)i / 8), sarake = i % 8;
+				Nappula* nappula = this->_lauta[ruutu][sarake];
 
-			if (nappula == ms) {
-				summa += -1 * keskipelisotilasM[i];
+				if (nappula == ms) {
+					summa += -1 * keskipelisotilasM[i];
+				}
+				else if (nappula == mr) {
+					summa += -1 * keskipeliratsuM[i];
+				}
+				else if (nappula == ml) {
+					summa += -1 * keskipelil‰hettiM[i];
+				}
+				else if (nappula == mt) {
+					summa += -1 * keskipelitorniM[i];
+				}
+				else if (nappula == mk) {
+					summa += -1 * keskipelikuningasM[i];
+				}
+				else if (nappula == md) {
+					summa += -1 * keskipelidaamiM[i];
+				}
 			}
-			else if (nappula == mr) {
-				summa += -1 * keskipeliratsuM[i];
-			}
-			else if (nappula == ml) {
-				summa += -1 * keskipelil‰hettiM[i];
-			}
-			else if (nappula == mt) {
-				summa += -1 * keskipelitorniM[i];
-			}			
-			else if (nappula == mk) {
-				summa += -1 * keskipelikuningasM[i];
-			}			
-			else if (nappula == md) {
-				summa += -1 * keskipelidaamiM[i];
+
+		}
+		else 
+		{
+			for (int i = 0; i < 64; i++) {
+				int ruutu = floor((float)i / 8), sarake = i % 8;
+				Nappula* nappula = this->_lauta[ruutu][sarake];
+
+				if (nappula == ms) {
+					summa += -1 * loppupelisotilasM[i];
+				}
+				else if (nappula == mr) {
+					summa += -1 * loppupeliratsuM[i];
+				}
+				else if (nappula == ml) {
+					summa += -1 * loppupelil‰hettiM[i];
+				}
+				else if (nappula == mt) {
+					summa += -1 * loppupelitorniM[i];
+				}
+				else if (nappula == mk) {
+					summa += -1 * loppupelikuningasM[i];
+				}
+				else if (nappula == md) {
+					summa += -1 * loppupelidaamiM[i];
+				}
 			}
 		}
-
+		
 	}
 	
 	return summa;

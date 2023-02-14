@@ -56,9 +56,13 @@ private:
 	bool _onkoValkeaKTliikkunut;		// Linnoitus ei ole sallittu, jos kuningassivustan torni on liikkunut.
 	bool _onkoMustaDTliikkunut;			// Linnoitus ei ole sallittu, jos daamisuvustan torni on liikkunut.	
 	bool _onkoMustaKTliikkunut;			// Linnoitus ei ole sallittu, jos kuningassivustan torni on liikkunut.
+	bool _onkoValkeaDLaudalla;
+	bool _onkoMustaDLaudalla;
+	int _valkoisetUpseerit;
+	int _mustatUpseerit;
 
 	double laskeNappuloidenArvo(int);
-	bool onkoAvausTaiKeskipeli(int);
+	bool onkoKeskiVaiLoppupeli(int);
 	double nappuloitaKeskella(int);
 	double linjat(int);
 	bool onkoRuutuUhattu(Ruutu*, Asema* asema, int vastustajanVari);
