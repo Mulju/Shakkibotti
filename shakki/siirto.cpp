@@ -42,7 +42,20 @@ bool Siirto::onkoPitkaLinna()
 	return _pitkaLinna;
 }
 
-bool Siirto::operator<(const Siirto* rhs)
+bool Siirto::operator<(const Siirto& rhs) const
 {
-	if()
+	if (this->_onSyonti == rhs._onSyonti)
+	{
+		return true;
+	}
+
+	if (this->_onSyonti == true && rhs._onSyonti == false)
+	{
+		return true;
+	}
+
+	if (this->_onSyonti == false && rhs._onSyonti == true)
+	{
+		return false;
+	}
 }
