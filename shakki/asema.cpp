@@ -874,7 +874,7 @@ MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys)
 		for (auto &siirto : siirtoLista)
 		{
 			// Täytyy luoda for loopissa aina uusi asema, joka syötetään syvemmälle rekursiossa
-			Asema rekursioAsema(*this);
+			Asema rekursioAsema = *this;
 
 			rekursioAsema.paivitaAsema(&siirto);
 			miniPaluu = rekursioAsema.alphaBetaMini(alpha, beta, syvyys - 1);
@@ -988,7 +988,7 @@ MinMaxPaluu Asema::alphaBetaMini(int alpha, int beta, int syvyys)
 		for (auto& siirto : siirtoLista)
 		{
 			// Täytyy luoda for loopissa aina uusi asema, joka syötetään syvemmälle rekursiossa
-			Asema rekursioAsema(*this);
+			Asema rekursioAsema = *this;
 
 			rekursioAsema.paivitaAsema(&siirto);
 			maxiPaluu = rekursioAsema.alphaBetaMaxi(alpha, beta, syvyys - 1);
