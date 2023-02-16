@@ -4,6 +4,7 @@
 #include "nappula.h"
 #include "ruutu.h"
 #include <array>
+#include <chrono>
 
 
 const int keskipelisotilasV[64] = {
@@ -287,6 +288,26 @@ Nappula* Asema::ml = new Lahetti(L"\u265D", 1, ML);
 Nappula* Asema::mr = new Ratsu(L"\u265E", 1, MR);
 Nappula* Asema::ms = new Sotilas(L"\u265F", 1, MS);
 
+// Roopen ajasin
+struct Ajastin
+{
+public:
+	std::chrono::steady_clock::time_point _aloitusAika;
+	std::string _nimi;
+
+	Ajastin(std::string nimi)
+	{
+		_aloitusAika = std::chrono::steady_clock::now();
+		_nimi = nimi;
+	}
+
+	~Ajastin()
+	{
+		std::chrono::steady_clock::time_point lopetusAika = std::chrono::steady_clock::now();
+		std::chrono::duration<double, std::milli> kesto = lopetusAika - _aloitusAika;
+		std::cout << _nimi << " : " << kesto.count() << " ms\n";
+	}
+};
 
 Asema::Asema()
 {
@@ -911,6 +932,9 @@ MinMaxPaluu Asema::minimax(int syvyys)
 
 MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys) 
 {
+	std::string nimi = "Maxi";
+	Ajastin ajastin(nimi);
+
 	MinMaxPaluu paluu;
 	double laudanArvo = -10000;
 	Siirto parasSiirto;

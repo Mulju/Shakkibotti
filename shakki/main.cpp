@@ -35,7 +35,9 @@ int main()
 	Peli peli(Kayttoliittyma::getInstance()->
 		kysyVastustajanVari());
 	std::list<Siirto> lista;
+	Siirto taulukko[200];
 	system("cls");
+	
 	int koneenVari = peli.getKoneenVari();
 
 	while (lopetus != 0) {
