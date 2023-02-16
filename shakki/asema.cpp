@@ -1245,7 +1245,7 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari) // Ta
 	lista = siivottuSiirtolista; // !!!Täytyy tarkistaa, toimiiko näin vai antaako tyhjän listan eteenpäin!!!
 }
 
-void Asema::poistaUhatutSiirrot(std::list<Siirto>& siivottuSiirtolista, Asema& asema, Siirto* siirto, Ruutu& kRuutu, int vari)
+void Asema::poistaUhatutSiirrot(std::list<Siirto>& siivottuSiirtolista, const Asema& asema, Siirto* siirto,  const Ruutu& kRuutu, int vari)
 {
 	Ruutu ruutu;
 	Ruutu kuninkaanRuutu = kRuutu;
