@@ -291,21 +291,23 @@ Nappula* Asema::ms = new Sotilas(L"\u265F", 1, MS);
 // Roopen ajasin
 struct Ajastin
 {
-public:
-	std::chrono::steady_clock::time_point _aloitusAika;
-	std::string _nimi;
+	using Kello = std::chrono::steady_clock;
 
-	Ajastin(std::string nimi)
+public:
+	Kello::time_point _aloitusAika;
+	std::wstring _nimi;
+
+	Ajastin(std::wstring nimi)
 	{
-		_aloitusAika = std::chrono::steady_clock::now();
+		_aloitusAika = Kello::now();
 		_nimi = nimi;
 	}
 
 	~Ajastin()
 	{
-		std::chrono::steady_clock::time_point lopetusAika = std::chrono::steady_clock::now();
+		Kello::time_point lopetusAika = Kello::now();
 		std::chrono::duration<double, std::milli> kesto = lopetusAika - _aloitusAika;
-		std::cout << _nimi << " : " << kesto.count() << " ms\n";
+		std::wcout << _nimi << L" : " << kesto.count() << L" ms\n";
 	}
 };
 
@@ -537,6 +539,8 @@ void Asema::paivitaAsema(Siirto *siirto)
 
 int Asema::getSiirtovuoro() 
 {
+	std::wstring nimi = L"hieno nimi";
+	Ajastin ajastin(nimi);
 	return _siirtovuoro;
 }
 
@@ -1202,8 +1206,8 @@ MinMaxPaluu Asema::minimax(int syvyys)
 
 MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys) 
 {
-	std::string nimi = "Maxi";
-	Ajastin ajastin(nimi);
+	//std::string nimi = "Maxi";
+	//Ajastin ajastin(nimi);
 
 	MinMaxPaluu paluu;
 	double laudanArvo = -10000;
