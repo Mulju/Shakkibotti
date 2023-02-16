@@ -301,10 +301,9 @@ public:
 		_nimi = nimi;
 	}
 
-private:
 	~Ajastin()
 	{
-		auto lopetusAika = std::chrono::steady_clock::now();
+		std::chrono::steady_clock::time_point lopetusAika = std::chrono::steady_clock::now();
 		std::chrono::duration<double, std::milli> kesto = lopetusAika - _aloitusAika;
 		std::cout << _nimi << " : " << kesto.count() << " ms\n";
 	}
@@ -1203,6 +1202,9 @@ MinMaxPaluu Asema::minimax(int syvyys)
 
 MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys) 
 {
+	std::string nimi = "Maxi";
+	Ajastin ajastin(nimi);
+
 	MinMaxPaluu paluu;
 	double laudanArvo = -10000;
 	Siirto parasSiirto;
