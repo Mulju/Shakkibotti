@@ -69,5 +69,7 @@ private:
 	void annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari);
 
 	// Karsii siirrot, jotka jättävät oman K:n shakkiin.
-	void huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari); 
+	void huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari);
+	void poistaUhatutSiirrot(std::list<Siirto>& siivottuSiirtolista, Asema& uusiAsema, Siirto* siirto, Ruutu& kuninkaanRuutu, int vari);
+
 };

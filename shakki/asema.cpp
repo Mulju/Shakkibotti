@@ -4,6 +4,10 @@
 #include "nappula.h"
 #include "ruutu.h"
 #include <array>
+#include <thread> //uusi
+#include <vector> // uusi
+
+using namespace std;
 
 
 const int keskipelisotilasV[64] = {
@@ -1222,76 +1226,88 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari) // Ta
 	}
 
 	// Tehd‰‰n kopioasema, jota voidaan muokata sekoittamatta oikeaa nykyist‰ asemaa
-	Asema uusiAsema;
 	std::list<Siirto> siivottuSiirtolista;
 	Ruutu ruutu;
+
+	vector<thread> threadVector;
 	
 	// K‰yd‰‰n l‰pi siirtolistan siirrot ja poistetaan sielt‰ kuninkaan shakkiin johtavat siirrot
-	for (int i = 0; i < lista.size(); i++)
+	for (auto& siirto : lista)
 	{
-		auto siirto = lista.begin(); // auto tekee siirrosta iteraattorin
-		advance(siirto, i);
+		threadVector.emplace_back([&]() {poistaUhatutSiirrot(siivottuSiirtolista, *this, &siirto, kuninkaanRuutu, vari); }); //Thread-kokeilu
+	}
 
-		uusiAsema = *this;
-		uusiAsema.paivitaAsema(&*siirto); // * dereferoi iteraattorin takaa olion ja & hakee muistipaikan
-
-		// Onko kuninkaan siirto?
-		if (siirto->onkoLyhytLinna())
-		{
-			ruutu.setSarake(6);
-			if (vari == 0) {
-				ruutu.setRivi(7);
-			}
-			else
-			{
-				ruutu.setRivi(0);
-			}
-		}
-		else if(siirto->onkoPitkaLinna())
-		{
-			ruutu.setSarake(2);
-			if (vari == 0) {
-				ruutu.setRivi(7);
-			}
-			else
-			{
-				ruutu.setRivi(0);
-			}
-		}
-		else
-		{
-			// Voi optimoida laittamalla funktiokutsut muuttujiin
-			Nappula* siirtyvaNappula = (*this)._lauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()];
-			if (siirtyvaNappula->getKoodi() == VK || siirtyvaNappula->getKoodi() == MK)
-			{
-				ruutu.setSarake(siirto->getLoppuruutu().getSarake());
-				ruutu.setRivi(siirto->getLoppuruutu().getRivi());
-			}
-			else
-			{
-				// Ei ole kuninkaan siirto, jolloin kuninkaan koordinaatit on samat kuin aiemmin
-				ruutu = kuninkaanRuutu;
-			}
-		}
-
-		int vastustajanVari;
-		if (vari == 0)
-		{
-			vastustajanVari = 1;
-		}
-		else
-		{
-			vastustajanVari = 0;
-		}
-
-		// Jos siirtoruutu ei aiheuta kuninkaalle uhkaa vastustajan vuorolla, se lis‰t‰‰n uuteen siirtolistaan
-		if (!onkoRuutuUhattu(&ruutu, &uusiAsema, vastustajanVari))
-		{
-			siivottuSiirtolista.push_back(*siirto);
-		}
+	for (auto& t : threadVector)
+	{
+		t.join();
 	}
 
 	lista = siivottuSiirtolista; // !!!T‰ytyy tarkistaa, toimiiko n‰in vai antaako tyhj‰n listan eteenp‰in!!!
+}
+
+void Asema::poistaUhatutSiirrot(std::list<Siirto>& siivottuSiirtolista, Asema& asema, Siirto* siirto, Ruutu& kRuutu, int vari)
+{
+	Ruutu ruutu;
+	Ruutu kuninkaanRuutu = kRuutu;
+
+	Asema uusiAsema = asema;
+	
+	uusiAsema.paivitaAsema(siirto);
+
+	// Onko kuninkaan siirto?
+	if (siirto->onkoLyhytLinna())
+	{
+		ruutu.setSarake(6);
+		if (vari == 0) {
+			ruutu.setRivi(7);
+		}
+		else
+		{
+			ruutu.setRivi(0);
+		}
+	}
+	else if (siirto->onkoPitkaLinna())
+	{
+		ruutu.setSarake(2);
+		if (vari == 0) {
+			ruutu.setRivi(7);
+		}
+		else
+		{
+			ruutu.setRivi(0);
+		}
+	}
+	else
+	{
+		// Voi optimoida laittamalla funktiokutsut muuttujiin
+		Nappula* siirtyvaNappula = (*this)._lauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()];
+		if (siirtyvaNappula == vk || siirtyvaNappula == mk)
+		{
+			ruutu.setSarake(siirto->getLoppuruutu().getSarake());
+			ruutu.setRivi(siirto->getLoppuruutu().getRivi());
+		}
+		else
+		{
+			// Ei ole kuninkaan siirto, jolloin kuninkaan koordinaatit on samat kuin aiemmin
+			ruutu = kuninkaanRuutu;
+		}
+	}
+
+	int vastustajanVari;
+	if (vari == 0)
+	{
+		vastustajanVari = 1;
+	}
+	else
+	{
+		vastustajanVari = 0;
+	}
+
+	// Jos siirtoruutu ei aiheuta kuninkaalle uhkaa vastustajan vuorolla, se lis‰t‰‰n uuteen siirtolistaan
+	if (!onkoRuutuUhattu(&ruutu, &uusiAsema, vastustajanVari))
+	{
+		siivottuSiirtolista.push_back(*siirto);
+	}
 }
 
 
