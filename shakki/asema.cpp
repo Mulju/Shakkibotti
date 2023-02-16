@@ -544,8 +544,6 @@ void Asema::paivitaAsema(Siirto *siirto)
 
 int Asema::getSiirtovuoro() 
 {
-	std::wstring nimi = L"hieno nimi";
-	Ajastin ajastin(nimi);
 	return _siirtovuoro;
 }
 
