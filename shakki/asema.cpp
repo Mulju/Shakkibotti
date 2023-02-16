@@ -361,6 +361,11 @@ void Asema::paivitaAsema(Siirto *siirto)
 	// Asetetaan myöhemmin, jos tarvii.
 	//kaksoisaskelSarakkeella = -1;
 
+	int alkurivi = siirto->getAlkuruutu().getRivi();
+	int alkusarake = siirto->getAlkuruutu().getSarake();
+	int loppurivi = siirto->getLoppuruutu().getRivi();
+	int loppusarake = siirto->getLoppuruutu().getSarake();
+
 
 	//Tarkastetaan on siirto lyhyt linna
 	if (siirto->onkoLyhytLinna())
@@ -400,30 +405,30 @@ void Asema::paivitaAsema(Siirto *siirto)
 	else // Kaikki muut siirrot
 	{
 		//Ottaa siirron alkuruudussa olleen nappulan talteen
-		Nappula* nappula = _lauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()];
+		Nappula* nappula = _lauta[alkurivi][alkusarake];
 
 		//Laittaa talteen otetun nappulan uuteen ruutuun
-		_lauta[siirto->getLoppuruutu().getRivi()][siirto->getLoppuruutu().getSarake()] = nappula;
+		_lauta[loppurivi][loppusarake] = nappula;
 		
 		// Tarkistetaan, onko ohestalyönti. Ohestalyönti on tyhjään ruutuun. Vieressä oleva (sotilas) poistetaan.
-		if (nappula == ms && siirto->getAlkuruutu().getRivi() == 4 && siirto->getLoppuruutu().getSarake() == kaksoisaskelSarakkeella)
+		if (nappula == ms && alkurivi == 4 && loppusarake == kaksoisaskelSarakkeella)
 		{
-			_lauta[siirto->getLoppuruutu().getRivi() - 1][siirto->getLoppuruutu().getSarake()] = NULL;
+			_lauta[loppurivi - 1][loppusarake] = NULL;
 		}
-		if (nappula == vs && siirto->getAlkuruutu().getRivi() == 3 && siirto->getLoppuruutu().getSarake() == kaksoisaskelSarakkeella)
+		if (nappula == vs && alkurivi == 3 && loppusarake == kaksoisaskelSarakkeella)
 		{
-			_lauta[siirto->getLoppuruutu().getRivi() + 1][siirto->getLoppuruutu().getSarake()] = NULL;
+			_lauta[loppurivi + 1][loppusarake] = NULL;
 		}
 		
 		// Tarkistetaan oliko sotilaan kaksoisaskel
 		// (asetetaan kaksoisaskel-lippu)
-		if (nappula == ms && siirto->getLoppuruutu().getRivi() == 3 && siirto->getAlkuruutu().getRivi() == 1)
+		if (nappula == ms && loppurivi == 3 && alkurivi == 1)
 		{
-			kaksoisaskelSarakkeella = siirto->getLoppuruutu().getSarake();
+			kaksoisaskelSarakkeella = loppusarake;
 		}
-		else if (nappula == vs && siirto->getLoppuruutu().getRivi() == 4 && siirto->getAlkuruutu().getRivi() == 6)
+		else if (nappula == vs && loppurivi == 4 && alkurivi == 6)
 		{
-			kaksoisaskelSarakkeella = siirto->getLoppuruutu().getSarake();
+			kaksoisaskelSarakkeella = loppusarake;
 		}
 		else
 		{
@@ -434,19 +439,19 @@ void Asema::paivitaAsema(Siirto *siirto)
 		////eli alkuruutuun laitetaan null ja loppuruudussa on jo kliittymän laittama nappula MIIKKA, ei taida minmaxin kanssa hehkua?
 		
 		// Maikan ylempi kommentti on hämmentävä. Luullakseni tämä korottaa sotilaan oikein
-		if ((siirto->getLoppuruutu().getRivi() == 7 || siirto->getLoppuruutu().getRivi() == 0) &&
+		if ((loppurivi == 7 || loppurivi == 0) &&
 			(nappula == ms || nappula == vs))
 		{
 			// Siirron loppuruutu on laudan pääty, sekä nappula on sotilas. Siirrolla on korotus arvo
 			// Asetetaan nappula osoitin osoittamaan korotusarvon omaiseen nappulaan
 			nappula = siirto->_miksikorotetaan;
 			// Päivitetään laudalle oikean tyyppinen nappula
-			_lauta[siirto->getLoppuruutu().getRivi()][siirto->getLoppuruutu().getSarake()] = nappula;
+			_lauta[loppurivi][loppusarake] = nappula;
 		}
 
 		//
 		////muissa tapauksissa alkuruutuun null ja loppuruutuun sama alkuruudusta lähtenyt nappula
-		_lauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()] = NULL;
+		_lauta[alkurivi][alkusarake] = NULL;
 
 		// katsotaan jos liikkunut nappula on kuningas niin muutetaan onkoKuningasLiikkunut arvo (molemmille väreille)
 		if (nappula == mk) {
@@ -1175,6 +1180,7 @@ bool Asema::onkoRuutuUhattu(Ruutu* kuninkaanRuutu, Asema* uusiAsema, int vastust
 
 		if (kuninkaanRuutu->getSarake() == siirto->getLoppuruutu().getSarake() && kuninkaanRuutu->getRivi() == siirto->getLoppuruutu().getRivi()) {
 			ruutuUhattu = true;
+			break;
 		}
 	}
 
