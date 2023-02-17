@@ -71,5 +71,7 @@ private:
 	Ruutu getKuninkaanRuutu(int vari);
 
 	// Karsii siirrot, jotka jättävät oman K:n shakkiin.
-	void huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari); 
+	void huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari);
+
+	void poistaUhatutSiirrot(std::list<Siirto>& siivottuSiirtolista, const Asema& asema, Siirto* siirto, const Ruutu& kRuutu, int vari);
 };
