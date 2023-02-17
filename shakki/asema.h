@@ -38,6 +38,7 @@ public:
 	MinMaxPaluu minimax(int syvyys);						// Minimax-algoritmi.
 	void annaLaillisetSiirrot(std::list<Siirto>& lista);	// Siirtogeneraattori.
 	int getSiirtovuoro();									// Palauttaa siirtovuoron.
+	int getVastustajanSiirtovuoro();
 	void setSiirtovuoro(int);								// Asettaa siirtovuoron.
 	bool getOnkoValkeaKuningasLiikkunut();					// Linnoittuminen mahdollista?
 	bool getOnkoMustaKuningasLiikkunut();					// Linnoittuminen mahdollista?
@@ -67,6 +68,7 @@ private:
 	double linjat(int);
 	bool onkoRuutuUhattu(Ruutu*, Asema* asema, int vastustajanVari);
 	void annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari);
+	Ruutu getKuninkaanRuutu(int vari);
 
 	// Karsii siirrot, jotka jättävät oman K:n shakkiin.
 	void huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari); 
