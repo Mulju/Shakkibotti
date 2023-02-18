@@ -73,6 +73,4 @@ private:
 
 	// Karsii siirrot, jotka jättävät oman K:n shakkiin.
 	void huolehdiKuninkaanShakeista(std::vector<Siirto>& lista, int vari);
-
-	void poistaUhatutSiirrot(std::vector<Siirto>& siivottuSiirtolista, const Asema& asema, Siirto* siirto, const Ruutu& kRuutu, int vari);
 };
