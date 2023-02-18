@@ -936,6 +936,7 @@ MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys)
 	double laudanArvo = -10000;
 	Siirto parasSiirto;
 	std::vector<Siirto> siirrot;
+	siirrot.reserve(200);
 	Asema uusiAsema = *this;
 
 	annaLaillisetSiirrot(siirrot);
@@ -1016,6 +1017,7 @@ MinMaxPaluu Asema::alphaBetaMini(int alpha, int beta, int syvyys)
 	double laudanArvo = 10000;
 	Siirto parasSiirto;
 	std::vector<Siirto> siirrot;
+	siirrot.reserve(200);
 	Asema uusiAsema = *this;
 
 	annaLaillisetSiirrot(siirrot);
@@ -1092,6 +1094,7 @@ MinMaxPaluu Asema::alphaBetaMini(int alpha, int beta, int syvyys)
 bool Asema::onkoRuutuUhattu(Ruutu* kuninkaanRuutu, Asema* uusiAsema, int vastustajanVari)
 {
 	std::vector<Siirto> vastustajanSiirtolista;
+	vastustajanSiirtolista.reserve(200);
 	Ruutu ruutu;
 	
 	for (int i = 0; i < 8; i++)
@@ -1146,6 +1149,7 @@ void Asema::huolehdiKuninkaanShakeista(std::vector<Siirto>& lista, int vari) // 
 	// Tehd‰‰n kopioasema, jota voidaan muokata sekoittamatta oikeaa nykyist‰ asemaa
 	Asema uusiAsema;
 	std::vector<Siirto> siivottuSiirtolista;
+	siivottuSiirtolista.reserve(200);
 	Ruutu ruutu;
 	
 	// K‰yd‰‰n l‰pi siirtolistan siirrot ja poistetaan sielt‰ kuninkaan shakkiin johtavat siirrot
