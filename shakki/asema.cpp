@@ -1234,12 +1234,21 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari) // Ta
 	// K‰yd‰‰n l‰pi siirtolistan siirrot ja poistetaan sielt‰ kuninkaan shakkiin johtavat siirrot
 	for (auto& siirto : lista)
 	{
-		threadVector.emplace_back([&]() {poistaUhatutSiirrot(siivottuSiirtolista, *this, &siirto, kuninkaanRuutu, vari); }); //Thread-kokeilu
+		threadVector.emplace_back([&]()
+		{
+			poistaUhatutSiirrot(siivottuSiirtolista, *this, &siirto, kuninkaanRuutu, vari);
+		}); //Thread-kokeilu
+
+		wcout << "Threadi " << threadVector.back().get_id() << "luotu" << endl;
 	}
 
 	for (auto& t : threadVector)
 	{
-		t.join();
+		if (t.joinable())
+		{
+			wcout << "Threadi " << t.get_id() << "joinattu" << endl;
+			t.join();
+		}
 	}
 
 	lista = siivottuSiirtolista; // !!!T‰ytyy tarkistaa, toimiiko n‰in vai antaako tyhj‰n listan eteenp‰in!!!
