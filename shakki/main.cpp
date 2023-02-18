@@ -35,26 +35,23 @@ int main()
 
 	Peli peli(Kayttoliittyma::getInstance()->
 		kysyVastustajanVari());
-	std::list<Siirto> lista;
 	system("cls");
 	
 	std:vector<Siirto> siirrot;
-	cout << "Ennen: " << siirrot.capacity();
-	siirrot.reserve(100);
-	cout << "\nJalkeen: " << siirrot.capacity() << "\n";
+	siirrot.reserve(200);
 
 	int koneenVari = peli.getKoneenVari();
 
 	while (lopetus != 0) {
-		lista.clear();
+		siirrot.clear();
 		// Tarkasta onko peli loppu?
-		asema.annaLaillisetSiirrot(lista);
-		if (lista.size() == 0) {
+		asema.annaLaillisetSiirrot(siirrot);
+		if (siirrot.size() == 0) {
 			lopetus = 0;
 			std::wcout << "Peli loppui";
 			continue;
 		}
-		Kayttoliittyma::getInstance()->piirraLauta(lista);
+		Kayttoliittyma::getInstance()->piirraLauta(siirrot);
 		wcout << "\n";
 		Siirto siirto;
 		if (asema.getSiirtovuoro() == koneenVari) {
@@ -77,7 +74,7 @@ int main()
 		}
 		else {
 			siirto = Kayttoliittyma::getInstance()->
-				annaVastustajanSiirto(lista, lista.size());
+				annaVastustajanSiirto(siirrot, siirrot.size());
 		}
 		asema.paivitaAsema(&siirto);
 	}

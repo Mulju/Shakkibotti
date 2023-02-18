@@ -5,7 +5,7 @@
 #include "ruutu.h"
 #include <array>
 #include <chrono>
-
+#include <vector>
 
 const int keskipelisotilasV[64] = {
 	0, 0, 0, 0, 0, 0, 0, 0,
@@ -958,17 +958,17 @@ MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys)
 	MinMaxPaluu paluu;
 	double laudanArvo = -10000;
 	Siirto parasSiirto;
-	std::list<Siirto> siirtoLista;
+	std::vector<Siirto> siirrot;
 	Asema uusiAsema = *this;
 
-	annaLaillisetSiirrot(siirtoLista);
+	annaLaillisetSiirrot(siirrot);
 	//siirtoLista.sort();
 	Ruutu kuninkaanRuutu = getKuninkaanRuutu(getSiirtovuoro());
 
 	// Otetaan negaatio siirtovuorosta. Tarvitaan onkoRuutuUhattu funktiolle
 	int vastustajanSiirtoVuoro = getVastustajanSiirtovuoro();
 
-	if (siirtoLista.empty())
+	if (siirrot.empty())
 	{
 		// Siirtolista on tyhj‰, tilanne on joko matti tai patti
 		if (onkoRuutuUhattu(&kuninkaanRuutu, &uusiAsema, vastustajanSiirtoVuoro))
@@ -1001,7 +1001,7 @@ MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys)
 		MinMaxPaluu miniPaluu;
 
 		// Siirtoja on, k‰yd‰‰n kaikki l‰pi
-		for (auto &siirto : siirtoLista)
+		for (auto &siirto : siirrot)
 		{
 			// T‰ytyy luoda for loopissa aina uusi asema, joka syˆtet‰‰n syvemm‰lle rekursiossa
 			Asema rekursioAsema = *this;
@@ -1038,17 +1038,17 @@ MinMaxPaluu Asema::alphaBetaMini(int alpha, int beta, int syvyys)
 	MinMaxPaluu paluu;
 	double laudanArvo = 10000;
 	Siirto parasSiirto;
-	std::list<Siirto> siirtoLista;
+	std::vector<Siirto> siirrot;
 	Asema uusiAsema = *this;
 
-	annaLaillisetSiirrot(siirtoLista);
+	annaLaillisetSiirrot(siirrot);
 	//siirtoLista.sort();
 	Ruutu kuninkaanRuutu = getKuninkaanRuutu(getSiirtovuoro());
 
 	// Otetaan negaatio siirtovuorosta. Tarvitaan onkoRuutuUhattu funktiolle
 	int vastustajanSiirtoVuoro = getVastustajanSiirtovuoro();
 
-	if (siirtoLista.empty())
+	if (siirrot.empty())
 	{
 		// Siirtolista on tyhj‰, tilanne on joko matti tai patti
 		if (onkoRuutuUhattu(&kuninkaanRuutu, &uusiAsema, vastustajanSiirtoVuoro))
@@ -1081,7 +1081,7 @@ MinMaxPaluu Asema::alphaBetaMini(int alpha, int beta, int syvyys)
 		MinMaxPaluu maxiPaluu;
 
 		// Siirtoja on, k‰yd‰‰n kaikki l‰pi
-		for (auto& siirto : siirtoLista)
+		for (auto& siirto : siirrot)
 		{
 			// T‰ytyy luoda for loopissa aina uusi asema, joka syˆtet‰‰n syvemm‰lle rekursiossa
 			Asema rekursioAsema = *this;
@@ -1114,7 +1114,7 @@ MinMaxPaluu Asema::alphaBetaMini(int alpha, int beta, int syvyys)
 // Tarkistaa, onko uudessa asemassa kuningas uhattuna, kun vastustaja pelaa vuoronsa
 bool Asema::onkoRuutuUhattu(Ruutu* kuninkaanRuutu, Asema* uusiAsema, int vastustajanVari)
 {
-	std::list<Siirto> vastustajanSiirtolista;
+	std::vector<Siirto> vastustajanSiirtolista;
 	Ruutu ruutu;
 	
 	for (int i = 0; i < 8; i++)
@@ -1162,13 +1162,13 @@ bool Asema::onkoRuutuUhattu(Ruutu* kuninkaanRuutu, Asema* uusiAsema, int vastust
 }
 
 
-void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari) // Tarvitaanko lista.size() parametrina???
+void Asema::huolehdiKuninkaanShakeista(std::vector<Siirto>& lista, int vari) // Tarvitaanko lista.size() parametrina???
 { 
 	Ruutu kuninkaanRuutu = getKuninkaanRuutu(vari);
 
 	// Tehd‰‰n kopioasema, jota voidaan muokata sekoittamatta oikeaa nykyist‰ asemaa
 	Asema uusiAsema;
-	std::list<Siirto> siivottuSiirtolista;
+	std::vector<Siirto> siivottuSiirtolista;
 	Ruutu ruutu;
 	
 	// K‰yd‰‰n l‰pi siirtolistan siirrot ja poistetaan sielt‰ kuninkaan shakkiin johtavat siirrot
@@ -1242,7 +1242,7 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari) // Ta
 	lista = siivottuSiirtolista; // !!!T‰ytyy tarkistaa, toimiiko n‰in vai antaako tyhj‰n listan eteenp‰in!!!
 }
 
-void Asema::poistaUhatutSiirrot(std::list<Siirto>& siivottuSiirtolista, const Asema& asema, Siirto* siirto, const Ruutu& kRuutu, int vari)
+void Asema::poistaUhatutSiirrot(std::vector<Siirto>& siivottuSiirtolista, const Asema& asema, Siirto* siirto, const Ruutu& kRuutu, int vari)
 {
 	Ruutu ruutu;
 	Ruutu kuninkaanRuutu = kRuutu;
@@ -1307,7 +1307,7 @@ void Asema::poistaUhatutSiirrot(std::list<Siirto>& siivottuSiirtolista, const As
 	}
 }
 
-void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista)
+void Asema::annaLaillisetSiirrot(std::vector<Siirto>& lista)
 {
 	Ruutu ruutu;
 	
@@ -1340,7 +1340,7 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista)
 	huolehdiKuninkaanShakeista(lista, _siirtovuoro);
 }
 
-void Asema::annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari)
+void Asema::annaLinnoitusSiirrot(std::vector<Siirto>& lista, int vari)
 {
 		Asema uusiAsema = *this;
 
