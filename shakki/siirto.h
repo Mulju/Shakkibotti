@@ -21,7 +21,6 @@ public:
 	bool onkoPitkaLinna();
 	Nappula* _miksikorotetaan = 0; 
 
-private:
 	Ruutu _alkuRuutu;
 	Ruutu _loppuRuutu;
 	bool _lyhytLinna;
