@@ -7,6 +7,7 @@
 #include "kayttoliittyma.h"
 #include "Siirto.h"
 #include "asema.h"
+#include <vector>
 
 using namespace std; 
 
@@ -37,6 +38,11 @@ int main()
 	std::list<Siirto> lista;
 	system("cls");
 	
+	std:vector<Siirto> siirrot;
+	cout << "Ennen: " << siirrot.capacity();
+	siirrot.reserve(100);
+	cout << "\nJalkeen: " << siirrot.capacity() << "\n";
+
 	int koneenVari = peli.getKoneenVari();
 
 	while (lopetus != 0) {
