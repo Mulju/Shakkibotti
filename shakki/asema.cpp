@@ -51,7 +51,7 @@ const int loppupeliratsuV[64] = {
 	-29, -51, -23, -15, -22, -18, -50, -64,
 };
 
-const int keskipelilähettiV[64] = {
+const int keskipelilahettiV[64] = {
 	-29,   4, -82, -37, -25, -42,   7,  -8,
 	-26,  16, -18, -13,  30,  59,  18, -47,
 	-16,  37,  43,  40,  35,  50,  37,  -2,
@@ -62,7 +62,7 @@ const int keskipelilähettiV[64] = {
 	-33,  -3, -14, -21, -13, -12, -39, -21,
 };
 
-const int loppupelilähettiV[64] = {
+const int loppupelilahettiV[64] = {
 	-14, -21, -11,  -8, -7,  -9, -17, -24,
 	-8,  -4,   7, -12, -3, -13,  -4, -14,
 	2,  -8,   0,  -1, -2,   6,   0,   4,
@@ -185,7 +185,7 @@ const int loppupeliratsuM[64] = {
 	-58, -38, -13, -28, -31, -27, -63, -99,
 };
 
-const int keskipelilähettiM[64] = {
+const int keskipelilahettiM[64] = {
 	-33,  -3, -14, -21, -13, -12, -39, -21,
 	4,  15,  16,   0,   7,  21,  33,   1,
 	0,  15,  15,  15,  14,  27,  18,  10,
@@ -196,7 +196,7 @@ const int keskipelilähettiM[64] = {
 	-29,   4, -82, -37, -25, -42,   7,  -8,
 };
 
-const int loppupelilähettiM[64] = {
+const int loppupelilahettiM[64] = {
 	-23,  -9, -23,  -5, -9, -16,  -5, -17,
 	-14, -18,  -7,  -1,  4,  -9, -15, -27,
 	-12,  -3,   8,  10, 13,   3,  -7, -15,
@@ -743,14 +743,16 @@ bool Asema::onkoKeskiVaiLoppupeli(int vari)
 double Asema::nappuloitaKeskella(int vari) 
 {
 	double summa = 0;
+	int ruutu, sarake;
+	Nappula* nappula;
 
 	if (vari == 0) 
 	{
 		if (onkoKeskiVaiLoppupeli(vari))
 		{
 			for (int i = 0; i < 64; i++) {
-				int ruutu = floor((float)i / 8), sarake = i % 8;
-				Nappula* nappula = this->_lauta[ruutu][sarake];
+				ruutu = floor((float)i / 8), sarake = i % 8;
+				nappula = this->_lauta[ruutu][sarake];
 
 				if (nappula == vs) {
 					summa += keskipelisotilasV[i];
@@ -759,7 +761,7 @@ double Asema::nappuloitaKeskella(int vari)
 					summa += keskipeliratsuV[i];
 				}
 				else if (nappula == vl) {
-					summa += keskipelilähettiV[i];
+					summa += keskipelilahettiV[i];
 				}
 				else if (nappula == vt) {
 					summa += keskipelitorniV[i];
@@ -775,8 +777,8 @@ double Asema::nappuloitaKeskella(int vari)
 		else 
 		{
 			for (int i = 0; i < 64; i++) {
-				int ruutu = floor((float)i / 8), sarake = i % 8;
-				Nappula* nappula = this->_lauta[ruutu][sarake];
+				ruutu = floor((float)i / 8), sarake = i % 8;
+				nappula = this->_lauta[ruutu][sarake];
 
 				if (nappula == vs) {
 					summa += loppupelisotilasV[i];
@@ -785,7 +787,7 @@ double Asema::nappuloitaKeskella(int vari)
 					summa += loppupeliratsuV[i];
 				}
 				else if (nappula == vl) {
-					summa += loppupelilähettiV[i];
+					summa += loppupelilahettiV[i];
 				}
 				else if (nappula == vt) {
 					summa += loppupelitorniV[i];
@@ -804,8 +806,8 @@ double Asema::nappuloitaKeskella(int vari)
 		if (onkoKeskiVaiLoppupeli(vari))
 		{
 			for (int i = 0; i < 64; i++) {
-				int ruutu = floor((float)i / 8), sarake = i % 8;
-				Nappula* nappula = this->_lauta[ruutu][sarake];
+				ruutu = floor((float)i / 8), sarake = i % 8;
+				nappula = this->_lauta[ruutu][sarake];
 
 				if (nappula == ms) {
 					summa += -1 * keskipelisotilasM[i];
@@ -814,7 +816,7 @@ double Asema::nappuloitaKeskella(int vari)
 					summa += -1 * keskipeliratsuM[i];
 				}
 				else if (nappula == ml) {
-					summa += -1 * keskipelilähettiM[i];
+					summa += -1 * keskipelilahettiM[i];
 				}
 				else if (nappula == mt) {
 					summa += -1 * keskipelitorniM[i];
@@ -830,8 +832,8 @@ double Asema::nappuloitaKeskella(int vari)
 		else 
 		{
 			for (int i = 0; i < 64; i++) {
-				int ruutu = floor((float)i / 8), sarake = i % 8;
-				Nappula* nappula = this->_lauta[ruutu][sarake];
+				ruutu = floor((float)i / 8), sarake = i % 8;
+				nappula = this->_lauta[ruutu][sarake];
 
 				if (nappula == ms) {
 					summa += -1 * loppupelisotilasM[i];
@@ -840,7 +842,7 @@ double Asema::nappuloitaKeskella(int vari)
 					summa += -1 * loppupeliratsuM[i];
 				}
 				else if (nappula == ml) {
-					summa += -1 * loppupelilähettiM[i];
+					summa += -1 * loppupelilahettiM[i];
 				}
 				else if (nappula == mt) {
 					summa += -1 * loppupelitorniM[i];
@@ -888,28 +890,6 @@ double Asema::linjat(int vari)
 }
 
 
-// https://chessprogramming.wikispaces.com/Minimax MinMax-algoritmin pseudokoodi (lisäsin parametrina aseman)
-//int maxi(int depth, asema a) 
-//	if (depth == 0) return evaluate();
-//	int max = -oo;
-//	for (all moves ) {
-//		score = mini(depth - 1, seuraaja);
-//		if (score > max)
-//			max = score;
-//	}
-//	return max;
-//}
-
-//int mini(int depth, asema a) {
-//	if (depth == 0) return -evaluate();
-//	int min = +oo;
-//	for (all moves) {
-//		score = maxi(depth - 1);
-//		if (score < min)
-//			min = score;
-//	}
-//	return min;
-//}
 MinMaxPaluu Asema::minimax(int syvyys)
 {
 	MinMaxPaluu paluuarvo;
@@ -929,9 +909,6 @@ MinMaxPaluu Asema::minimax(int syvyys)
 
 MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys) 
 {
-	//std::wstring nimi = L"Maxi";
-	//Ajastin ajastin(nimi);
-
 	MinMaxPaluu paluu;
 	double laudanArvo = -10000;
 	Siirto parasSiirto;
@@ -977,12 +954,13 @@ MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys)
 		}
 		
 		MinMaxPaluu miniPaluu;
+		Asema rekursioAsema;
 
 		// Siirtoja on, käydään kaikki läpi
 		for (auto &siirto : siirrot)
 		{
 			// Täytyy luoda for loopissa aina uusi asema, joka syötetään syvemmälle rekursiossa
-			Asema rekursioAsema = *this;
+			rekursioAsema = *this;
 
 			rekursioAsema.paivitaAsema(&siirto);
 			miniPaluu = rekursioAsema.alphaBetaMini(alpha, beta, syvyys - 1);
@@ -1009,7 +987,6 @@ MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys)
 	paluu._parasSiirto = parasSiirto;
 	return paluu;
 }
-
 
 MinMaxPaluu Asema::alphaBetaMini(int alpha, int beta, int syvyys) 
 {
@@ -1058,12 +1035,13 @@ MinMaxPaluu Asema::alphaBetaMini(int alpha, int beta, int syvyys)
 		}
 
 		MinMaxPaluu maxiPaluu;
+		Asema rekursioAsema;
 
 		// Siirtoja on, käydään kaikki läpi
 		for (auto& siirto : siirrot)
 		{
 			// Täytyy luoda for loopissa aina uusi asema, joka syötetään syvemmälle rekursiossa
-			Asema rekursioAsema = *this;
+			rekursioAsema = *this;
 
 			rekursioAsema.paivitaAsema(&siirto);
 			maxiPaluu = rekursioAsema.alphaBetaMaxi(alpha, beta, syvyys - 1);
@@ -1140,7 +1118,6 @@ bool Asema::onkoRuutuUhattu(Ruutu* kuninkaanRuutu, Asema* uusiAsema, int vastust
 
 	return ruutuUhattu;
 }
-
 
 void Asema::huolehdiKuninkaanShakeista(std::vector<Siirto>& lista, int vari) // Tarvitaanko lista.size() parametrina???
 { 
