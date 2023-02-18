@@ -288,29 +288,6 @@ Nappula* Asema::ml = new Lahetti(L"\u265D", 1, ML);
 Nappula* Asema::mr = new Ratsu(L"\u265E", 1, MR);
 Nappula* Asema::ms = new Sotilas(L"\u265F", 1, MS);
 
-// Roopen ajasin
-struct Ajastin
-{
-	using Kello = std::chrono::steady_clock;
-
-public:
-	Kello::time_point _aloitusAika;
-	std::wstring _nimi;
-
-	Ajastin(std::wstring nimi)
-	{
-		_aloitusAika = Kello::now();
-		_nimi = nimi;
-	}
-
-	~Ajastin()
-	{
-		Kello::time_point lopetusAika = Kello::now();
-		std::chrono::duration<double, std::milli> kesto = lopetusAika - _aloitusAika;
-		std::wcout << _nimi << L" : " << kesto.count() << L" ms\n";
-	}
-};
-
 Asema::Asema()
 {
 	// Ensin alustetaan kaikki laudan ruudut nappulla "NULL", koska muuten ruuduissa satunnaista tauhkaa

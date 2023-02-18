@@ -8,6 +8,7 @@
 #include "Siirto.h"
 #include "asema.h"
 #include <vector>
+#include "Ajastin.h"
 
 using namespace std; 
 
