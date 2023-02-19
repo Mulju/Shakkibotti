@@ -39,7 +39,7 @@ int main()
 		kysyVastustajanVari());
 	system("cls");
 	
-	std:vector<Siirto> siirrot;
+	std::vector<Siirto> siirrot;
 	siirrot.reserve(200);
 
 	int koneenVari = peli.getKoneenVari();
