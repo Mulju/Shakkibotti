@@ -292,9 +292,9 @@ Nappula* Asema::ms = new Sotilas(L"\u265F", 1, MS);
 Asema::Asema()
 {
 	// Ensin alustetaan kaikki laudan ruudut nappulla "NULL", koska muuten ruuduissa satunnaista tauhkaa
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 8; ++i)
 	{
-		for (int j = 0; j < 8; j++)
+		for (int j = 0; j < 8; ++j)
 		{
 			_lauta[i][j] = NULL;
 		}
@@ -475,9 +475,9 @@ void Asema::paivitaAsema(Siirto *siirto)
 	_valkoisetUpseerit = 0;
 	_mustatUpseerit = 0;
 
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 8; ++i)
 	{
-		for (int j = 0; j < 8; j++) 
+		for (int j = 0; j < 8; ++j) 
 		{
 			if (_lauta[i][j] == vd) 
 			{
@@ -567,9 +567,9 @@ Ruutu Asema::getKuninkaanRuutu(int vari)
 	Ruutu kuninkaanRuutu;
 
 	// Haetaan kuninkaan sijainti
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 8; ++i)
 	{
-		for (int j = 0; j < 8; j++)
+		for (int j = 0; j < 8; ++j)
 		{
 			// Valkoinen kuningas
 			if (vari == 0)
@@ -634,9 +634,9 @@ double Asema::laskeNappuloidenArvo(int vari)
 {
 	double nappuloidenArvo = 0;
 
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 8; ++i)
 	{
-		for (int j = 0; j < 8; j++)
+		for (int j = 0; j < 8; ++j)
 		{
 			// Loopataan koko lauta
 			if (_lauta[i][j] != nullptr)
@@ -751,7 +751,7 @@ double Asema::nappuloitaKeskella(int vari)
 	{
 		if (onkoKeskiVaiLoppupeli(vari))
 		{
-			for (int i = 0; i < 64; i++) {
+			for (int i = 0; i < 64; ++i) {
 				ruutu = floor((float)i / 8), sarake = i % 8;
 				nappula = this->_lauta[ruutu][sarake];
 
@@ -777,7 +777,7 @@ double Asema::nappuloitaKeskella(int vari)
 		}
 		else 
 		{
-			for (int i = 0; i < 64; i++) {
+			for (int i = 0; i < 64; ++i) {
 				ruutu = floor((float)i / 8), sarake = i % 8;
 				nappula = this->_lauta[ruutu][sarake];
 
@@ -806,7 +806,7 @@ double Asema::nappuloitaKeskella(int vari)
 	{
 		if (onkoKeskiVaiLoppupeli(vari))
 		{
-			for (int i = 0; i < 64; i++) {
+			for (int i = 0; i < 64; ++i) {
 				ruutu = floor((float)i / 8), sarake = i % 8;
 				nappula = this->_lauta[ruutu][sarake];
 
@@ -832,7 +832,7 @@ double Asema::nappuloitaKeskella(int vari)
 		}
 		else 
 		{
-			for (int i = 0; i < 64; i++) {
+			for (int i = 0; i < 64; ++i) {
 				ruutu = floor((float)i / 8), sarake = i % 8;
 				nappula = this->_lauta[ruutu][sarake];
 
@@ -1076,9 +1076,9 @@ bool Asema::onkoRuutuUhattu(Ruutu* kuninkaanRuutu, Asema* uusiAsema, int vastust
 	vastustajanSiirtolista.reserve(200);
 	Ruutu ruutu;
 	
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 8; ++i)
 	{
-		for (int j = 0; j < 8; j++)
+		for (int j = 0; j < 8; ++j)
 		{
 			// Siirrot valkoisille nappuloille
 			if (vastustajanVari == 0)
@@ -1189,9 +1189,9 @@ void Asema::annaLaillisetSiirrot(std::vector<Siirto>& lista)
 {
 	Ruutu ruutu;
 	
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 8; ++i)
 	{
-		for (int j = 0; j < 8; j++)
+		for (int j = 0; j < 8; ++j)
 		{
 			// Siirrot valkoisille nappuloille
 			if (_siirtovuoro == 0)
