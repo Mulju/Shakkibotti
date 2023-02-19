@@ -7,8 +7,11 @@
 #include "kayttoliittyma.h"
 #include "Siirto.h"
 #include "asema.h"
+#include <vector>
+#include "Ajastin.h"
 
-using namespace std; 
+using namespace std;
+using namespace std::chrono;
 
 int main()
 {
@@ -34,23 +37,28 @@ int main()
 
 	Peli peli(Kayttoliittyma::getInstance()->
 		kysyVastustajanVari());
-	std::list<Siirto> lista;
 	system("cls");
+	
+	std:vector<Siirto> siirrot;
+	siirrot.reserve(200);
+
 	int koneenVari = peli.getKoneenVari();
 
 	while (lopetus != 0) {
-		lista.clear();
+		siirrot.clear();
 		// Tarkasta onko peli loppu?
-		asema.annaLaillisetSiirrot(lista);
-		if (lista.size() == 0) {
+		asema.annaLaillisetSiirrot(siirrot);
+		if (siirrot.size() == 0) {
 			lopetus = 0;
 			std::wcout << "Peli loppui";
 			continue;
 		}
-		Kayttoliittyma::getInstance()->piirraLauta(lista);
+		Kayttoliittyma::getInstance()->piirraLauta(siirrot);
 		wcout << "\n";
 		Siirto siirto;
 		if (asema.getSiirtovuoro() == koneenVari) {
+			auto start = high_resolution_clock::now();
+			
 			MinMaxPaluu paluu;
 			if (koneenVari == 0) {
 				paluu = asema.alphaBetaMaxi(-100000, 100000, 4);
@@ -59,6 +67,10 @@ int main()
 				paluu = asema.alphaBetaMini(-100000, 100000, 4);
 			}
 			siirto = paluu._parasSiirto;
+
+			auto stop = high_resolution_clock::now();
+			auto duration = duration_cast<milliseconds>(stop - start);
+			wcout << duration.count() << " ms" << endl;
 
 			/*
 			// Random siirto testausta varten
@@ -70,7 +82,7 @@ int main()
 		}
 		else {
 			siirto = Kayttoliittyma::getInstance()->
-				annaVastustajanSiirto(lista, lista.size());
+				annaVastustajanSiirto(siirrot, siirrot.size());
 		}
 		asema.paivitaAsema(&siirto);
 	}

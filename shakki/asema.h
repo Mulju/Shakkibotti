@@ -4,6 +4,7 @@
 #include <string>
 #include "minmaxpaluu.h"
 #include "siirto.h"
+#include <vector>
 
 
 // Ns. "forward declaration". Nyt Asema-luokassa voidaa esitellä Nappula-osoittimia ilman,
@@ -36,8 +37,9 @@ public:
 	MinMaxPaluu alphaBetaMaxi(int alpha, int beta, int syvyys);					// Minimax (max:n siirtovuoro).
 	MinMaxPaluu alphaBetaMini(int alpha, int beta, int syvyys);					// Minimax (min:n siirtovuoro).
 	MinMaxPaluu minimax(int syvyys);						// Minimax-algoritmi.
-	void annaLaillisetSiirrot(std::list<Siirto>& lista);	// Siirtogeneraattori.
+	void annaLaillisetSiirrot(std::vector<Siirto>& lista);	// Siirtogeneraattori.
 	int getSiirtovuoro();									// Palauttaa siirtovuoron.
+	int getVastustajanSiirtovuoro();
 	void setSiirtovuoro(int);								// Asettaa siirtovuoron.
 	bool getOnkoValkeaKuningasLiikkunut();					// Linnoittuminen mahdollista?
 	bool getOnkoMustaKuningasLiikkunut();					// Linnoittuminen mahdollista?
@@ -66,10 +68,9 @@ private:
 	double nappuloitaKeskella(int);
 	double linjat(int);
 	bool onkoRuutuUhattu(Ruutu*, Asema* asema, int vastustajanVari);
-	void annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari);
+	void annaLinnoitusSiirrot(std::vector<Siirto>& lista, int vari);
+	Ruutu getKuninkaanRuutu(int vari);
 
 	// Karsii siirrot, jotka jättävät oman K:n shakkiin.
-	void huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari);
-	void poistaUhatutSiirrot(std::list<Siirto>& siivottuSiirtolista, const Asema& uusiAsema, Siirto* siirto, const Ruutu& kuninkaanRuutu, int vari);
-
+	void huolehdiKuninkaanShakeista(std::vector<Siirto>& lista, int vari);
 };

@@ -73,7 +73,7 @@ void Kayttoliittyma::piirraLauta()
 	wcout << "\n    a b c d e f g h\n\n";
 }
 
-void Kayttoliittyma::piirraLauta(list<Siirto> &lista)
+void Kayttoliittyma::piirraLauta(vector<Siirto> &lista)
 {
 	bool aputaulukko[8][8];
 
@@ -162,7 +162,7 @@ void Kayttoliittyma::piirraLauta(list<Siirto> &lista)
 	muodollisesti korrekti (ei tarkista aseman laillisuutta)
 	Ottaa irti myös nappulan kirjaimen (K/D/L/R/T), tarkistaa että kirjain korrekti
 */
-Siirto Kayttoliittyma::annaVastustajanSiirto(list<Siirto>& lista, int size)
+Siirto Kayttoliittyma::annaVastustajanSiirto(vector<Siirto>& lista, int size)
 {
 	string syote;
 	int alkuKirjain;

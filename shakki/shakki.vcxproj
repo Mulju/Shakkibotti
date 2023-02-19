@@ -77,6 +77,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Ajastin.cpp" />
     <ClCompile Include="asema.cpp" />
     <ClCompile Include="kayttoliittyma.cpp" />
     <ClCompile Include="main.cpp" />
@@ -87,6 +88,7 @@
     <ClCompile Include="vastustaja.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Ajastin.h" />
     <ClInclude Include="asema.h" />
     <ClInclude Include="kayttoliittyma.h" />
     <ClInclude Include="minmaxpaluu.h" />
