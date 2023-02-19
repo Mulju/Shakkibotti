@@ -541,7 +541,6 @@ bool Asema::getOnkoValkeaDTliikkunut()
 	return _onkoValkeaDTliikkunut;
 }
 
-
 bool Asema::getOnkoValkeaKTliikkunut() 
 {
 	return _onkoValkeaKTliikkunut;
@@ -698,7 +697,6 @@ double Asema::laskeNappuloidenArvo(int vari)
 
 bool Asema::onkoKeskiVaiLoppupeli(int vari) 
 {
-
 	bool keskipeli = true;
 
 	if (vari == 0) 
@@ -748,23 +746,26 @@ double Asema::nappuloitaKeskella(int vari)
 				ruutu = floor((float)i / 8), sarake = i % 8;
 				nappula = this->_lauta[ruutu][sarake];
 
-				if (nappula == vs) {
-					summa += keskipelisotilasV[i];
-				}
-				else if (nappula == vr) {
-					summa += keskipeliratsuV[i];
-				}
-				else if (nappula == vl) {
-					summa += keskipelilahettiV[i];
-				}
-				else if (nappula == vt) {
-					summa += keskipelitorniV[i];
-				}
-				else if (nappula == vk) {
-					summa += keskipelikuningasV[i];
-				}
-				else if (nappula == vd) {
-					summa += keskipelidaamiV[i];
+				if (nappula != nullptr)
+				{
+					if (nappula->getKoodi() == VS) {
+						summa += keskipelisotilasV[i];
+					}
+					else if (nappula->getKoodi() == VR) {
+						summa += keskipeliratsuV[i];
+					}
+					else if (nappula->getKoodi() == VL) {
+						summa += keskipelilahettiV[i];
+					}
+					else if (nappula->getKoodi() == VT) {
+						summa += keskipelitorniV[i];
+					}
+					else if (nappula->getKoodi() == VK) {
+						summa += keskipelikuningasV[i];
+					}
+					else if (nappula->getKoodi() == VD) {
+						summa += keskipelidaamiV[i];
+					}
 				}
 			}
 		}
@@ -774,23 +775,26 @@ double Asema::nappuloitaKeskella(int vari)
 				ruutu = floor((float)i / 8), sarake = i % 8;
 				nappula = this->_lauta[ruutu][sarake];
 
-				if (nappula == vs) {
-					summa += loppupelisotilasV[i];
-				}
-				else if (nappula == vr) {
-					summa += loppupeliratsuV[i];
-				}
-				else if (nappula == vl) {
-					summa += loppupelilahettiV[i];
-				}
-				else if (nappula == vt) {
-					summa += loppupelitorniV[i];
-				}
-				else if (nappula == vk) {
-					summa += loppupelikuningasV[i];
-				}
-				else if (nappula == vd) {
-					summa += loppupelidaamiV[i];
+				if (nappula != nullptr)
+				{
+					if (nappula->getKoodi() == VS) {
+						summa += loppupelisotilasV[i];
+					}
+					else if (nappula->getKoodi() == VR) {
+						summa += loppupeliratsuV[i];
+					}
+					else if (nappula->getKoodi() == VL) {
+						summa += loppupelilahettiV[i];
+					}
+					else if (nappula->getKoodi() == VT) {
+						summa += loppupelitorniV[i];
+					}
+					else if (nappula->getKoodi() == VK) {
+						summa += loppupelikuningasV[i];
+					}
+					else if (nappula->getKoodi() == VD) {
+						summa += loppupelidaamiV[i];
+					}
 				}
 			}
 		}
@@ -803,23 +807,26 @@ double Asema::nappuloitaKeskella(int vari)
 				ruutu = floor((float)i / 8), sarake = i % 8;
 				nappula = this->_lauta[ruutu][sarake];
 
-				if (nappula == ms) {
-					summa += -1 * keskipelisotilasM[i];
-				}
-				else if (nappula == mr) {
-					summa += -1 * keskipeliratsuM[i];
-				}
-				else if (nappula == ml) {
-					summa += -1 * keskipelilahettiM[i];
-				}
-				else if (nappula == mt) {
-					summa += -1 * keskipelitorniM[i];
-				}
-				else if (nappula == mk) {
-					summa += -1 * keskipelikuningasM[i];
-				}
-				else if (nappula == md) {
-					summa += -1 * keskipelidaamiM[i];
+				if (nappula != nullptr)
+				{
+					if (nappula->getKoodi() == MS) {
+						summa += -1 * keskipelisotilasM[i];
+					}
+					else if (nappula->getKoodi() == MR) {
+						summa += -1 * keskipeliratsuM[i];
+					}
+					else if (nappula->getKoodi() == ML) {
+						summa += -1 * keskipelilahettiM[i];
+					}
+					else if (nappula->getKoodi() == MT) {
+						summa += -1 * keskipelitorniM[i];
+					}
+					else if (nappula->getKoodi() == MK) {
+						summa += -1 * keskipelikuningasM[i];
+					}
+					else if (nappula->getKoodi() == MD) {
+						summa += -1 * keskipelidaamiM[i];
+					}
 				}
 			}
 		}
@@ -829,23 +836,26 @@ double Asema::nappuloitaKeskella(int vari)
 				ruutu = floor((float)i / 8), sarake = i % 8;
 				nappula = this->_lauta[ruutu][sarake];
 
-				if (nappula == ms) {
-					summa += -1 * loppupelisotilasM[i];
-				}
-				else if (nappula == mr) {
-					summa += -1 * loppupeliratsuM[i];
-				}
-				else if (nappula == ml) {
-					summa += -1 * loppupelilahettiM[i];
-				}
-				else if (nappula == mt) {
-					summa += -1 * loppupelitorniM[i];
-				}
-				else if (nappula == mk) {
-					summa += -1 * loppupelikuningasM[i];
-				}
-				else if (nappula == md) {
-					summa += -1 * loppupelidaamiM[i];
+				if (nappula != nullptr)
+				{
+					if (nappula->getKoodi() == MS) {
+						summa += -1 * loppupelisotilasM[i];
+					}
+					else if (nappula->getKoodi() == MR) {
+						summa += -1 * loppupeliratsuM[i];
+					}
+					else if (nappula->getKoodi() == ML) {
+						summa += -1 * loppupelilahettiM[i];
+					}
+					else if (nappula->getKoodi() == MT) {
+						summa += -1 * loppupelitorniM[i];
+					}
+					else if (nappula->getKoodi() == MK) {
+						summa += -1 * loppupelikuningasM[i];
+					}
+					else if (nappula->getKoodi() == MD) {
+						summa += -1 * loppupelidaamiM[i];
+					}
 				}
 			}
 		}
