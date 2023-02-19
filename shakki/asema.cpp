@@ -274,7 +274,6 @@ const int loppupelikuningasM[64] = {
 	-74, -35, -18, -18, -11,  15,   4, -17,
 };
 
-
 Nappula* Asema::vk = new Kuningas(L"\u2654", 0, VK);
 Nappula* Asema::vd = new Daami(L"\u2655", 0, VD);
 Nappula* Asema::vt = new Torni(L"\u2656", 0, VT);
@@ -520,24 +519,20 @@ int Asema::getVastustajanSiirtovuoro()
 	}
 }
 
-
 void Asema::setSiirtovuoro(int vuoro) 
 {
 	_siirtovuoro = vuoro;
 }
-
 
 bool Asema::getOnkoValkeaKuningasLiikkunut() 
 {
 	return _onkoValkeaKuningasLiikkunut;
 }
 
-
 bool Asema::getOnkoMustaKuningasLiikkunut() 
 {
 	return _onkoMustaKuningasLiikkunut;
 }
-
 
 bool Asema::getOnkoValkeaDTliikkunut() 
 {
@@ -550,12 +545,10 @@ bool Asema::getOnkoValkeaKTliikkunut()
 	return _onkoValkeaKTliikkunut;
 }
 
-
 bool Asema::getOnkoMustaDTliikkunut() 
 {
 	return _onkoMustaDTliikkunut;
 }
-
 
 bool Asema::getOnkoMustaKTliikkunut() 
 {
@@ -629,7 +622,6 @@ double Asema::evaluoi()
 	return laudanArvo;
 }
 
-
 double Asema::laskeNappuloidenArvo(int vari) 
 {
 	double nappuloidenArvo = 0;
@@ -701,7 +693,6 @@ double Asema::laskeNappuloidenArvo(int vari)
 
 	return nappuloidenArvo;
 }
-
 
 bool Asema::onkoKeskiVaiLoppupeli(int vari) 
 {
@@ -879,7 +870,6 @@ double Asema::nappuloitaKeskella(int vari)
 	
 }
 
-
 double Asema::linjat(int vari) 
 {
 	return 0;
@@ -889,7 +879,6 @@ double Asema::linjat(int vari)
 	//mustat
 	
 }
-
 
 MinMaxPaluu Asema::minimax(int syvyys)
 {
@@ -906,7 +895,6 @@ MinMaxPaluu Asema::minimax(int syvyys)
 	
 	return paluuarvo;
 }
-
 
 MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys) 
 {
@@ -1220,71 +1208,71 @@ void Asema::annaLaillisetSiirrot(std::vector<Siirto>& lista)
 
 void Asema::annaLinnoitusSiirrot(std::vector<Siirto>& lista, int vari)
 {
-		Asema uusiAsema = *this;
+	Asema uusiAsema = *this;
 
-		//pitk‰n valkoisen linnotuksen lis‰‰minen lailliseksi siirroksi
-		if (vari == 0  
-			&& !getOnkoValkeaDTliikkunut() 
-			&& !getOnkoValkeaKuningasLiikkunut() 
-			&& !onkoRuutuUhattu(&Ruutu(2, 7), &uusiAsema , 1)
-			&& !onkoRuutuUhattu(&Ruutu(3, 7), &uusiAsema , 1)
-			&& !onkoRuutuUhattu(&Ruutu(4, 7), &uusiAsema, 1)
-			&& _lauta[7][1] == NULL 
-			&& _lauta [7][2] == NULL 
-			&& _lauta [7][3]== NULL)
-		{
-			Siirto uusiSiirto(false, true);
-			lista.push_back(uusiSiirto);
-		}
+	//pitk‰n valkoisen linnotuksen lis‰‰minen lailliseksi siirroksi
+	if (vari == 0  
+		&& !getOnkoValkeaDTliikkunut() 
+		&& !getOnkoValkeaKuningasLiikkunut() 
+		&& !onkoRuutuUhattu(&Ruutu(2, 7), &uusiAsema , 1)
+		&& !onkoRuutuUhattu(&Ruutu(3, 7), &uusiAsema , 1)
+		&& !onkoRuutuUhattu(&Ruutu(4, 7), &uusiAsema, 1)
+		&& _lauta[7][1] == NULL 
+		&& _lauta [7][2] == NULL 
+		&& _lauta [7][3]== NULL)
+	{
+		Siirto uusiSiirto(false, true);
+		lista.push_back(uusiSiirto);
+	}
 
-		//lyhyt valkoisen linnotuksen lis‰‰minen lailliseksi siirroksi
-		if (vari == 0 
-			&& !getOnkoValkeaKTliikkunut() 
-			&& !getOnkoValkeaKuningasLiikkunut() 
-			&& !onkoRuutuUhattu(&Ruutu(4, 7), &uusiAsema, 1)
-			&& !onkoRuutuUhattu(&Ruutu(5, 7), &uusiAsema, 1)
-			&& !onkoRuutuUhattu(&Ruutu(6, 7), &uusiAsema, 1)
-			&& _lauta[7][6] == NULL 
-			&& _lauta[7][5] == NULL)
-		{
-			//Debuggausta
-			bool valkeaKT = getOnkoValkeaKTliikkunut();
-			bool valkeaK = getOnkoValkeaKuningasLiikkunut();
-			bool ruutu47uhattu = onkoRuutuUhattu(&Ruutu(4, 7), &uusiAsema, 1);
-			bool ruutu57uhattu = onkoRuutuUhattu(&Ruutu(5, 7), &uusiAsema, 1);
-			bool ruutu67uhattu = onkoRuutuUhattu(&Ruutu(6, 7), &uusiAsema, 1);
+	//lyhyt valkoisen linnotuksen lis‰‰minen lailliseksi siirroksi
+	if (vari == 0 
+		&& !getOnkoValkeaKTliikkunut() 
+		&& !getOnkoValkeaKuningasLiikkunut() 
+		&& !onkoRuutuUhattu(&Ruutu(4, 7), &uusiAsema, 1)
+		&& !onkoRuutuUhattu(&Ruutu(5, 7), &uusiAsema, 1)
+		&& !onkoRuutuUhattu(&Ruutu(6, 7), &uusiAsema, 1)
+		&& _lauta[7][6] == NULL 
+		&& _lauta[7][5] == NULL)
+	{
+		//Debuggausta
+		bool valkeaKT = getOnkoValkeaKTliikkunut();
+		bool valkeaK = getOnkoValkeaKuningasLiikkunut();
+		bool ruutu47uhattu = onkoRuutuUhattu(&Ruutu(4, 7), &uusiAsema, 1);
+		bool ruutu57uhattu = onkoRuutuUhattu(&Ruutu(5, 7), &uusiAsema, 1);
+		bool ruutu67uhattu = onkoRuutuUhattu(&Ruutu(6, 7), &uusiAsema, 1);
 			
 			
-			Siirto uusiSiirto(true, false);
-			lista.push_back(uusiSiirto);
-		}
+		Siirto uusiSiirto(true, false);
+		lista.push_back(uusiSiirto);
+	}
 
-		//pitk‰n musta linnotuksen lis‰‰minen lailliseksi siirroksi
-		if (vari == 1 
-			&& !getOnkoMustaDTliikkunut() 
-			&& !getOnkoMustaKuningasLiikkunut() 
-			&& !onkoRuutuUhattu(&Ruutu(2, 0), &uusiAsema, 0)
-			&& !onkoRuutuUhattu(&Ruutu(3, 0), &uusiAsema, 0)
-			&& !onkoRuutuUhattu(&Ruutu(4, 0), &uusiAsema, 0)
-			&& _lauta[0][1] == NULL 
-			&& _lauta[0][2] == NULL 
-			&& _lauta[0][3] == NULL)
-		{
-			Siirto uusiSiirto(false, true);
-			lista.push_back(uusiSiirto);
-		}
+	//pitk‰n musta linnotuksen lis‰‰minen lailliseksi siirroksi
+	if (vari == 1 
+		&& !getOnkoMustaDTliikkunut() 
+		&& !getOnkoMustaKuningasLiikkunut() 
+		&& !onkoRuutuUhattu(&Ruutu(2, 0), &uusiAsema, 0)
+		&& !onkoRuutuUhattu(&Ruutu(3, 0), &uusiAsema, 0)
+		&& !onkoRuutuUhattu(&Ruutu(4, 0), &uusiAsema, 0)
+		&& _lauta[0][1] == NULL 
+		&& _lauta[0][2] == NULL 
+		&& _lauta[0][3] == NULL)
+	{
+		Siirto uusiSiirto(false, true);
+		lista.push_back(uusiSiirto);
+	}
 
-		//lyhyt musta linnotuksen lis‰‰minen lailliseksi siirroksi
-		if (vari == 1 
-			&& !getOnkoMustaKTliikkunut() 
-			&& !getOnkoMustaKuningasLiikkunut() 
-			&& !onkoRuutuUhattu(&Ruutu(4, 0), &uusiAsema, 0)
-			&& !onkoRuutuUhattu(&Ruutu(5, 0), &uusiAsema, 0)
-			&& !onkoRuutuUhattu(&Ruutu(6, 0), &uusiAsema, 0)
-			&& _lauta[0][6] == NULL 
-			&& _lauta[0][5] == NULL)
-		{
-			Siirto uusiSiirto(true, false);
-			lista.push_back(uusiSiirto);
-		}
+	//lyhyt musta linnotuksen lis‰‰minen lailliseksi siirroksi
+	if (vari == 1 
+		&& !getOnkoMustaKTliikkunut() 
+		&& !getOnkoMustaKuningasLiikkunut() 
+		&& !onkoRuutuUhattu(&Ruutu(4, 0), &uusiAsema, 0)
+		&& !onkoRuutuUhattu(&Ruutu(5, 0), &uusiAsema, 0)
+		&& !onkoRuutuUhattu(&Ruutu(6, 0), &uusiAsema, 0)
+		&& _lauta[0][6] == NULL 
+		&& _lauta[0][5] == NULL)
+	{
+		Siirto uusiSiirto(true, false);
+		lista.push_back(uusiSiirto);
+	}
 }

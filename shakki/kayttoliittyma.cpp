@@ -9,7 +9,6 @@
 
 using namespace std;
 
-
 Kayttoliittyma* Kayttoliittyma::instance = 0;
 
 Kayttoliittyma* Kayttoliittyma::getInstance()
@@ -18,7 +17,6 @@ Kayttoliittyma* Kayttoliittyma::getInstance()
 		instance = new Kayttoliittyma();
 	return instance;
 }
-
 
 void Kayttoliittyma::piirraLauta()
 {
@@ -155,7 +153,6 @@ void Kayttoliittyma::piirraLauta(vector<Siirto> &lista)
 
 	wcout << "\n    a b c d e f g h\n\n";
 }
-
 
 /*
 	Aliohjelma tarkistaa että käyttäjän antama syöte siirroksi on 
@@ -513,7 +510,6 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(vector<Siirto>& lista, int size)
 	Siirto siirto(alkuruutu, loppuruutu, false);
 	return siirto;
 }
-
 
 int Kayttoliittyma::kysyVastustajanVari()
 {
