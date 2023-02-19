@@ -1123,7 +1123,7 @@ bool Asema::onkoRuutuUhattu(Ruutu* kuninkaanRuutu, Asema* uusiAsema, int vastust
 	return ruutuUhattu;
 }
 
-void Asema::huolehdiKuninkaanShakeista(std::vector<Siirto>& lista, int vari) // Tarvitaanko lista.size() parametrina???
+void Asema::huolehdiKuninkaanShakeista(std::vector<Siirto>& lista, int vari)
 { 
 	Ruutu kuninkaanRuutu = getKuninkaanRuutu(vari);
 
@@ -1138,7 +1138,7 @@ void Asema::huolehdiKuninkaanShakeista(std::vector<Siirto>& lista, int vari) // 
 	for (auto& siirto : lista)
 	{
 		uusiAsema = *this;
-		uusiAsema.paivitaAsema(&siirto); // * dereferoi iteraattorin takaa olion ja & hakee muistipaikan
+		uusiAsema.paivitaAsema(&siirto);
 
 		// Onko kuninkaan siirto?
 		if (siirto.onkoLyhytLinna())

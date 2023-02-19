@@ -209,7 +209,7 @@ void Ratsu::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 				if (aR - 2 < 0 || aS + 1 > 7)
 				{
 					// Jos menn‰‰n ylilaudan niin poistutaan loopista
-					continue;
+					break;
 				}
 
 				if (!(asema->_lauta[aR - 2][aS + 1] == NULL))
@@ -242,7 +242,7 @@ void Ratsu::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 				if (aS + 2 > 7 || aR - 1 < 0)
 				{
 					// Jos menn‰‰n ylilaudan niin poistutaan loopista
-					continue;
+					break;
 				}
 			
 				if (!(asema->_lauta[aR - 1][aS + 2] == NULL))
@@ -275,7 +275,7 @@ void Ratsu::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 				if (aS + 2 > 7 || aR + 1 > 7)
 				{
 					// Jos menn‰‰n ylilaudan niin poistutaan loopista
-					continue;
+					break;
 				}
 
 				if (!(asema->_lauta[aR + 1][aS + 2] == NULL))
@@ -308,7 +308,7 @@ void Ratsu::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 				if (aR + 2 > 7 || aS + 1 > 7)
 				{
 					// Jos menn‰‰n ylilaudan niin poistutaan loopista
-					continue;
+					break;
 				}
 			
 				if (!(asema->_lauta[aR + 2][aS + 1] == NULL))
@@ -341,7 +341,7 @@ void Ratsu::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 				if (aR + 2 > 7 || aS - 1 < 0)
 				{
 					// Jos menn‰‰n ylilaudan niin poistutaan loopista
-					continue;
+					break;
 				}
 			
 				if (!(asema->_lauta[aR + 2][aS - 1] == NULL))
@@ -374,7 +374,7 @@ void Ratsu::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 				if (aS - 2 < 0 || aR + 1 > 7)
 				{
 					// Jos menn‰‰n ylilaudan niin poistutaan loopista
-					continue;
+					break;
 				}
 			
 				if (!(asema->_lauta[aR + 1][aS - 2] == NULL))
@@ -407,7 +407,7 @@ void Ratsu::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 				if (aS - 2 < 0 || aR - 1 < 0)
 				{
 					// Jos menn‰‰n ylilaudan niin poistutaan loopista
-					continue;
+					break;
 				}
 			
 				if (!(asema->_lauta[aR - 1][aS - 2] == NULL))
@@ -440,7 +440,7 @@ void Ratsu::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 				if (aR - 2 < 0 || aS - 1 < 0)
 				{
 					// Jos menn‰‰n ylilaudan niin poistutaan loopista
-					continue;
+					break;
 				}
 			
 				if (!(asema->_lauta[aR - 2][aS - 1] == NULL))
@@ -679,7 +679,7 @@ void Kuningas::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asem
 					if (aR - 1 < 0 || aS + j < 0 || aS + j > 7)
 					{
 						// Jos menn‰‰n ylilaudan niin poistutaan loopista
-						continue;
+						break;
 					}
 				
 					if (asema->_lauta[aR - 1][aS + j] != NULL)
@@ -749,7 +749,7 @@ void Kuningas::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asem
 					if (aR + 1 > 7 || aS + j < 0 || aS + j > 7)
 					{
 						// Jos menn‰‰n ylilaudan niin poistutaan loopista
-						continue;
+						break;
 					}
 
 					if (asema->_lauta[aR + 1][aS + j] != NULL)
@@ -836,7 +836,7 @@ void Sotilas::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema
 					if (aR - 1 < 0)
 					{
 						// Jos menn‰‰n ylilaudan niin ei tehd‰ mit‰‰n
-						continue;
+						break;
 					}
 					else
 					{
@@ -868,7 +868,7 @@ void Sotilas::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema
 					if (aR - 1 < 0 || aS + 1 > 7)
 					{
 						// Jos menn‰‰n ylilaudan niin poistutaan loopista
-						continue;
+						break;
 					}
 					else
 					{
@@ -908,7 +908,7 @@ void Sotilas::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema
 					if (aR - 1 < 0 || aS - 1 < 0)
 					{
 						// Jos menn‰‰n ylilaudan niin poistutaan loopista
-						continue;
+						break;
 					}
 					else
 					{
@@ -1003,7 +1003,7 @@ void Sotilas::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema
 					if (aR + 1 > 7)
 					{
 						// Jos menn‰‰n ylilaudan niin ei tehd‰ mit‰‰n
-						continue;
+						break;
 					}
 					else
 					{
@@ -1035,7 +1035,7 @@ void Sotilas::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema
 					if (aR + 1 > 7 || aS + 1 > 7)
 					{
 						// Jos menn‰‰n ylilaudan niin poistutaan loopista
-						continue;
+						break;
 					}
 					else
 					{
@@ -1075,7 +1075,7 @@ void Sotilas::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema
 					if (aR + 1 > 7 || aS - 1 < 0)
 					{
 						// Jos menn‰‰n ylilaudan niin poistutaan loopista
-						continue;
+						break;
 					}
 					else
 					{
