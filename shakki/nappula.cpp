@@ -18,7 +18,7 @@ void Torni::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 	int aS = ruutu->getSarake();
 	int aR = ruutu->getRivi();
 
-	for(int i = 0; i < 4; i++)
+	for(int i = 0; i < 4; ++i)
 	{
 		// for looppi 1-4, koska tornilla on neljä vapausastetta
 		switch (i)
@@ -26,7 +26,7 @@ void Torni::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 			// Switchi, jolla käydään kaikki vapausasteet erikseen
 		case 0:
 			// Ylöspäin
-			for (int j = 1; j < 8; j++)
+			for (int j = 1; j < 8; ++j)
 			{
 				// for looppi alkaa 1:stä, koska ei oteta samaa ruutua huomioon missä jo ollaan
 				// for looppi 1-8, koska laudassa on maksimissaan 8 ruutua
@@ -68,7 +68,7 @@ void Torni::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 
 		case 1:
 			// Oikealle
-			for (int j = 1; j < 8; j++)
+			for (int j = 1; j < 8; ++j)
 			{
 				if (aS + j > 7)
 				{
@@ -107,7 +107,7 @@ void Torni::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 
 		case 2:
 			// Alaspäin
-			for (int j = 1; j < 8; j++)
+			for (int j = 1; j < 8; ++j)
 			{
 				// for looppi alkaa 1:stä, koska ei oteta samaa ruutua huomioon missä jo ollaan
 				// for looppi 1-8, koska laudassa on maksimissaan 8 ruutua
@@ -149,7 +149,7 @@ void Torni::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 
 		case 3:
 			// Vasemmalle
-			for (int j = 1; j < 8; j++)
+			for (int j = 1; j < 8; ++j)
 			{
 				if (aS - j < 0)
 				{
@@ -198,7 +198,7 @@ void Ratsu::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 	int aS = ruutu->getSarake();
 	int aR = ruutu->getRivi();
 
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 8; ++i)
 	{
 		// for looppi 1-8, koska ratsulla on 8 vapausastetta
 		switch (i)
@@ -481,7 +481,7 @@ void Lahetti::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema
 	int aS = ruutu->getSarake();
 	int aR = ruutu->getRivi();
 
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 4; ++i)
 	{
 		// for looppi 1-4, koska tornilla on neljä vapausastetta
 		switch (i)
@@ -489,7 +489,7 @@ void Lahetti::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema
 			// Switchi, jolla käydään kaikki vapausasteet erikseen
 		case 0:
 			// Oikea ylös
-			for (int j = 1; j < 8; j++)
+			for (int j = 1; j < 8; ++j)
 			{
 				// for looppi alkaa 1:stä, koska ei oteta samaa ruutua huomioon missä jo ollaan
 				// for looppi 1-8, koska laudassa on maksimissaan 8 ruutua
@@ -531,7 +531,7 @@ void Lahetti::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema
 
 		case 1:
 			// Oikea alas
-			for (int j = 1; j < 8; j++)
+			for (int j = 1; j < 8; ++j)
 			{
 				if (aR + j > 7 || aS + j > 7)
 				{
@@ -570,7 +570,7 @@ void Lahetti::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema
 
 		case 2:
 			// Vasen alas
-			for (int j = 1; j < 8; j++)
+			for (int j = 1; j < 8; ++j)
 			{
 				// for looppi alkaa 1:stä, koska ei oteta samaa ruutua huomioon missä jo ollaan
 				// for looppi 1-8, koska laudassa on maksimissaan 8 ruutua
@@ -612,7 +612,7 @@ void Lahetti::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema
 
 		case 3:
 			// Vasen ylös
-			for (int j = 1; j < 8; j++)
+			for (int j = 1; j < 8; ++j)
 			{
 				if (aR - j < 0 || aS - j < 0)
 				{
@@ -672,13 +672,13 @@ void Kuningas::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asem
 	int aS = ruutu->getSarake();
 	int aR = ruutu->getRivi();
 	
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 4; ++i)
 	{
 		switch (i)
 		{
 		case 0:
 			// Ylöspäin, sekä ylös viistoon
-			for (int j = -1; j < 2; j++)
+			for (int j = -1; j < 2; ++j)
 			{
 				if (aR - 1 < 0 || aS + j < 0 || aS + j > 7)
 				{
@@ -748,7 +748,7 @@ void Kuningas::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asem
 
 		case 2:
 			// Alaspäin ja alas viistoon
-			for (int j = -1; j < 2; j++)
+			for (int j = -1; j < 2; ++j)
 			{
 				if (aR + 1 > 7 || aS + j < 0 || aS + j > 7)
 				{
@@ -831,7 +831,7 @@ void Sotilas::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema
     
 	if (vari == 0) // Valkoisen siirrot
 	{
-		for (int i = 0; i < 6; i++)
+		for (int i = 0; i < 6; ++i)
 		{
 			switch (i)
 			{
@@ -998,7 +998,7 @@ void Sotilas::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema
 	}
 	else // Mustan siirrot
 	{
-		for (int i = 0; i < 6; i++)
+		for (int i = 0; i < 6; ++i)
 		{
 			switch (i)
 			{
