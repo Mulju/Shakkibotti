@@ -402,18 +402,18 @@ void Asema::paivitaAsema(Siirto *siirto)
 		_lauta[loppurivi][loppusarake] = nappula;
 		
 		// Tarkistetaan, onko ohestalyönti. Ohestalyönti on tyhjään ruutuun. Vieressä oleva (sotilas) poistetaan.
-		if (nappula == ms && alkurivi == 4 && loppusarake == kaksoisaskelSarakkeella)
+		if (nappula->getKoodi() == MS && alkurivi == 4 && loppusarake == kaksoisaskelSarakkeella)
 		{
 			_lauta[loppurivi - 1][loppusarake] = NULL;
 		}
-		if (nappula == vs && alkurivi == 3 && loppusarake == kaksoisaskelSarakkeella)
+		if (nappula->getKoodi() == VS && alkurivi == 3 && loppusarake == kaksoisaskelSarakkeella)
 		{
 			_lauta[loppurivi + 1][loppusarake] = NULL;
 		}
 		
 		// Tarkistetaan oliko sotilaan kaksoisaskel
 		// (asetetaan kaksoisaskel-lippu)
-		if (nappula == ms && loppurivi == 3 && alkurivi == 1)
+		if (nappula->getKoodi() == MS && loppurivi == 3 && alkurivi == 1)
 		{
 			kaksoisaskelSarakkeella = loppusarake;
 		}
@@ -431,7 +431,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 		
 		// Maikan ylempi kommentti on hämmentävä. Luullakseni tämä korottaa sotilaan oikein
 		if ((loppurivi == 7 || loppurivi == 0) &&
-			(nappula == ms || nappula == vs))
+			(nappula->getKoodi() == MS || nappula->getKoodi() == VS))
 		{
 			// Siirron loppuruutu on laudan pääty, sekä nappula on sotilas. Siirrolla on korotus arvo
 			// Asetetaan nappula osoitin osoittamaan korotusarvon omaiseen nappulaan
@@ -445,27 +445,26 @@ void Asema::paivitaAsema(Siirto *siirto)
 		_lauta[alkurivi][alkusarake] = NULL;
 
 		// katsotaan jos liikkunut nappula on kuningas niin muutetaan onkoKuningasLiikkunut arvo (molemmille väreille)
-		if (nappula == mk) {
+		if (nappula->getKoodi() == MK) {
 			_onkoMustaKuningasLiikkunut = true;
 		}
-		if (nappula == vk) {
+		if (nappula->getKoodi() == VK) {
 			_onkoValkeaKuningasLiikkunut = true;
 		}
 
 		// katsotaan jos liikkunut nappula on torni niin muutetaan onkoTorniLiikkunut arvo (molemmille väreille ja molemmille torneille)
-		if (nappula == vt && _lauta[7][0]) {
+		if (nappula->getKoodi() == VT && _lauta[7][0]) {
 			_onkoValkeaDTliikkunut = true;
 		}
-		if (nappula == vt && _lauta[7][7]) {
+		if (nappula->getKoodi() == VT && _lauta[7][7]) {
 			_onkoValkeaKTliikkunut = true;
 		}
-		if (nappula == mt && _lauta[0][7]) {
+		if (nappula->getKoodi() == MT && _lauta[0][7]) {
 			_onkoMustaDTliikkunut = true;
 		}
-		if (nappula == mt && _lauta[0][0]) {
+		if (nappula->getKoodi() == MT && _lauta[0][0]) {
 			_onkoMustaKTliikkunut = true;
 		}
-
 	}
 
 	//Tarkistetaan, onko daamit laudalla ja lasketaan upseerit (keski- ja loppupeliä varten)
@@ -478,21 +477,24 @@ void Asema::paivitaAsema(Siirto *siirto)
 	{
 		for (int j = 0; j < 8; ++j) 
 		{
-			if (_lauta[i][j] == vd) 
+			if (_lauta[i][j] != NULL)
 			{
-				_onkoValkeaDLaudalla = true;
-			}
-			if (_lauta[i][j] == md)
-			{
-				_onkoMustaDLaudalla = true;
-			}
-			if (_lauta[i][j] == vt || _lauta[i][j] == vr || _lauta[i][j] == vl || _lauta[i][j] == vk || _lauta[i][j] == vd) 
-			{
-				_valkoisetUpseerit++;
-			}
-			if (_lauta[i][j] == mt || _lauta[i][j] == mr || _lauta[i][j] == ml || _lauta[i][j] == mk || _lauta[i][j] == md)
-			{
-				_mustatUpseerit++;
+				if (_lauta[i][j]->getKoodi() == VD)
+				{
+					_onkoValkeaDLaudalla = true;
+				}
+				if (_lauta[i][j]->getKoodi() == MD)
+				{
+					_onkoMustaDLaudalla = true;
+				}
+				if (_lauta[i][j]->getKoodi() == VT || _lauta[i][j]->getKoodi() == VR|| _lauta[i][j]->getKoodi() == VL || _lauta[i][j]->getKoodi() == VK || _lauta[i][j]->getKoodi() == VD)
+				{
+					_valkoisetUpseerit++;
+				}
+				if (_lauta[i][j]->getKoodi() == MT || _lauta[i][j]->getKoodi() == MR || _lauta[i][j]->getKoodi() == ML || _lauta[i][j]->getKoodi() == MK || _lauta[i][j]->getKoodi() == MD)
+				{
+					_mustatUpseerit++;
+				}
 			}
 		}
 	}
@@ -567,7 +569,7 @@ Ruutu Asema::getKuninkaanRuutu(int vari)
 			// Valkoinen kuningas
 			if (vari == 0)
 			{
-				if (_lauta[i][j] == vk)
+				if (_lauta[i][j] != NULL && _lauta[i][j]->getKoodi() == VK)
 				{
 					kuninkaanRuutu.setRivi(i);
 					kuninkaanRuutu.setSarake(j);
@@ -576,7 +578,7 @@ Ruutu Asema::getKuninkaanRuutu(int vari)
 			}
 			else // Musta kuningas
 			{
-				if (_lauta[i][j] == mk)
+				if (_lauta[i][j] != NULL && _lauta[i][j]->getKoodi() == MK)
 				{
 					kuninkaanRuutu.setRivi(i);
 					kuninkaanRuutu.setSarake(j);
@@ -1071,22 +1073,28 @@ bool Asema::onkoRuutuUhattu(Ruutu* kuninkaanRuutu, Asema* uusiAsema, int vastust
 			// Siirrot valkoisille nappuloille
 			if (vastustajanVari == 0)
 			{
-				if (uusiAsema->_lauta[i][j] == vs || uusiAsema->_lauta[i][j] == vt || uusiAsema->_lauta[i][j] == vr 
-					|| uusiAsema->_lauta[i][j] == vl || uusiAsema->_lauta[i][j] == vd || uusiAsema->_lauta[i][j] == vk)
+				if (uusiAsema->_lauta[i][j] != NULL)
 				{
-					ruutu.setRivi(i);
-					ruutu.setSarake(j);
-					uusiAsema->_lauta[i][j]->annaSiirrot(vastustajanSiirtolista, &ruutu, uusiAsema, vastustajanVari);
+					if (uusiAsema->_lauta[i][j]->getKoodi() == VS || uusiAsema->_lauta[i][j]->getKoodi() == VT || uusiAsema->_lauta[i][j]->getKoodi() == VR
+						|| uusiAsema->_lauta[i][j]->getKoodi() == VL || uusiAsema->_lauta[i][j]->getKoodi() == VD || uusiAsema->_lauta[i][j]->getKoodi() == VK)
+					{
+						ruutu.setRivi(i);
+						ruutu.setSarake(j);
+						uusiAsema->_lauta[i][j]->annaSiirrot(vastustajanSiirtolista, &ruutu, uusiAsema, vastustajanVari);
+					}
 				}
 			}
 			else // Siirrot mustille nappuloille
 			{
-				if (uusiAsema->_lauta[i][j] == ms || uusiAsema->_lauta[i][j] == mt || uusiAsema->_lauta[i][j] == mr
-					|| uusiAsema->_lauta[i][j] == ml || uusiAsema->_lauta[i][j] == md || uusiAsema->_lauta[i][j] == mk)
+				if (uusiAsema->_lauta[i][j] != NULL)
 				{
-					ruutu.setRivi(i);
-					ruutu.setSarake(j);
-					uusiAsema->_lauta[i][j]->annaSiirrot(vastustajanSiirtolista, &ruutu, uusiAsema, vastustajanVari);
+					if (uusiAsema->_lauta[i][j]->getKoodi() == MS || uusiAsema->_lauta[i][j]->getKoodi() == MT || uusiAsema->_lauta[i][j]->getKoodi() == MR
+						|| uusiAsema->_lauta[i][j]->getKoodi() == ML || uusiAsema->_lauta[i][j]->getKoodi() == MD || uusiAsema->_lauta[i][j]->getKoodi() == MK)
+					{
+						ruutu.setRivi(i);
+						ruutu.setSarake(j);
+						uusiAsema->_lauta[i][j]->annaSiirrot(vastustajanSiirtolista, &ruutu, uusiAsema, vastustajanVari);
+					}
 				}
 			}
 		}
@@ -1149,7 +1157,7 @@ void Asema::huolehdiKuninkaanShakeista(std::vector<Siirto>& lista, int vari) // 
 		{
 			// Voi optimoida laittamalla funktiokutsut muuttujiin
 			siirtyvaNappula = (*this)._lauta[siirto.getAlkuruutu().getRivi()][siirto.getAlkuruutu().getSarake()];
-			if (siirtyvaNappula == vk || siirtyvaNappula == mk)
+			if (siirtyvaNappula->getKoodi() == VK || siirtyvaNappula->getKoodi() == MK)
 			{
 				ruutu.setSarake(siirto.getLoppuruutu().getSarake());
 				ruutu.setRivi(siirto.getLoppuruutu().getRivi());
@@ -1184,20 +1192,27 @@ void Asema::annaLaillisetSiirrot(std::vector<Siirto>& lista)
 			// Siirrot valkoisille nappuloille
 			if (_siirtovuoro == 0)
 			{
-				if (_lauta[i][j] == vs || _lauta[i][j] == vt || _lauta[i][j] == vr || _lauta[i][j] == vl || _lauta[i][j] == vd || _lauta[i][j] == vk)
+				if (_lauta[i][j] != NULL)
 				{
-					ruutu.setRivi(i);
-					ruutu.setSarake(j);
-					_lauta[i][j]->annaSiirrot(lista, &ruutu, this, _siirtovuoro);
+					if (_lauta[i][j]->getKoodi() == VS || _lauta[i][j]->getKoodi() == VT || _lauta[i][j]->getKoodi() == VR || _lauta[i][j]->getKoodi() == VL || _lauta[i][j]->getKoodi() == VD || _lauta[i][j]->getKoodi() == VK)
+					{
+						ruutu.setRivi(i);
+						ruutu.setSarake(j);
+						_lauta[i][j]->annaSiirrot(lista, &ruutu, this, _siirtovuoro);
+					}
 				}
 			}
 			else // Siirrot mustille nappuloille
 			{
-				if (_lauta[i][j] == ms || _lauta[i][j] == mt || _lauta[i][j] == mr || _lauta[i][j] == ml || _lauta[i][j] == md || _lauta[i][j] == mk)
+				if (_lauta[i][j] != NULL)
 				{
-					ruutu.setRivi(i);
-					ruutu.setSarake(j);
-					_lauta[i][j]->annaSiirrot(lista, &ruutu, this, _siirtovuoro);
+					if (_lauta[i][j]->getKoodi() == MS || _lauta[i][j]->getKoodi() == MT || _lauta[i][j]->getKoodi() == MR || _lauta[i][j]->getKoodi() == ML || _lauta[i][j]->getKoodi() == MD || _lauta[i][j]->getKoodi() == MK)
+					{
+						ruutu.setRivi(i);
+						ruutu.setSarake(j);
+						_lauta[i][j]->annaSiirrot(lista, &ruutu, this, _siirtovuoro);
+					}
+
 				}
 			}
 		}
