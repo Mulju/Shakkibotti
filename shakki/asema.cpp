@@ -274,7 +274,6 @@ const int loppupelikuningasM[64] = {
 	-74, -35, -18, -18, -11,  15,   4, -17,
 };
 
-
 Nappula* Asema::vk = new Kuningas(L"\u2654", 0, VK);
 Nappula* Asema::vd = new Daami(L"\u2655", 0, VD);
 Nappula* Asema::vt = new Torni(L"\u2656", 0, VT);
@@ -292,9 +291,9 @@ Nappula* Asema::ms = new Sotilas(L"\u265F", 1, MS);
 Asema::Asema()
 {
 	// Ensin alustetaan kaikki laudan ruudut nappulla "NULL", koska muuten ruuduissa satunnaista tauhkaa
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 8; ++i)
 	{
-		for (int j = 0; j < 8; j++)
+		for (int j = 0; j < 8; ++j)
 		{
 			_lauta[i][j] = NULL;
 		}
@@ -403,18 +402,18 @@ void Asema::paivitaAsema(Siirto *siirto)
 		_lauta[loppurivi][loppusarake] = nappula;
 		
 		// Tarkistetaan, onko ohestalyˆnti. Ohestalyˆnti on tyhj‰‰n ruutuun. Vieress‰ oleva (sotilas) poistetaan.
-		if (nappula == ms && alkurivi == 4 && loppusarake == kaksoisaskelSarakkeella)
+		if (nappula->getKoodi() == MS && alkurivi == 4 && loppusarake == kaksoisaskelSarakkeella)
 		{
 			_lauta[loppurivi - 1][loppusarake] = NULL;
 		}
-		if (nappula == vs && alkurivi == 3 && loppusarake == kaksoisaskelSarakkeella)
+		if (nappula->getKoodi() == VS && alkurivi == 3 && loppusarake == kaksoisaskelSarakkeella)
 		{
 			_lauta[loppurivi + 1][loppusarake] = NULL;
 		}
 		
 		// Tarkistetaan oliko sotilaan kaksoisaskel
 		// (asetetaan kaksoisaskel-lippu)
-		if (nappula == ms && loppurivi == 3 && alkurivi == 1)
+		if (nappula->getKoodi() == MS && loppurivi == 3 && alkurivi == 1)
 		{
 			kaksoisaskelSarakkeella = loppusarake;
 		}
@@ -432,7 +431,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 		
 		// Maikan ylempi kommentti on h‰mment‰v‰. Luullakseni t‰m‰ korottaa sotilaan oikein
 		if ((loppurivi == 7 || loppurivi == 0) &&
-			(nappula == ms || nappula == vs))
+			(nappula->getKoodi() == MS || nappula->getKoodi() == VS))
 		{
 			// Siirron loppuruutu on laudan p‰‰ty, sek‰ nappula on sotilas. Siirrolla on korotus arvo
 			// Asetetaan nappula osoitin osoittamaan korotusarvon omaiseen nappulaan
@@ -446,27 +445,26 @@ void Asema::paivitaAsema(Siirto *siirto)
 		_lauta[alkurivi][alkusarake] = NULL;
 
 		// katsotaan jos liikkunut nappula on kuningas niin muutetaan onkoKuningasLiikkunut arvo (molemmille v‰reille)
-		if (nappula == mk) {
+		if (nappula->getKoodi() == MK) {
 			_onkoMustaKuningasLiikkunut = true;
 		}
-		if (nappula == vk) {
+		if (nappula->getKoodi() == VK) {
 			_onkoValkeaKuningasLiikkunut = true;
 		}
 
 		// katsotaan jos liikkunut nappula on torni niin muutetaan onkoTorniLiikkunut arvo (molemmille v‰reille ja molemmille torneille)
-		if (nappula == vt && _lauta[7][0]) {
+		if (nappula->getKoodi() == VT && _lauta[7][0]) {
 			_onkoValkeaDTliikkunut = true;
 		}
-		if (nappula == vt && _lauta[7][7]) {
+		if (nappula->getKoodi() == VT && _lauta[7][7]) {
 			_onkoValkeaKTliikkunut = true;
 		}
-		if (nappula == mt && _lauta[0][7]) {
+		if (nappula->getKoodi() == MT && _lauta[0][7]) {
 			_onkoMustaDTliikkunut = true;
 		}
-		if (nappula == mt && _lauta[0][0]) {
+		if (nappula->getKoodi() == MT && _lauta[0][0]) {
 			_onkoMustaKTliikkunut = true;
 		}
-
 	}
 
 	//Tarkistetaan, onko daamit laudalla ja lasketaan upseerit (keski- ja loppupeli‰ varten)
@@ -475,25 +473,28 @@ void Asema::paivitaAsema(Siirto *siirto)
 	_valkoisetUpseerit = 0;
 	_mustatUpseerit = 0;
 
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 8; ++i)
 	{
-		for (int j = 0; j < 8; j++) 
+		for (int j = 0; j < 8; ++j) 
 		{
-			if (_lauta[i][j] == vd) 
+			if (_lauta[i][j] != NULL)
 			{
-				_onkoValkeaDLaudalla = true;
-			}
-			if (_lauta[i][j] == md)
-			{
-				_onkoMustaDLaudalla = true;
-			}
-			if (_lauta[i][j] == vt || _lauta[i][j] == vr || _lauta[i][j] == vl || _lauta[i][j] == vk || _lauta[i][j] == vd) 
-			{
-				_valkoisetUpseerit++;
-			}
-			if (_lauta[i][j] == mt || _lauta[i][j] == mr || _lauta[i][j] == ml || _lauta[i][j] == mk || _lauta[i][j] == md)
-			{
-				_mustatUpseerit++;
+				if (_lauta[i][j]->getKoodi() == VD)
+				{
+					_onkoValkeaDLaudalla = true;
+				}
+				if (_lauta[i][j]->getKoodi() == MD)
+				{
+					_onkoMustaDLaudalla = true;
+				}
+				if (_lauta[i][j]->getKoodi() == VT || _lauta[i][j]->getKoodi() == VR|| _lauta[i][j]->getKoodi() == VL || _lauta[i][j]->getKoodi() == VK || _lauta[i][j]->getKoodi() == VD)
+				{
+					_valkoisetUpseerit++;
+				}
+				if (_lauta[i][j]->getKoodi() == MT || _lauta[i][j]->getKoodi() == MR || _lauta[i][j]->getKoodi() == ML || _lauta[i][j]->getKoodi() == MK || _lauta[i][j]->getKoodi() == MD)
+				{
+					_mustatUpseerit++;
+				}
 			}
 		}
 	}
@@ -520,42 +521,35 @@ int Asema::getVastustajanSiirtovuoro()
 	}
 }
 
-
 void Asema::setSiirtovuoro(int vuoro) 
 {
 	_siirtovuoro = vuoro;
 }
-
 
 bool Asema::getOnkoValkeaKuningasLiikkunut() 
 {
 	return _onkoValkeaKuningasLiikkunut;
 }
 
-
 bool Asema::getOnkoMustaKuningasLiikkunut() 
 {
 	return _onkoMustaKuningasLiikkunut;
 }
-
 
 bool Asema::getOnkoValkeaDTliikkunut() 
 {
 	return _onkoValkeaDTliikkunut;
 }
 
-
 bool Asema::getOnkoValkeaKTliikkunut() 
 {
 	return _onkoValkeaKTliikkunut;
 }
 
-
 bool Asema::getOnkoMustaDTliikkunut() 
 {
 	return _onkoMustaDTliikkunut;
 }
-
 
 bool Asema::getOnkoMustaKTliikkunut() 
 {
@@ -567,14 +561,14 @@ Ruutu Asema::getKuninkaanRuutu(int vari)
 	Ruutu kuninkaanRuutu;
 
 	// Haetaan kuninkaan sijainti
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 8; ++i)
 	{
-		for (int j = 0; j < 8; j++)
+		for (int j = 0; j < 8; ++j)
 		{
 			// Valkoinen kuningas
 			if (vari == 0)
 			{
-				if (_lauta[i][j] == vk)
+				if (_lauta[i][j] != NULL && _lauta[i][j]->getKoodi() == VK)
 				{
 					kuninkaanRuutu.setRivi(i);
 					kuninkaanRuutu.setSarake(j);
@@ -583,7 +577,7 @@ Ruutu Asema::getKuninkaanRuutu(int vari)
 			}
 			else // Musta kuningas
 			{
-				if (_lauta[i][j] == mk)
+				if (_lauta[i][j] != NULL && _lauta[i][j]->getKoodi() == MK)
 				{
 					kuninkaanRuutu.setRivi(i);
 					kuninkaanRuutu.setSarake(j);
@@ -629,14 +623,13 @@ double Asema::evaluoi()
 	return laudanArvo;
 }
 
-
 double Asema::laskeNappuloidenArvo(int vari) 
 {
 	double nappuloidenArvo = 0;
 
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 8; ++i)
 	{
-		for (int j = 0; j < 8; j++)
+		for (int j = 0; j < 8; ++j)
 		{
 			// Loopataan koko lauta
 			if (_lauta[i][j] != nullptr)
@@ -702,10 +695,8 @@ double Asema::laskeNappuloidenArvo(int vari)
 	return nappuloidenArvo;
 }
 
-
 bool Asema::onkoKeskiVaiLoppupeli(int vari) 
 {
-
 	bool keskipeli = true;
 
 	if (vari == 0) 
@@ -751,53 +742,59 @@ double Asema::nappuloitaKeskella(int vari)
 	{
 		if (onkoKeskiVaiLoppupeli(vari))
 		{
-			for (int i = 0; i < 64; i++) {
+			for (int i = 0; i < 64; ++i) {
 				ruutu = floor((float)i / 8), sarake = i % 8;
 				nappula = this->_lauta[ruutu][sarake];
 
-				if (nappula == vs) {
-					summa += keskipelisotilasV[i];
-				}
-				else if (nappula == vr) {
-					summa += keskipeliratsuV[i];
-				}
-				else if (nappula == vl) {
-					summa += keskipelilahettiV[i];
-				}
-				else if (nappula == vt) {
-					summa += keskipelitorniV[i];
-				}
-				else if (nappula == vk) {
-					summa += keskipelikuningasV[i];
-				}
-				else if (nappula == vd) {
-					summa += keskipelidaamiV[i];
+				if (nappula != nullptr)
+				{
+					if (nappula->getKoodi() == VS) {
+						summa += keskipelisotilasV[i];
+					}
+					else if (nappula->getKoodi() == VR) {
+						summa += keskipeliratsuV[i];
+					}
+					else if (nappula->getKoodi() == VL) {
+						summa += keskipelilahettiV[i];
+					}
+					else if (nappula->getKoodi() == VT) {
+						summa += keskipelitorniV[i];
+					}
+					else if (nappula->getKoodi() == VK) {
+						summa += keskipelikuningasV[i];
+					}
+					else if (nappula->getKoodi() == VD) {
+						summa += keskipelidaamiV[i];
+					}
 				}
 			}
 		}
 		else 
 		{
-			for (int i = 0; i < 64; i++) {
+			for (int i = 0; i < 64; ++i) {
 				ruutu = floor((float)i / 8), sarake = i % 8;
 				nappula = this->_lauta[ruutu][sarake];
 
-				if (nappula == vs) {
-					summa += loppupelisotilasV[i];
-				}
-				else if (nappula == vr) {
-					summa += loppupeliratsuV[i];
-				}
-				else if (nappula == vl) {
-					summa += loppupelilahettiV[i];
-				}
-				else if (nappula == vt) {
-					summa += loppupelitorniV[i];
-				}
-				else if (nappula == vk) {
-					summa += loppupelikuningasV[i];
-				}
-				else if (nappula == vd) {
-					summa += loppupelidaamiV[i];
+				if (nappula != nullptr)
+				{
+					if (nappula->getKoodi() == VS) {
+						summa += loppupelisotilasV[i];
+					}
+					else if (nappula->getKoodi() == VR) {
+						summa += loppupeliratsuV[i];
+					}
+					else if (nappula->getKoodi() == VL) {
+						summa += loppupelilahettiV[i];
+					}
+					else if (nappula->getKoodi() == VT) {
+						summa += loppupelitorniV[i];
+					}
+					else if (nappula->getKoodi() == VK) {
+						summa += loppupelikuningasV[i];
+					}
+					else if (nappula->getKoodi() == VD) {
+						summa += loppupelidaamiV[i];
+					}
 				}
 			}
 		}
@@ -806,53 +803,59 @@ double Asema::nappuloitaKeskella(int vari)
 	{
 		if (onkoKeskiVaiLoppupeli(vari))
 		{
-			for (int i = 0; i < 64; i++) {
+			for (int i = 0; i < 64; ++i) {
 				ruutu = floor((float)i / 8), sarake = i % 8;
 				nappula = this->_lauta[ruutu][sarake];
 
-				if (nappula == ms) {
-					summa += -1 * keskipelisotilasM[i];
-				}
-				else if (nappula == mr) {
-					summa += -1 * keskipeliratsuM[i];
-				}
-				else if (nappula == ml) {
-					summa += -1 * keskipelilahettiM[i];
-				}
-				else if (nappula == mt) {
-					summa += -1 * keskipelitorniM[i];
-				}
-				else if (nappula == mk) {
-					summa += -1 * keskipelikuningasM[i];
-				}
-				else if (nappula == md) {
-					summa += -1 * keskipelidaamiM[i];
+				if (nappula != nullptr)
+				{
+					if (nappula->getKoodi() == MS) {
+						summa += -1 * keskipelisotilasM[i];
+					}
+					else if (nappula->getKoodi() == MR) {
+						summa += -1 * keskipeliratsuM[i];
+					}
+					else if (nappula->getKoodi() == ML) {
+						summa += -1 * keskipelilahettiM[i];
+					}
+					else if (nappula->getKoodi() == MT) {
+						summa += -1 * keskipelitorniM[i];
+					}
+					else if (nappula->getKoodi() == MK) {
+						summa += -1 * keskipelikuningasM[i];
+					}
+					else if (nappula->getKoodi() == MD) {
+						summa += -1 * keskipelidaamiM[i];
+					}
 				}
 			}
 		}
 		else 
 		{
-			for (int i = 0; i < 64; i++) {
+			for (int i = 0; i < 64; ++i) {
 				ruutu = floor((float)i / 8), sarake = i % 8;
 				nappula = this->_lauta[ruutu][sarake];
 
-				if (nappula == ms) {
-					summa += -1 * loppupelisotilasM[i];
-				}
-				else if (nappula == mr) {
-					summa += -1 * loppupeliratsuM[i];
-				}
-				else if (nappula == ml) {
-					summa += -1 * loppupelilahettiM[i];
-				}
-				else if (nappula == mt) {
-					summa += -1 * loppupelitorniM[i];
-				}
-				else if (nappula == mk) {
-					summa += -1 * loppupelikuningasM[i];
-				}
-				else if (nappula == md) {
-					summa += -1 * loppupelidaamiM[i];
+				if (nappula != nullptr)
+				{
+					if (nappula->getKoodi() == MS) {
+						summa += -1 * loppupelisotilasM[i];
+					}
+					else if (nappula->getKoodi() == MR) {
+						summa += -1 * loppupeliratsuM[i];
+					}
+					else if (nappula->getKoodi() == ML) {
+						summa += -1 * loppupelilahettiM[i];
+					}
+					else if (nappula->getKoodi() == MT) {
+						summa += -1 * loppupelitorniM[i];
+					}
+					else if (nappula->getKoodi() == MK) {
+						summa += -1 * loppupelikuningasM[i];
+					}
+					else if (nappula->getKoodi() == MD) {
+						summa += -1 * loppupelidaamiM[i];
+					}
 				}
 			}
 		}
@@ -879,7 +882,6 @@ double Asema::nappuloitaKeskella(int vari)
 	
 }
 
-
 double Asema::linjat(int vari) 
 {
 	return 0;
@@ -889,7 +891,6 @@ double Asema::linjat(int vari)
 	//mustat
 	
 }
-
 
 MinMaxPaluu Asema::minimax(int syvyys)
 {
@@ -906,7 +907,6 @@ MinMaxPaluu Asema::minimax(int syvyys)
 	
 	return paluuarvo;
 }
-
 
 MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys) 
 {
@@ -1076,29 +1076,35 @@ bool Asema::onkoRuutuUhattu(Ruutu* kuninkaanRuutu, Asema* uusiAsema, int vastust
 	vastustajanSiirtolista.reserve(200);
 	Ruutu ruutu;
 	
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 8; ++i)
 	{
-		for (int j = 0; j < 8; j++)
+		for (int j = 0; j < 8; ++j)
 		{
 			// Siirrot valkoisille nappuloille
 			if (vastustajanVari == 0)
 			{
-				if (uusiAsema->_lauta[i][j] == vs || uusiAsema->_lauta[i][j] == vt || uusiAsema->_lauta[i][j] == vr 
-					|| uusiAsema->_lauta[i][j] == vl || uusiAsema->_lauta[i][j] == vd || uusiAsema->_lauta[i][j] == vk)
+				if (uusiAsema->_lauta[i][j] != NULL)
 				{
-					ruutu.setRivi(i);
-					ruutu.setSarake(j);
-					uusiAsema->_lauta[i][j]->annaSiirrot(vastustajanSiirtolista, &ruutu, uusiAsema, vastustajanVari);
+					if (uusiAsema->_lauta[i][j]->getKoodi() == VS || uusiAsema->_lauta[i][j]->getKoodi() == VT || uusiAsema->_lauta[i][j]->getKoodi() == VR
+						|| uusiAsema->_lauta[i][j]->getKoodi() == VL || uusiAsema->_lauta[i][j]->getKoodi() == VD || uusiAsema->_lauta[i][j]->getKoodi() == VK)
+					{
+						ruutu.setRivi(i);
+						ruutu.setSarake(j);
+						uusiAsema->_lauta[i][j]->annaSiirrot(vastustajanSiirtolista, &ruutu, uusiAsema, vastustajanVari);
+					}
 				}
 			}
 			else // Siirrot mustille nappuloille
 			{
-				if (uusiAsema->_lauta[i][j] == ms || uusiAsema->_lauta[i][j] == mt || uusiAsema->_lauta[i][j] == mr
-					|| uusiAsema->_lauta[i][j] == ml || uusiAsema->_lauta[i][j] == md || uusiAsema->_lauta[i][j] == mk)
+				if (uusiAsema->_lauta[i][j] != NULL)
 				{
-					ruutu.setRivi(i);
-					ruutu.setSarake(j);
-					uusiAsema->_lauta[i][j]->annaSiirrot(vastustajanSiirtolista, &ruutu, uusiAsema, vastustajanVari);
+					if (uusiAsema->_lauta[i][j]->getKoodi() == MS || uusiAsema->_lauta[i][j]->getKoodi() == MT || uusiAsema->_lauta[i][j]->getKoodi() == MR
+						|| uusiAsema->_lauta[i][j]->getKoodi() == ML || uusiAsema->_lauta[i][j]->getKoodi() == MD || uusiAsema->_lauta[i][j]->getKoodi() == MK)
+					{
+						ruutu.setRivi(i);
+						ruutu.setSarake(j);
+						uusiAsema->_lauta[i][j]->annaSiirrot(vastustajanSiirtolista, &ruutu, uusiAsema, vastustajanVari);
+					}
 				}
 			}
 		}
@@ -1117,7 +1123,7 @@ bool Asema::onkoRuutuUhattu(Ruutu* kuninkaanRuutu, Asema* uusiAsema, int vastust
 	return ruutuUhattu;
 }
 
-void Asema::huolehdiKuninkaanShakeista(std::vector<Siirto>& lista, int vari) // Tarvitaanko lista.size() parametrina???
+void Asema::huolehdiKuninkaanShakeista(std::vector<Siirto>& lista, int vari)
 { 
 	Ruutu kuninkaanRuutu = getKuninkaanRuutu(vari);
 
@@ -1132,7 +1138,7 @@ void Asema::huolehdiKuninkaanShakeista(std::vector<Siirto>& lista, int vari) // 
 	for (auto& siirto : lista)
 	{
 		uusiAsema = *this;
-		uusiAsema.paivitaAsema(&siirto); // * dereferoi iteraattorin takaa olion ja & hakee muistipaikan
+		uusiAsema.paivitaAsema(&siirto);
 
 		// Onko kuninkaan siirto?
 		if (siirto.onkoLyhytLinna())
@@ -1161,7 +1167,7 @@ void Asema::huolehdiKuninkaanShakeista(std::vector<Siirto>& lista, int vari) // 
 		{
 			// Voi optimoida laittamalla funktiokutsut muuttujiin
 			siirtyvaNappula = (*this)._lauta[siirto.getAlkuruutu().getRivi()][siirto.getAlkuruutu().getSarake()];
-			if (siirtyvaNappula == vk || siirtyvaNappula == mk)
+			if (siirtyvaNappula->getKoodi() == VK || siirtyvaNappula->getKoodi() == MK)
 			{
 				ruutu.setSarake(siirto.getLoppuruutu().getSarake());
 				ruutu.setRivi(siirto.getLoppuruutu().getRivi());
@@ -1189,27 +1195,34 @@ void Asema::annaLaillisetSiirrot(std::vector<Siirto>& lista)
 {
 	Ruutu ruutu;
 	
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 8; ++i)
 	{
-		for (int j = 0; j < 8; j++)
+		for (int j = 0; j < 8; ++j)
 		{
 			// Siirrot valkoisille nappuloille
 			if (_siirtovuoro == 0)
 			{
-				if (_lauta[i][j] == vs || _lauta[i][j] == vt || _lauta[i][j] == vr || _lauta[i][j] == vl || _lauta[i][j] == vd || _lauta[i][j] == vk)
+				if (_lauta[i][j] != NULL)
 				{
-					ruutu.setRivi(i);
-					ruutu.setSarake(j);
-					_lauta[i][j]->annaSiirrot(lista, &ruutu, this, _siirtovuoro);
+					if (_lauta[i][j]->getKoodi() == VS || _lauta[i][j]->getKoodi() == VT || _lauta[i][j]->getKoodi() == VR || _lauta[i][j]->getKoodi() == VL || _lauta[i][j]->getKoodi() == VD || _lauta[i][j]->getKoodi() == VK)
+					{
+						ruutu.setRivi(i);
+						ruutu.setSarake(j);
+						_lauta[i][j]->annaSiirrot(lista, &ruutu, this, _siirtovuoro);
+					}
 				}
 			}
 			else // Siirrot mustille nappuloille
 			{
-				if (_lauta[i][j] == ms || _lauta[i][j] == mt || _lauta[i][j] == mr || _lauta[i][j] == ml || _lauta[i][j] == md || _lauta[i][j] == mk)
+				if (_lauta[i][j] != NULL)
 				{
-					ruutu.setRivi(i);
-					ruutu.setSarake(j);
-					_lauta[i][j]->annaSiirrot(lista, &ruutu, this, _siirtovuoro);
+					if (_lauta[i][j]->getKoodi() == MS || _lauta[i][j]->getKoodi() == MT || _lauta[i][j]->getKoodi() == MR || _lauta[i][j]->getKoodi() == ML || _lauta[i][j]->getKoodi() == MD || _lauta[i][j]->getKoodi() == MK)
+					{
+						ruutu.setRivi(i);
+						ruutu.setSarake(j);
+						_lauta[i][j]->annaSiirrot(lista, &ruutu, this, _siirtovuoro);
+					}
+
 				}
 			}
 		}
@@ -1220,71 +1233,71 @@ void Asema::annaLaillisetSiirrot(std::vector<Siirto>& lista)
 
 void Asema::annaLinnoitusSiirrot(std::vector<Siirto>& lista, int vari)
 {
-		Asema uusiAsema = *this;
+	Asema uusiAsema = *this;
 
-		//pitk‰n valkoisen linnotuksen lis‰‰minen lailliseksi siirroksi
-		if (vari == 0  
-			&& !getOnkoValkeaDTliikkunut() 
-			&& !getOnkoValkeaKuningasLiikkunut() 
-			&& !onkoRuutuUhattu(&Ruutu(2, 7), &uusiAsema , 1)
-			&& !onkoRuutuUhattu(&Ruutu(3, 7), &uusiAsema , 1)
-			&& !onkoRuutuUhattu(&Ruutu(4, 7), &uusiAsema, 1)
-			&& _lauta[7][1] == NULL 
-			&& _lauta [7][2] == NULL 
-			&& _lauta [7][3]== NULL)
-		{
-			Siirto uusiSiirto(false, true);
-			lista.push_back(uusiSiirto);
-		}
+	//pitk‰n valkoisen linnotuksen lis‰‰minen lailliseksi siirroksi
+	if (vari == 0  
+		&& !getOnkoValkeaDTliikkunut() 
+		&& !getOnkoValkeaKuningasLiikkunut() 
+		&& !onkoRuutuUhattu(&Ruutu(2, 7), &uusiAsema , 1)
+		&& !onkoRuutuUhattu(&Ruutu(3, 7), &uusiAsema , 1)
+		&& !onkoRuutuUhattu(&Ruutu(4, 7), &uusiAsema, 1)
+		&& _lauta[7][1] == NULL 
+		&& _lauta [7][2] == NULL 
+		&& _lauta [7][3]== NULL)
+	{
+		Siirto uusiSiirto(false, true);
+		lista.push_back(uusiSiirto);
+	}
 
-		//lyhyt valkoisen linnotuksen lis‰‰minen lailliseksi siirroksi
-		if (vari == 0 
-			&& !getOnkoValkeaKTliikkunut() 
-			&& !getOnkoValkeaKuningasLiikkunut() 
-			&& !onkoRuutuUhattu(&Ruutu(4, 7), &uusiAsema, 1)
-			&& !onkoRuutuUhattu(&Ruutu(5, 7), &uusiAsema, 1)
-			&& !onkoRuutuUhattu(&Ruutu(6, 7), &uusiAsema, 1)
-			&& _lauta[7][6] == NULL 
-			&& _lauta[7][5] == NULL)
-		{
-			//Debuggausta
-			bool valkeaKT = getOnkoValkeaKTliikkunut();
-			bool valkeaK = getOnkoValkeaKuningasLiikkunut();
-			bool ruutu47uhattu = onkoRuutuUhattu(&Ruutu(4, 7), &uusiAsema, 1);
-			bool ruutu57uhattu = onkoRuutuUhattu(&Ruutu(5, 7), &uusiAsema, 1);
-			bool ruutu67uhattu = onkoRuutuUhattu(&Ruutu(6, 7), &uusiAsema, 1);
+	//lyhyt valkoisen linnotuksen lis‰‰minen lailliseksi siirroksi
+	if (vari == 0 
+		&& !getOnkoValkeaKTliikkunut() 
+		&& !getOnkoValkeaKuningasLiikkunut() 
+		&& !onkoRuutuUhattu(&Ruutu(4, 7), &uusiAsema, 1)
+		&& !onkoRuutuUhattu(&Ruutu(5, 7), &uusiAsema, 1)
+		&& !onkoRuutuUhattu(&Ruutu(6, 7), &uusiAsema, 1)
+		&& _lauta[7][6] == NULL 
+		&& _lauta[7][5] == NULL)
+	{
+		//Debuggausta
+		bool valkeaKT = getOnkoValkeaKTliikkunut();
+		bool valkeaK = getOnkoValkeaKuningasLiikkunut();
+		bool ruutu47uhattu = onkoRuutuUhattu(&Ruutu(4, 7), &uusiAsema, 1);
+		bool ruutu57uhattu = onkoRuutuUhattu(&Ruutu(5, 7), &uusiAsema, 1);
+		bool ruutu67uhattu = onkoRuutuUhattu(&Ruutu(6, 7), &uusiAsema, 1);
 			
 			
-			Siirto uusiSiirto(true, false);
-			lista.push_back(uusiSiirto);
-		}
+		Siirto uusiSiirto(true, false);
+		lista.push_back(uusiSiirto);
+	}
 
-		//pitk‰n musta linnotuksen lis‰‰minen lailliseksi siirroksi
-		if (vari == 1 
-			&& !getOnkoMustaDTliikkunut() 
-			&& !getOnkoMustaKuningasLiikkunut() 
-			&& !onkoRuutuUhattu(&Ruutu(2, 0), &uusiAsema, 0)
-			&& !onkoRuutuUhattu(&Ruutu(3, 0), &uusiAsema, 0)
-			&& !onkoRuutuUhattu(&Ruutu(4, 0), &uusiAsema, 0)
-			&& _lauta[0][1] == NULL 
-			&& _lauta[0][2] == NULL 
-			&& _lauta[0][3] == NULL)
-		{
-			Siirto uusiSiirto(false, true);
-			lista.push_back(uusiSiirto);
-		}
+	//pitk‰n musta linnotuksen lis‰‰minen lailliseksi siirroksi
+	if (vari == 1 
+		&& !getOnkoMustaDTliikkunut() 
+		&& !getOnkoMustaKuningasLiikkunut() 
+		&& !onkoRuutuUhattu(&Ruutu(2, 0), &uusiAsema, 0)
+		&& !onkoRuutuUhattu(&Ruutu(3, 0), &uusiAsema, 0)
+		&& !onkoRuutuUhattu(&Ruutu(4, 0), &uusiAsema, 0)
+		&& _lauta[0][1] == NULL 
+		&& _lauta[0][2] == NULL 
+		&& _lauta[0][3] == NULL)
+	{
+		Siirto uusiSiirto(false, true);
+		lista.push_back(uusiSiirto);
+	}
 
-		//lyhyt musta linnotuksen lis‰‰minen lailliseksi siirroksi
-		if (vari == 1 
-			&& !getOnkoMustaKTliikkunut() 
-			&& !getOnkoMustaKuningasLiikkunut() 
-			&& !onkoRuutuUhattu(&Ruutu(4, 0), &uusiAsema, 0)
-			&& !onkoRuutuUhattu(&Ruutu(5, 0), &uusiAsema, 0)
-			&& !onkoRuutuUhattu(&Ruutu(6, 0), &uusiAsema, 0)
-			&& _lauta[0][6] == NULL 
-			&& _lauta[0][5] == NULL)
-		{
-			Siirto uusiSiirto(true, false);
-			lista.push_back(uusiSiirto);
-		}
+	//lyhyt musta linnotuksen lis‰‰minen lailliseksi siirroksi
+	if (vari == 1 
+		&& !getOnkoMustaKTliikkunut() 
+		&& !getOnkoMustaKuningasLiikkunut() 
+		&& !onkoRuutuUhattu(&Ruutu(4, 0), &uusiAsema, 0)
+		&& !onkoRuutuUhattu(&Ruutu(5, 0), &uusiAsema, 0)
+		&& !onkoRuutuUhattu(&Ruutu(6, 0), &uusiAsema, 0)
+		&& _lauta[0][6] == NULL 
+		&& _lauta[0][5] == NULL)
+	{
+		Siirto uusiSiirto(true, false);
+		lista.push_back(uusiSiirto);
+	}
 }

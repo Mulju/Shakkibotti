@@ -10,7 +10,8 @@
 #include <vector>
 #include "Ajastin.h"
 
-using namespace std; 
+using namespace std;
+using namespace std::chrono;
 
 int main()
 {
@@ -38,7 +39,7 @@ int main()
 		kysyVastustajanVari());
 	system("cls");
 	
-	std:vector<Siirto> siirrot;
+	std::vector<Siirto> siirrot;
 	siirrot.reserve(200);
 
 	int koneenVari = peli.getKoneenVari();
@@ -56,6 +57,8 @@ int main()
 		wcout << "\n";
 		Siirto siirto;
 		if (asema.getSiirtovuoro() == koneenVari) {
+			auto start = high_resolution_clock::now();
+			
 			MinMaxPaluu paluu;
 			if (koneenVari == 0) {
 				paluu = asema.alphaBetaMaxi(-100000, 100000, 4);
@@ -64,6 +67,10 @@ int main()
 				paluu = asema.alphaBetaMini(-100000, 100000, 4);
 			}
 			siirto = paluu._parasSiirto;
+
+			auto stop = high_resolution_clock::now();
+			auto duration = duration_cast<milliseconds>(stop - start);
+			wcout << duration.count() << " ms" << endl;
 
 			/*
 			// Random siirto testausta varten
