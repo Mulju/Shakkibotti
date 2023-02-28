@@ -6,6 +6,7 @@
 #include "siirto.h"
 #include <vector>
 
+extern int rekursiosyvyys;
 
 // Ns. "forward declaration". Nyt Asema-luokassa voidaa esitellä Nappula-osoittimia ilman,
 // että nappula.h -tiedostoa täytyy includoida.
