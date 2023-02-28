@@ -38,8 +38,8 @@ int main()
 		kysyVastustajanVari());
 	system("cls");
 	
-	// T‰t‰ pit‰‰ testaa, onko konstruktorissa muistin varaus fiksumpaa
-	std:vector<Siirto> siirrot(200);
+	std:vector<Siirto> siirrot;
+	siirrot.reserve(200);
 
 	int koneenVari = peli.getKoneenVari();
 
@@ -58,12 +58,10 @@ int main()
 		if (asema.getSiirtovuoro() == koneenVari) {
 			MinMaxPaluu paluu;
 			if (koneenVari == 0) {
-				paluu = asema.alphaBetaMaxi(-100000, 100000, 2);
+				paluu = asema.alphaBetaMaxi(-100000, 100000, 4);
 			}
 			else {
-				std::wstring nimi = L"MinMax";
-				Ajastin ajastin(nimi);
-				paluu = asema.alphaBetaMini(-100000, 100000, 2);
+				paluu = asema.alphaBetaMini(-100000, 100000, 4);
 			}
 			siirto = paluu._parasSiirto;
 
