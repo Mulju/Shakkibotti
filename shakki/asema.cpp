@@ -1231,7 +1231,7 @@ void Asema::huolehdiKuninkaanShakeista(std::vector<Siirto>& lista, int vari)
 void Asema::annaLaillisetSiirrot(std::vector<Siirto>& lista)
 {
 	vector<thread> threads;
-	const int threadCount = 2;
+	const int threadCount = 4;
 	const int rangeLength = 8 / threadCount;
 
 	for (int i = 0; i < 8; i += rangeLength)
