@@ -20,11 +20,11 @@ public:
 	bool onkoLyhytLinna();
 	bool onkoPitkaLinna();
 	Nappula* _miksikorotetaan = 0; 
+	bool _onSyonti;
 
 private:
 	Ruutu _alkuRuutu;
 	Ruutu _loppuRuutu;
 	bool _lyhytLinna;
 	bool _pitkaLinna;
-	bool _onSyonti;
 };
