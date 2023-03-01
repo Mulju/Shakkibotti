@@ -7,6 +7,8 @@
 #include <chrono>
 #include <vector>
 #include "Ajastin.h"
+#include <unordered_map>
+#include <algorithm>
 
 const int keskipelisotilasV[64] = {
 	0, 0, 0, 0, 0, 0, 0, 0,
@@ -907,7 +909,7 @@ MinMaxPaluu Asema::minimax(int syvyys)
 	return paluuarvo;
 }
 
-MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys) 
+MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys, std::unordered_map<int, std::vector<Siirto>> &umap)
 {
 	MinMaxPaluu paluu;
 	double laudanArvo = -10000;
@@ -917,7 +919,8 @@ MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys)
 	Asema uusiAsema = *this;
 
 	annaLaillisetSiirrot(siirrot);
-	//siirtoLista.sort();
+	// Järjestää syönti siirrot ensimmäiseksi
+	std::sort(siirrot.begin(), siirrot.end());
 	Ruutu kuninkaanRuutu = getKuninkaanRuutu(getSiirtovuoro());
 
 	// Otetaan negaatio siirtovuorosta. Tarvitaan onkoRuutuUhattu funktiolle
@@ -955,21 +958,105 @@ MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys)
 		
 		MinMaxPaluu miniPaluu;
 		Asema rekursioAsema;
+		// Flag onko killerit käyty
+		bool onKayty = false;
 
 		// Siirtoja on, käydään kaikki läpi
 		for (auto &siirto : siirrot)
 		{
+			
+
+			// Tähän kohtaan if joka katsoo onko syönti siirto, jos on syönti
+			// jatketaan eteenpäin, jos ei tarkistetaan killermovet
+			if (siirto._onSyonti)
+			{
+				// Siirto on syönti, käydään ne ensiksi
+			}
+			else
+			{
+				if (!onKayty)
+				{
+					// Killermoveja ei ole vielä käyty, käydään ne
+
+					// Etsitään hash taulusta tällä syvyydellä olevat siirrot
+					// Jos siirtoja löytyy, tarkistetaan ne, muuten hypätään eteenpäin
+
+					auto iter = umap.find(syvyys);
+					if (iter != umap.end())
+					{
+						// Löytyi killer siirtoja tältä syvyydeltä, käydään ne läpi
+						for (auto& killerSiirto : iter->second)
+						{
+							// Tarkistetaan ensin löytyykö kyseistä siirtoa edes siirtotaulusta
+							for (auto& slSiirto : siirrot)
+							{
+								if (!slSiirto.onkoLyhytLinna() && !slSiirto.onkoPitkaLinna() &&
+									!killerSiirto.onkoLyhytLinna() && !killerSiirto.onkoPitkaLinna() &&
+									slSiirto.getAlkuruutu().getRivi() == killerSiirto.getAlkuruutu().getRivi() &&
+									slSiirto.getAlkuruutu().getSarake() == killerSiirto.getAlkuruutu().getSarake() &&
+									slSiirto.getLoppuruutu().getRivi() == killerSiirto.getLoppuruutu().getRivi() &&
+									slSiirto.getLoppuruutu().getSarake() == killerSiirto.getLoppuruutu().getSarake())
+								{
+									// Jos siirto ei ole linnoitussiirto (helpottaa läpikäyntiä) ja killersiirto löytyy siirtolistasta
+									
+									rekursioAsema = *this;
+
+									rekursioAsema.paivitaAsema(&killerSiirto);
+									miniPaluu = rekursioAsema.alphaBetaMini(alpha, beta, syvyys - 1, umap);
+
+									if (miniPaluu._evaluointiArvo >= beta)
+									{
+										miniPaluu._evaluointiArvo = beta;
+										return miniPaluu;
+									}
+
+									if (miniPaluu._evaluointiArvo > laudanArvo)
+									{
+										laudanArvo = miniPaluu._evaluointiArvo;
+										parasSiirto = killerSiirto;
+									}
+								}
+							}
+						}
+					}
+					onKayty = true;
+				}
+			}
+
+			
+
 			// Täytyy luoda for loopissa aina uusi asema, joka syötetään syvemmälle rekursiossa
 			rekursioAsema = *this;
 
 			rekursioAsema.paivitaAsema(&siirto);
-			miniPaluu = rekursioAsema.alphaBetaMini(alpha, beta, syvyys - 1);
+			miniPaluu = rekursioAsema.alphaBetaMini(alpha, beta, syvyys - 1, umap);
 
 			// Beta leikkaus
 			// Tulee ehkä ongelma ettei palauta siirtoa..?
+			// Tämä on killer move
 			if (miniPaluu._evaluointiArvo >= beta)
 			{
 				miniPaluu._evaluointiArvo = beta;
+
+				// Lisätään killer move hashmappiin
+				auto iterator = umap.find(syvyys);
+				if (iterator != umap.end())
+				{
+					// Löytyi jo olemassa oleva siirto tältä syvyydeltä, lisätään jatkoksi
+					iterator->second.push_back(siirto);
+				}
+				else
+				{
+					// Ei löytynyt olemassa olevaa siirtoa tältä syvyydeltä, lisätään hashmappiin
+					// Meneeköhän tää oikein?
+					vector<Siirto> killerSiirrot;
+					killerSiirrot.reserve(50);
+					pair<int, vector<Siirto>> jeps(syvyys, killerSiirrot);
+					umap.insert(jeps);
+					
+					//umap.insert(make_pair<int, vector<Siirto>>(syvyys, killerSiirrot));
+				}
+				
 				return miniPaluu;
 			}
 
@@ -988,7 +1075,7 @@ MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys)
 	return paluu;
 }
 
-MinMaxPaluu Asema::alphaBetaMini(int alpha, int beta, int syvyys) 
+MinMaxPaluu Asema::alphaBetaMini(int alpha, int beta, int syvyys, std::unordered_map<int, std::vector<Siirto>> &umap)
 {
 	MinMaxPaluu paluu;
 	double laudanArvo = 10000;
@@ -998,7 +1085,8 @@ MinMaxPaluu Asema::alphaBetaMini(int alpha, int beta, int syvyys)
 	Asema uusiAsema = *this;
 
 	annaLaillisetSiirrot(siirrot);
-	//siirtoLista.sort();
+	// Järjestää syönti siirrot ensimmäiseksi
+	std::sort(siirrot.begin(), siirrot.end());
 	Ruutu kuninkaanRuutu = getKuninkaanRuutu(getSiirtovuoro());
 
 	// Otetaan negaatio siirtovuorosta. Tarvitaan onkoRuutuUhattu funktiolle
@@ -1036,15 +1124,78 @@ MinMaxPaluu Asema::alphaBetaMini(int alpha, int beta, int syvyys)
 
 		MinMaxPaluu maxiPaluu;
 		Asema rekursioAsema;
+		// Flag onko killerit käyty
+		bool onKayty = false;
 
 		// Siirtoja on, käydään kaikki läpi
 		for (auto& siirto : siirrot)
 		{
+			
+
+			// Tähän kohtaan if joka katsoo onko syönti siirto, jos on syönti
+			// jatketaan eteenpäin, jos ei tarkistetaan killermovet
+			if (siirto._onSyonti)
+			{
+				// Siirto on syönti, käydään ne ensiksi
+			}
+			else
+			{
+				if (!onKayty)
+				{
+					// Killermoveja ei ole vielä käyty, käydään ne
+
+					// Etsitään hash taulusta tällä syvyydellä olevat siirrot
+					// Jos siirtoja löytyy, tarkistetaan ne, muuten hypätään eteenpäin
+
+					auto iter = umap.find(syvyys);
+					if (iter != umap.end())
+					{
+						// Löytyi killer siirtoja tältä syvyydeltä, käydään ne läpi
+						for (auto& killerSiirto : iter->second)
+						{
+							// Tarkistetaan ensin löytyykö kyseistä siirtoa edes siirtotaulusta
+							for (auto& slSiirto : siirrot)
+							{
+								if (!slSiirto.onkoLyhytLinna() && !slSiirto.onkoPitkaLinna() &&
+									!killerSiirto.onkoLyhytLinna() && !killerSiirto.onkoPitkaLinna() &&
+									slSiirto.getAlkuruutu().getRivi() == killerSiirto.getAlkuruutu().getRivi() &&
+									slSiirto.getAlkuruutu().getSarake() == killerSiirto.getAlkuruutu().getSarake() &&
+									slSiirto.getLoppuruutu().getRivi() == killerSiirto.getLoppuruutu().getRivi() &&
+									slSiirto.getLoppuruutu().getSarake() == killerSiirto.getLoppuruutu().getSarake())
+								{
+									// Jos siirto ei ole linnoitussiirto (helpottaa läpikäyntiä) ja killersiirto löytyy siirtolistasta
+
+									rekursioAsema = *this;
+
+									rekursioAsema.paivitaAsema(&killerSiirto);
+									maxiPaluu = rekursioAsema.alphaBetaMaxi(alpha, beta, syvyys - 1, umap);
+
+									if (maxiPaluu._evaluointiArvo >= beta)
+									{
+										maxiPaluu._evaluointiArvo = beta;
+										return maxiPaluu;
+									}
+
+									if (maxiPaluu._evaluointiArvo > laudanArvo)
+									{
+										laudanArvo = maxiPaluu._evaluointiArvo;
+										parasSiirto = killerSiirto;
+									}
+								}
+							}
+						}
+					}
+					onKayty = true;
+				}
+			}
+			
+			
+
 			// Täytyy luoda for loopissa aina uusi asema, joka syötetään syvemmälle rekursiossa
 			rekursioAsema = *this;
 
 			rekursioAsema.paivitaAsema(&siirto);
-			maxiPaluu = rekursioAsema.alphaBetaMaxi(alpha, beta, syvyys - 1);
+			maxiPaluu = rekursioAsema.alphaBetaMaxi(alpha, beta, syvyys - 1, umap);
 
 			// Alpha leikkaus, sama ongelma kuin Maxissa (ehkä)
 			if (maxiPaluu._evaluointiArvo <= alpha)

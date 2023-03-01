@@ -9,6 +9,7 @@
 #include "asema.h"
 #include <vector>
 #include "Ajastin.h"
+#include <unordered_map>
 
 using namespace std;
 using namespace std::chrono;
@@ -39,8 +40,11 @@ int main()
 		kysyVastustajanVari());
 	system("cls");
 	
-	std::vector<Siirto> siirrot;
+	vector<Siirto> siirrot;
 	siirrot.reserve(200);
+	
+	// Killermove hashmap
+	unordered_map<int, vector<Siirto>> umap;
 
 	int koneenVari = peli.getKoneenVari();
 
@@ -57,20 +61,22 @@ int main()
 		wcout << "\n";
 		Siirto siirto;
 		if (asema.getSiirtovuoro() == koneenVari) {
-			auto start = high_resolution_clock::now();
 			
+			// Ajastin debuggaukseen
+			wstring nimi = L"Koneen siirto";
+			Ajastin ajastin(nimi);
+			
+			// Tyhjennetään killer movet
+			umap.clear();
+
 			MinMaxPaluu paluu;
 			if (koneenVari == 0) {
-				paluu = asema.alphaBetaMaxi(-100000, 100000, 4);
+				paluu = asema.alphaBetaMaxi(-100000, 100000, 4, umap);
 			}
 			else {
-				paluu = asema.alphaBetaMini(-100000, 100000, 4);
+				paluu = asema.alphaBetaMini(-100000, 100000, 4, umap);
 			}
 			siirto = paluu._parasSiirto;
-
-			auto stop = high_resolution_clock::now();
-			auto duration = duration_cast<milliseconds>(stop - start);
-			wcout << duration.count() << " ms" << endl;
 
 			/*
 			// Random siirto testausta varten
