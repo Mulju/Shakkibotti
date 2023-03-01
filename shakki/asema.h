@@ -6,8 +6,6 @@
 #include "siirto.h"
 #include <vector>
 
-extern int rekursiosyvyys;
-
 // Ns. "forward declaration". Nyt Asema-luokassa voidaa esitellä Nappula-osoittimia ilman,
 // että nappula.h -tiedostoa täytyy includoida.
 class Nappula;
@@ -39,6 +37,7 @@ public:
 	MinMaxPaluu alphaBetaMini(int alpha, int beta, int syvyys);					// Minimax (min:n siirtovuoro).
 	MinMaxPaluu minimax(int syvyys);						// Minimax-algoritmi.
 	void annaLaillisetSiirrot(std::vector<Siirto>& lista);	// Siirtogeneraattori.
+	void Asema::haeSiirrot(std::vector<Siirto>& lista, int start, int end);
 	int getSiirtovuoro();									// Palauttaa siirtovuoron.
 	int getVastustajanSiirtovuoro();
 	void setSiirtovuoro(int);								// Asettaa siirtovuoron.

@@ -6,6 +6,7 @@
 #include <array>
 #include <chrono>
 #include <vector>
+#include <thread>
 #include "Ajastin.h"
 
 const int keskipelisotilasV[64] = {
@@ -1229,11 +1230,34 @@ void Asema::huolehdiKuninkaanShakeista(std::vector<Siirto>& lista, int vari)
 
 void Asema::annaLaillisetSiirrot(std::vector<Siirto>& lista)
 {
+	vector<thread> threads;
+	const int threadCount = 2;
+	const int rangeLength = 8 / threadCount;
+
+	for (int i = 0; i < 8; i += rangeLength)
+	{
+		const int start = i;
+		const int end = i + (8 / threadCount);
+
+		threads.emplace_back(&Asema::haeSiirrot, this, ref(lista), start, end);
+	}
+
+	for (auto& thread : threads)
+	{
+		thread.join();
+	}
+
+	annaLinnoitusSiirrot(lista, _siirtovuoro);
+	huolehdiKuninkaanShakeista(lista, _siirtovuoro);
+}
+
+void Asema::haeSiirrot(std::vector<Siirto>& lista, int start, int end)
+{
 	Ruutu ruutu;
 
-	for (int i = 0; i < 8; ++i)
+	for (int j = start; j < end; ++j)
 	{
-		for (int j = 0; j < 8; ++j)
+		for (int i = 0; i < 8; ++i)
 		{
 			// Siirrot valkoisille nappuloille
 			if (_siirtovuoro == 0)
@@ -1263,8 +1287,6 @@ void Asema::annaLaillisetSiirrot(std::vector<Siirto>& lista)
 			}
 		}
 	}
-	annaLinnoitusSiirrot(lista, _siirtovuoro);
-	huolehdiKuninkaanShakeista(lista, _siirtovuoro);
 }
 
 void Asema::annaLinnoitusSiirrot(std::vector<Siirto>& lista, int vari)

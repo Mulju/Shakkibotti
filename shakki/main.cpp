@@ -61,10 +61,10 @@ int main()
 			
 			MinMaxPaluu paluu;
 			if (koneenVari == 0) {
-				paluu = asema.alphaBetaMaxi(-100000, 100000, rekursiosyvyys);
+				paluu = asema.alphaBetaMaxi(-100000, 100000, 4);
 			}
 			else {
-				paluu = asema.alphaBetaMini(-100000, 100000, rekursiosyvyys);
+				paluu = asema.alphaBetaMini(-100000, 100000, 4);
 			}
 			siirto = paluu._parasSiirto;
 
