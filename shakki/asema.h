@@ -68,6 +68,7 @@ private:
 	bool onkoKeskiVaiLoppupeli(int);
 	double nappuloitaKeskella(int);
 	double linjat(int);
+	bool onkoRuutuUhattu(Ruutu*, Asema* asema, int vastustajanVari, std::vector<Siirto>);
 	bool onkoRuutuUhattu(Ruutu*, Asema* asema, int vastustajanVari);
 	void annaLinnoitusSiirrot(std::vector<Siirto>& lista, int vari);
 	Ruutu getKuninkaanRuutu(int vari);

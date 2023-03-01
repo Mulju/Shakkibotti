@@ -1220,10 +1220,11 @@ MinMaxPaluu Asema::alphaBetaMini(int alpha, int beta, int syvyys, std::unordered
 }
 
 // Tarkistaa, onko uudessa asemassa kuningas uhattuna, kun vastustaja pelaa vuoronsa
-bool Asema::onkoRuutuUhattu(Ruutu* kuninkaanRuutu, Asema* uusiAsema, int vastustajanVari)
+// Overloadattu versio huolehdiKuninkaanShakeista funktiota varten
+bool Asema::onkoRuutuUhattu(Ruutu* kuninkaanRuutu, Asema* uusiAsema, int vastustajanVari, std::vector<Siirto> vastustajanSiirtolista)
 {
-	std::vector<Siirto> vastustajanSiirtolista;
-	vastustajanSiirtolista.reserve(200);
+	// Tyhjennetään siirtolista joka kierroksen alussa
+	vastustajanSiirtolista.clear();
 	Ruutu ruutu;
 	
 	for (int i = 0; i < 8; ++i)
@@ -1273,6 +1274,60 @@ bool Asema::onkoRuutuUhattu(Ruutu* kuninkaanRuutu, Asema* uusiAsema, int vastust
 	return ruutuUhattu;
 }
 
+// Versio ilman vectoria parametrina
+bool Asema::onkoRuutuUhattu(Ruutu* kuninkaanRuutu, Asema* uusiAsema, int vastustajanVari)
+{
+	std::vector<Siirto> vastustajanSiirtolista;
+	vastustajanSiirtolista.reserve(200);
+	Ruutu ruutu;
+
+	for (int i = 0; i < 8; ++i)
+	{
+		for (int j = 0; j < 8; ++j)
+		{
+			// Siirrot valkoisille nappuloille
+			if (vastustajanVari == 0)
+			{
+				if (uusiAsema->_lauta[i][j] != NULL)
+				{
+					if (uusiAsema->_lauta[i][j]->getKoodi() == VS || uusiAsema->_lauta[i][j]->getKoodi() == VT || uusiAsema->_lauta[i][j]->getKoodi() == VR
+						|| uusiAsema->_lauta[i][j]->getKoodi() == VL || uusiAsema->_lauta[i][j]->getKoodi() == VD || uusiAsema->_lauta[i][j]->getKoodi() == VK)
+					{
+						ruutu.setRivi(i);
+						ruutu.setSarake(j);
+						uusiAsema->_lauta[i][j]->annaSiirrot(vastustajanSiirtolista, &ruutu, uusiAsema, vastustajanVari);
+					}
+				}
+			}
+			else // Siirrot mustille nappuloille
+			{
+				if (uusiAsema->_lauta[i][j] != NULL)
+				{
+					if (uusiAsema->_lauta[i][j]->getKoodi() == MS || uusiAsema->_lauta[i][j]->getKoodi() == MT || uusiAsema->_lauta[i][j]->getKoodi() == MR
+						|| uusiAsema->_lauta[i][j]->getKoodi() == ML || uusiAsema->_lauta[i][j]->getKoodi() == MD || uusiAsema->_lauta[i][j]->getKoodi() == MK)
+					{
+						ruutu.setRivi(i);
+						ruutu.setSarake(j);
+						uusiAsema->_lauta[i][j]->annaSiirrot(vastustajanSiirtolista, &ruutu, uusiAsema, vastustajanVari);
+					}
+				}
+			}
+		}
+	}
+
+	// Käydään vastustajan siirtolista läpi ja tarkistetaan, löytyykö kuninkaan ruutu
+	bool ruutuUhattu = false;
+	for (auto& siirto : vastustajanSiirtolista)
+	{
+		if (kuninkaanRuutu->getSarake() == siirto.getLoppuruutu().getSarake() && kuninkaanRuutu->getRivi() == siirto.getLoppuruutu().getRivi()) {
+			ruutuUhattu = true;
+			break;
+		}
+	}
+
+	return ruutuUhattu;
+}
+
 void Asema::huolehdiKuninkaanShakeista(std::vector<Siirto>& lista, int vari)
 { 
 	Ruutu kuninkaanRuutu = getKuninkaanRuutu(vari);
@@ -1283,6 +1338,10 @@ void Asema::huolehdiKuninkaanShakeista(std::vector<Siirto>& lista, int vari)
 	siivottuSiirtolista.reserve(200);
 	Ruutu ruutu;
 	Nappula* siirtyvaNappula;
+
+	// onkoRuutuUhattu funktiota varten
+	std::vector<Siirto> vastustajanSiirtolista;
+	vastustajanSiirtolista.reserve(200);
 	
 	// Käydään läpi siirtolistan siirrot ja poistetaan sieltä kuninkaan shakkiin johtavat siirrot
 	for (auto& siirto : lista)
@@ -1332,7 +1391,7 @@ void Asema::huolehdiKuninkaanShakeista(std::vector<Siirto>& lista, int vari)
 		int vastustajanVari = getVastustajanSiirtovuoro();
 
 		// Jos siirtoruutu ei aiheuta kuninkaalle uhkaa vastustajan vuorolla, se lisätään uuteen siirtolistaan
-		if (!onkoRuutuUhattu(&ruutu, &uusiAsema, vastustajanVari))
+		if (!onkoRuutuUhattu(&ruutu, &uusiAsema, vastustajanVari, vastustajanSiirtolista))
 		{
 			siivottuSiirtolista.push_back(siirto);
 		}
