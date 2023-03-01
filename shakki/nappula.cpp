@@ -969,7 +969,6 @@ void Sotilas::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema
 						Ruutu loppuRuutu(aS + 1, aR - 1);
 						Siirto uusiSiirto(*ruutu, loppuRuutu, true);
 						lista.push_back(uusiSiirto);
-						asema->_lauta[aR][aS + 1] = NULL;
 					}
 					break;
 
@@ -981,14 +980,12 @@ void Sotilas::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema
 						Ruutu loppuRuutu(aS - 1, aR - 1);
 						Siirto uusiSiirto(*ruutu, loppuRuutu, true);
 						lista.push_back(uusiSiirto);
-						asema->_lauta[aR][aS - 1] = NULL;
 					}
 					break;
 
 				default:
 					break;
 			}
-		
 		}
 	}
 	else // Mustan siirrot
@@ -1136,7 +1133,6 @@ void Sotilas::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema
 						Ruutu loppuRuutu(aS + 1, aR + 1);
 						Siirto uusiSiirto(*ruutu, loppuRuutu, true);
 						lista.push_back(uusiSiirto);
-						asema->_lauta[aR][aS + 1] = NULL;
 					}
 					break;
 
@@ -1148,7 +1144,6 @@ void Sotilas::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema
 						Ruutu loppuRuutu(aS - 1, aR + 1);
 						Siirto uusiSiirto(*ruutu, loppuRuutu, true);
 						lista.push_back(uusiSiirto);
-						asema->_lauta[aR][aS - 1] = NULL;
 					}
 					break;
 
@@ -1157,7 +1152,6 @@ void Sotilas::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asema
 			}
 		}
 	}
-	
 }
 
 void Sotilas::lisaaSotilaanKorotukset(Siirto* siirto, std::vector<Siirto>& lista, Asema* asema) 

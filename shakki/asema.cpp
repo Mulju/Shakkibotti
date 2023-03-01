@@ -417,7 +417,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 		{
 			kaksoisaskelSarakkeella = loppusarake;
 		}
-		else if (nappula == vs && loppurivi == 4 && alkurivi == 6)
+		else if (nappula->getKoodi() == VS && loppurivi == 4 && alkurivi == 6)
 		{
 			kaksoisaskelSarakkeella = loppusarake;
 		}
@@ -501,7 +501,6 @@ void Asema::paivitaAsema(Siirto *siirto)
 
 	//P‰ivitet‰‰n _siirtovuoro
 	_siirtovuoro = getVastustajanSiirtovuoro();
-
 }
 
 int Asema::getSiirtovuoro() 
@@ -1260,14 +1259,6 @@ void Asema::annaLinnoitusSiirrot(std::vector<Siirto>& lista, int vari)
 		&& _lauta[7][6] == NULL 
 		&& _lauta[7][5] == NULL)
 	{
-		//Debuggausta
-		bool valkeaKT = getOnkoValkeaKTliikkunut();
-		bool valkeaK = getOnkoValkeaKuningasLiikkunut();
-		bool ruutu47uhattu = onkoRuutuUhattu(&Ruutu(4, 7), &uusiAsema, 1);
-		bool ruutu57uhattu = onkoRuutuUhattu(&Ruutu(5, 7), &uusiAsema, 1);
-		bool ruutu67uhattu = onkoRuutuUhattu(&Ruutu(6, 7), &uusiAsema, 1);
-			
-			
 		Siirto uusiSiirto(true, false);
 		lista.push_back(uusiSiirto);
 	}
