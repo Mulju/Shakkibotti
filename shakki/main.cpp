@@ -22,29 +22,12 @@ int main()
 	Asema asema; 
 	Kayttoliittyma::getInstance()->aseta_asema(&asema);
 
-	/*//Testausta varten
-	std::list<Siirto> lista;
-	Kayttoliittyma::getInstance()->piirraLauta();
-	
-	while (true)
-	{
-		lista.clear();
-		asema.annaLaillisetSiirrot(lista);
-		Kayttoliittyma::getInstance()->piirraLauta(lista);
-		Siirto siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto(lista, lista.size());
-		asema.paivitaAsema(&siirto);
-	}
-	Testikoodi loppuu*/
-
 	Peli peli(Kayttoliittyma::getInstance()->
 		kysyVastustajanVari());
 	system("cls");
 	
 	vector<Siirto> siirrot;
 	siirrot.reserve(200);
-	
-	// Killermove hashmap
-	unordered_map<int, vector<Siirto>> umap;
 
 	int koneenVari = peli.getKoneenVari();
 
@@ -65,9 +48,6 @@ int main()
 			// Ajastin debuggaukseen
 			wstring nimi = L"Koneen siirto";
 			Ajastin ajastin(nimi);
-			
-			// Tyhjennetään killer movet
-			umap.clear();
 
 			MinMaxPaluu paluu;
 			if (koneenVari == 0) {
@@ -77,14 +57,6 @@ int main()
 				paluu = asema.alphaBetaMini(-100000, 100000, 4);
 			}
 			siirto = paluu._parasSiirto;
-
-			/*
-			// Random siirto testausta varten
-			int randomIndex = rand() % lista.size();
-			auto siirtoTemp = lista.begin();
-			advance(siirtoTemp, randomIndex);
-			siirto = *siirtoTemp;
-			*/
 		}
 		else {
 			siirto = Kayttoliittyma::getInstance()->
