@@ -6,6 +6,7 @@
 #include <array>
 #include <chrono>
 #include <vector>
+#include <future>
 #include "Ajastin.h"
 
 const int keskipelisotilasV[64] = {
@@ -907,7 +908,7 @@ MinMaxPaluu Asema::minimax(int syvyys)
 	return paluuarvo;
 }
 
-MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys) 
+MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys)
 {
 	MinMaxPaluu paluu;
 	double laudanArvo = -10000;
@@ -952,33 +953,81 @@ MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys)
 
 			return paluu;
 		}
-		
+
 		MinMaxPaluu miniPaluu;
 		Asema rekursioAsema;
 
-		// Siirtoja on, käydään kaikki läpi
-		for (auto &siirto : siirrot)
+		// Aloitetaan threadit ensimmäisellä syvyydellä
+		if (syvyys == 4)
 		{
-			// Täytyy luoda for loopissa aina uusi asema, joka syötetään syvemmälle rekursiossa
-			rekursioAsema = *this;
+			vector<future<MinMaxPaluu>> tehtavat;
 
-			rekursioAsema.paivitaAsema(&siirto);
-			miniPaluu = rekursioAsema.alphaBetaMini(alpha, beta, syvyys - 1);
-
-			// Beta leikkaus
-			// Tulee ehkä ongelma ettei palauta siirtoa..?
-			if (miniPaluu._evaluointiArvo >= beta)
+			// Siirtoja on, käydään kaikki läpi
+			for (auto& siirto : siirrot)
 			{
-				miniPaluu._evaluointiArvo = beta;
-				return miniPaluu;
+				// Täytyy luoda for loopissa aina uusi asema, joka syötetään syvemmälle rekursiossa
+				rekursioAsema = *this;
+
+				rekursioAsema.paivitaAsema(&siirto);
+
+				tehtavat.push_back(async(launch::async, [rekursioAsema, alpha, beta, syvyys]() mutable -> MinMaxPaluu
+					{
+						Asema testi = rekursioAsema;
+						return testi.alphaBetaMini(alpha, beta, syvyys - 1);
+					}));
 			}
 
-			if (miniPaluu._evaluointiArvo > laudanArvo)
+			int i = 0;
+
+			for (auto& tehtava : tehtavat)
 			{
-				// Voisi kirjoittaa myös kopiokonstruktorin MinMaxPaluulle
-				// ja sijoittaa suoraan paluu = miniPaluu
-				laudanArvo = miniPaluu._evaluointiArvo;
-				parasSiirto = siirto;
+				miniPaluu = tehtava.get();
+
+				// Beta leikkaus
+				// Tulee ehkä ongelma ettei palauta siirtoa..?
+				if (miniPaluu._evaluointiArvo >= beta)
+				{
+					miniPaluu._evaluointiArvo = beta;
+					return miniPaluu;
+				}
+
+				if (miniPaluu._evaluointiArvo > laudanArvo)
+				{
+					// Voisi kirjoittaa myös kopiokonstruktorin MinMaxPaluulle
+					// ja sijoittaa suoraan paluu = miniPaluu
+					laudanArvo = miniPaluu._evaluointiArvo;
+					parasSiirto = siirrot[i];
+				}
+
+				i++;
+			}
+		}
+		else
+		{
+			// Siirtoja on, käydään kaikki läpi
+			for (auto& siirto : siirrot)
+			{
+				// Täytyy luoda for loopissa aina uusi asema, joka syötetään syvemmälle rekursiossa
+				rekursioAsema = *this;
+
+				rekursioAsema.paivitaAsema(&siirto);
+				miniPaluu = rekursioAsema.alphaBetaMini(alpha, beta, syvyys - 1);
+
+				// Beta leikkaus
+				// Tulee ehkä ongelma ettei palauta siirtoa..?
+				if (miniPaluu._evaluointiArvo >= beta)
+				{
+					miniPaluu._evaluointiArvo = beta;
+					return miniPaluu;
+				}
+
+				if (miniPaluu._evaluointiArvo > laudanArvo)
+				{
+					// Voisi kirjoittaa myös kopiokonstruktorin MinMaxPaluulle
+					// ja sijoittaa suoraan paluu = miniPaluu
+					laudanArvo = miniPaluu._evaluointiArvo;
+					parasSiirto = siirto;
+				}
 			}
 		}
 	}
@@ -988,7 +1037,7 @@ MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys)
 	return paluu;
 }
 
-MinMaxPaluu Asema::alphaBetaMini(int alpha, int beta, int syvyys) 
+MinMaxPaluu Asema::alphaBetaMini(int alpha, int beta, int syvyys)
 {
 	MinMaxPaluu paluu;
 	double laudanArvo = 10000;
@@ -1037,28 +1086,75 @@ MinMaxPaluu Asema::alphaBetaMini(int alpha, int beta, int syvyys)
 		MinMaxPaluu maxiPaluu;
 		Asema rekursioAsema;
 
-		// Siirtoja on, käydään kaikki läpi
-		for (auto& siirto : siirrot)
+		// Aloitetaan threadit ensimmäisellä syvyydellä
+		if (syvyys == 4)
 		{
-			// Täytyy luoda for loopissa aina uusi asema, joka syötetään syvemmälle rekursiossa
-			rekursioAsema = *this;
+			vector<future<MinMaxPaluu>> tehtavat;
 
-			rekursioAsema.paivitaAsema(&siirto);
-			maxiPaluu = rekursioAsema.alphaBetaMaxi(alpha, beta, syvyys - 1);
-
-			// Alpha leikkaus, sama ongelma kuin Maxissa (ehkä)
-			if (maxiPaluu._evaluointiArvo <= alpha)
+			// Siirtoja on, käydään kaikki läpi
+			for (auto& siirto : siirrot)
 			{
-				maxiPaluu._evaluointiArvo = alpha;
-				return maxiPaluu;
+				// Täytyy luoda for loopissa aina uusi asema, joka syötetään syvemmälle rekursiossa
+				rekursioAsema = *this;
+
+				rekursioAsema.paivitaAsema(&siirto);
+
+				tehtavat.push_back(async(launch::async, [rekursioAsema, alpha, beta, syvyys]() mutable -> MinMaxPaluu
+					{
+						Asema testi = rekursioAsema;
+						return testi.alphaBetaMaxi(alpha, beta, syvyys - 1);
+					}));
 			}
 
-			if (maxiPaluu._evaluointiArvo < laudanArvo)
+			int i = 0;
+
+			for (auto& tehtava : tehtavat)
 			{
-				// Voisi kirjoittaa myös kopiokonstruktorin MinMaxPaluulle
-				// ja sijoittaa suoraan paluu = miniPaluu
-				laudanArvo = maxiPaluu._evaluointiArvo;
-				parasSiirto = siirto;
+				maxiPaluu = tehtava.get();
+
+				// Alpha leikkaus, sama ongelma kuin Maxissa (ehkä)
+				if (maxiPaluu._evaluointiArvo <= alpha)
+				{
+					maxiPaluu._evaluointiArvo = alpha;
+					return maxiPaluu;
+				}
+
+				if (maxiPaluu._evaluointiArvo < laudanArvo)
+				{
+					// Voisi kirjoittaa myös kopiokonstruktorin MinMaxPaluulle
+					// ja sijoittaa suoraan paluu = miniPaluu
+					laudanArvo = maxiPaluu._evaluointiArvo;
+					parasSiirto = siirrot[i];
+				}
+
+				i++;
+			}
+		}
+		else
+		{
+			// Siirtoja on, käydään kaikki läpi
+			for (auto& siirto : siirrot)
+			{
+				// Täytyy luoda for loopissa aina uusi asema, joka syötetään syvemmälle rekursiossa
+				rekursioAsema = *this;
+
+				rekursioAsema.paivitaAsema(&siirto);
+				maxiPaluu = rekursioAsema.alphaBetaMaxi(alpha, beta, syvyys - 1);
+
+				// Alpha leikkaus, sama ongelma kuin Maxissa (ehkä)
+				if (maxiPaluu._evaluointiArvo <= alpha)
+				{
+					maxiPaluu._evaluointiArvo = alpha;
+					return maxiPaluu;
+				}
+
+				if (maxiPaluu._evaluointiArvo < laudanArvo)
+				{
+					// Voisi kirjoittaa myös kopiokonstruktorin MinMaxPaluulle
+					// ja sijoittaa suoraan paluu = miniPaluu
+					laudanArvo = maxiPaluu._evaluointiArvo;
+					parasSiirto = siirto;
+				}
 			}
 		}
 	}
