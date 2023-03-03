@@ -40,7 +40,7 @@ bool Siirto::operator<(const Siirto& rhs) const
 {
 	if (this->_onSyonti == rhs._onSyonti)
 	{
-		return true;
+		return false;
 	}
 
 	if (this->_onSyonti == true && rhs._onSyonti == false)
