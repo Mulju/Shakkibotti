@@ -7,6 +7,7 @@
 #include <chrono>
 #include <vector>
 #include <thread>
+#include <future>
 #include "Ajastin.h"
 
 const int keskipelisotilasV[64] = {
@@ -991,29 +992,76 @@ MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys)
 		MinMaxPaluu miniPaluu;
 		Asema rekursioAsema;
 
-		// Siirtoja on, käydään kaikki läpi
-		for (auto& siirto : siirrot)
+		// Aloitetaan threadit ensimmäisellä syvyydellä
+		if (syvyys == 4)
 		{
-			// Täytyy luoda for loopissa aina uusi asema, joka syötetään syvemmälle rekursiossa
-			rekursioAsema = *this;
-
-			rekursioAsema.paivitaAsema(&siirto);
-			miniPaluu = rekursioAsema.alphaBetaMini(alpha, beta, syvyys - 1);
-
-			// Beta leikkaus
-			// Tulee ehkä ongelma ettei palauta siirtoa..?
-			if (miniPaluu._evaluointiArvo >= beta)
+			vector<future<MinMaxPaluu>> tehtavat;
+			
+			// Siirtoja on, käydään kaikki läpi
+			for (auto& siirto : siirrot)
 			{
-				miniPaluu._evaluointiArvo = beta;
-				return miniPaluu;
+				// Täytyy luoda for loopissa aina uusi asema, joka syötetään syvemmälle rekursiossa
+				rekursioAsema = *this;
+
+				rekursioAsema.paivitaAsema(&siirto);
+
+				tehtavat.push_back(async(launch::async, [rekursioAsema, alpha, beta, syvyys]() mutable -> MinMaxPaluu
+					{
+						Asema testi = rekursioAsema;
+						return testi.alphaBetaMini(alpha, beta, syvyys - 1);
+					}));
 			}
 
-			if (miniPaluu._evaluointiArvo > laudanArvo)
+			int i = 0;
+
+			for (auto& tehtava : tehtavat)
 			{
-				// Voisi kirjoittaa myös kopiokonstruktorin MinMaxPaluulle
-				// ja sijoittaa suoraan paluu = miniPaluu
-				laudanArvo = miniPaluu._evaluointiArvo;
-				parasSiirto = siirto;
+				miniPaluu = tehtava.get();
+					
+				// Beta leikkaus
+				// Tulee ehkä ongelma ettei palauta siirtoa..?
+				if (miniPaluu._evaluointiArvo >= beta)
+				{
+					miniPaluu._evaluointiArvo = beta;
+					return miniPaluu;
+				}
+
+				if (miniPaluu._evaluointiArvo > laudanArvo)
+				{
+					// Voisi kirjoittaa myös kopiokonstruktorin MinMaxPaluulle
+					// ja sijoittaa suoraan paluu = miniPaluu
+					laudanArvo = miniPaluu._evaluointiArvo;
+					parasSiirto = siirrot[i];
+				}
+				i++;
+			}
+		}
+		else
+		{
+			// Siirtoja on, käydään kaikki läpi
+			for (auto& siirto : siirrot)
+			{
+				// Täytyy luoda for loopissa aina uusi asema, joka syötetään syvemmälle rekursiossa
+				rekursioAsema = *this;
+
+				rekursioAsema.paivitaAsema(&siirto);
+				miniPaluu = rekursioAsema.alphaBetaMini(alpha, beta, syvyys - 1);
+
+				// Beta leikkaus
+				// Tulee ehkä ongelma ettei palauta siirtoa..?
+				if (miniPaluu._evaluointiArvo >= beta)
+				{
+					miniPaluu._evaluointiArvo = beta;
+					return miniPaluu;
+				}
+
+				if (miniPaluu._evaluointiArvo > laudanArvo)
+				{
+					// Voisi kirjoittaa myös kopiokonstruktorin MinMaxPaluulle
+					// ja sijoittaa suoraan paluu = miniPaluu
+					laudanArvo = miniPaluu._evaluointiArvo;
+					parasSiirto = siirto;
+				}
 			}
 		}
 	}
@@ -1072,28 +1120,73 @@ MinMaxPaluu Asema::alphaBetaMini(int alpha, int beta, int syvyys)
 		MinMaxPaluu maxiPaluu;
 		Asema rekursioAsema;
 
-		// Siirtoja on, käydään kaikki läpi
-		for (auto& siirto : siirrot)
+		// Aloitetaan threadit ensimmäisellä syvyydellä
+		if (syvyys == 4)
 		{
-			// Täytyy luoda for loopissa aina uusi asema, joka syötetään syvemmälle rekursiossa
-			rekursioAsema = *this;
+			vector<future<MinMaxPaluu>> tehtavat;
 
-			rekursioAsema.paivitaAsema(&siirto);
-			maxiPaluu = rekursioAsema.alphaBetaMaxi(alpha, beta, syvyys - 1);
-
-			// Alpha leikkaus, sama ongelma kuin Maxissa (ehkä)
-			if (maxiPaluu._evaluointiArvo <= alpha)
+			// Siirtoja on, käydään kaikki läpi
+			for (auto& siirto : siirrot)
 			{
-				maxiPaluu._evaluointiArvo = alpha;
-				return maxiPaluu;
+				// Täytyy luoda for loopissa aina uusi asema, joka syötetään syvemmälle rekursiossa
+				rekursioAsema = *this;
+
+				rekursioAsema.paivitaAsema(&siirto);
+
+				tehtavat.push_back(async(launch::async, [rekursioAsema, alpha, beta, syvyys]() mutable -> MinMaxPaluu
+					{
+						return rekursioAsema.alphaBetaMaxi(alpha, beta, syvyys - 1);
+					}));
 			}
 
-			if (maxiPaluu._evaluointiArvo < laudanArvo)
+			int i = 0;
+
+			for (auto& tehtava : tehtavat)
 			{
-				// Voisi kirjoittaa myös kopiokonstruktorin MinMaxPaluulle
-				// ja sijoittaa suoraan paluu = miniPaluu
-				laudanArvo = maxiPaluu._evaluointiArvo;
-				parasSiirto = siirto;
+				maxiPaluu = tehtava.get();
+
+				// Alpha leikkaus, sama ongelma kuin Maxissa (ehkä)
+				if (maxiPaluu._evaluointiArvo <= alpha)
+				{
+					maxiPaluu._evaluointiArvo = alpha;
+					return maxiPaluu;
+				}
+
+				if (maxiPaluu._evaluointiArvo < laudanArvo)
+				{
+					// Voisi kirjoittaa myös kopiokonstruktorin MinMaxPaluulle
+					// ja sijoittaa suoraan paluu = miniPaluu
+					laudanArvo = maxiPaluu._evaluointiArvo;
+					parasSiirto = siirrot[i];
+				}
+				i++;
+			}
+		}
+		else
+		{
+			// Siirtoja on, käydään kaikki läpi
+			for (auto& siirto : siirrot)
+			{
+				// Täytyy luoda for loopissa aina uusi asema, joka syötetään syvemmälle rekursiossa
+				rekursioAsema = *this;
+
+				rekursioAsema.paivitaAsema(&siirto);
+				maxiPaluu = rekursioAsema.alphaBetaMaxi(alpha, beta, syvyys - 1);
+
+				// Alpha leikkaus, sama ongelma kuin Maxissa (ehkä)
+				if (maxiPaluu._evaluointiArvo <= alpha)
+				{
+					maxiPaluu._evaluointiArvo = alpha;
+					return maxiPaluu;
+				}
+
+				if (maxiPaluu._evaluointiArvo < laudanArvo)
+				{
+					// Voisi kirjoittaa myös kopiokonstruktorin MinMaxPaluulle
+					// ja sijoittaa suoraan paluu = miniPaluu
+					laudanArvo = maxiPaluu._evaluointiArvo;
+					parasSiirto = siirto;
+				}
 			}
 		}
 	}
@@ -1230,7 +1323,42 @@ void Asema::huolehdiKuninkaanShakeista(std::vector<Siirto>& lista, int vari)
 
 void Asema::annaLaillisetSiirrot(std::vector<Siirto>& lista)
 {
-	vector<thread> threads;
+	Ruutu ruutu;
+
+	for (int j = 0; j < 8; ++j)
+	{
+		for (int i = 0; i < 8; ++i)
+		{
+			// Siirrot valkoisille nappuloille
+			if (_siirtovuoro == 0)
+			{
+				if (_lauta[i][j] != NULL)
+				{
+					if (_lauta[i][j]->getKoodi() == VS || _lauta[i][j]->getKoodi() == VT || _lauta[i][j]->getKoodi() == VR || _lauta[i][j]->getKoodi() == VL || _lauta[i][j]->getKoodi() == VD || _lauta[i][j]->getKoodi() == VK)
+					{
+						ruutu.setRivi(i);
+						ruutu.setSarake(j);
+						_lauta[i][j]->annaSiirrot(lista, &ruutu, this, _siirtovuoro);
+					}
+				}
+			}
+			else // Siirrot mustille nappuloille
+			{
+				if (_lauta[i][j] != NULL)
+				{
+					if (_lauta[i][j]->getKoodi() == MS || _lauta[i][j]->getKoodi() == MT || _lauta[i][j]->getKoodi() == MR || _lauta[i][j]->getKoodi() == ML || _lauta[i][j]->getKoodi() == MD || _lauta[i][j]->getKoodi() == MK)
+					{
+						ruutu.setRivi(i);
+						ruutu.setSarake(j);
+						_lauta[i][j]->annaSiirrot(lista, &ruutu, this, _siirtovuoro);
+					}
+
+				}
+			}
+		}
+	}
+	
+	/*vector<thread> threads;
 	const int threadCount = 4;
 	const int rangeLength = 8 / threadCount;
 
@@ -1245,7 +1373,7 @@ void Asema::annaLaillisetSiirrot(std::vector<Siirto>& lista)
 	for (auto& thread : threads)
 	{
 		thread.join();
-	}
+	}*/
 
 	annaLinnoitusSiirrot(lista, _siirtovuoro);
 	huolehdiKuninkaanShakeista(lista, _siirtovuoro);
