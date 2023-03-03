@@ -6,6 +6,7 @@
 #include <array>
 #include <chrono>
 #include <vector>
+#include <future>
 #include "Ajastin.h"
 #include <unordered_map>
 #include <algorithm>
@@ -909,7 +910,7 @@ MinMaxPaluu Asema::minimax(int syvyys)
 	return paluuarvo;
 }
 
-MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys, std::unordered_map<int, std::vector<Siirto>> &umap)
+MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys) 
 {
 	MinMaxPaluu paluu;
 	double laudanArvo = -10000;
@@ -955,117 +956,83 @@ MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys, std::unordered
 
 			return paluu;
 		}
-		
+
 		MinMaxPaluu miniPaluu;
 		Asema rekursioAsema;
 		// Flag onko killerit käyty
 		bool onKayty = false;
 
-		// Siirtoja on, käydään kaikki läpi
-		for (auto &siirto : siirrot)
+		// Aloitetaan threadit ensimmäisellä syvyydellä
+		if (syvyys == 4)
 		{
-			
+			vector<future<MinMaxPaluu>> tehtavat;
 
-			// Tähän kohtaan if joka katsoo onko syönti siirto, jos on syönti
-			// jatketaan eteenpäin, jos ei tarkistetaan killermovet
-			if (siirto._onSyonti)
+			// Siirtoja on, käydään kaikki läpi
+			for (auto& siirto : siirrot)
 			{
-				// Siirto on syönti, käydään ne ensiksi
-			}
-			else
-			{
-				if (!onKayty)
-				{
-					// Killermoveja ei ole vielä käyty, käydään ne
+				// Täytyy luoda for loopissa aina uusi asema, joka syötetään syvemmälle rekursiossa
+				rekursioAsema = *this;
 
-					// Etsitään hash taulusta tällä syvyydellä olevat siirrot
-					// Jos siirtoja löytyy, tarkistetaan ne, muuten hypätään eteenpäin
+				rekursioAsema.paivitaAsema(&siirto);
 
-					auto iter = umap.find(syvyys);
-					if (iter != umap.end())
+				tehtavat.push_back(async(launch::async, [rekursioAsema, alpha, beta, syvyys]() mutable -> MinMaxPaluu
 					{
-						// Löytyi killer siirtoja tältä syvyydeltä, käydään ne läpi
-						for (auto& killerSiirto : iter->second)
-						{
-							// Tarkistetaan ensin löytyykö kyseistä siirtoa edes siirtotaulusta
-							for (auto& slSiirto : siirrot)
-							{
-								if (!slSiirto.onkoLyhytLinna() && !slSiirto.onkoPitkaLinna() &&
-									!killerSiirto.onkoLyhytLinna() && !killerSiirto.onkoPitkaLinna() &&
-									slSiirto.getAlkuruutu().getRivi() == killerSiirto.getAlkuruutu().getRivi() &&
-									slSiirto.getAlkuruutu().getSarake() == killerSiirto.getAlkuruutu().getSarake() &&
-									slSiirto.getLoppuruutu().getRivi() == killerSiirto.getLoppuruutu().getRivi() &&
-									slSiirto.getLoppuruutu().getSarake() == killerSiirto.getLoppuruutu().getSarake())
-								{
-									// Jos siirto ei ole linnoitussiirto (helpottaa läpikäyntiä) ja killersiirto löytyy siirtolistasta
-									
-									rekursioAsema = *this;
-
-									rekursioAsema.paivitaAsema(&killerSiirto);
-									miniPaluu = rekursioAsema.alphaBetaMini(alpha, beta, syvyys - 1, umap);
-
-									if (miniPaluu._evaluointiArvo >= beta)
-									{
-										miniPaluu._evaluointiArvo = beta;
-										return miniPaluu;
-									}
-
-									if (miniPaluu._evaluointiArvo > laudanArvo)
-									{
-										laudanArvo = miniPaluu._evaluointiArvo;
-										parasSiirto = killerSiirto;
-									}
-								}
-							}
-						}
-					}
-					onKayty = true;
-				}
+						Asema testi = rekursioAsema;
+						return testi.alphaBetaMini(alpha, beta, syvyys - 1);
+					}));
 			}
 
-			
+			int i = 0;
 
-			// Täytyy luoda for loopissa aina uusi asema, joka syötetään syvemmälle rekursiossa
-			rekursioAsema = *this;
-
-			rekursioAsema.paivitaAsema(&siirto);
-			miniPaluu = rekursioAsema.alphaBetaMini(alpha, beta, syvyys - 1, umap);
-
-			// Beta leikkaus
-			// Tulee ehkä ongelma ettei palauta siirtoa..?
-			// Tämä on killer move
-			if (miniPaluu._evaluointiArvo >= beta)
+			for (auto& tehtava : tehtavat)
 			{
-				miniPaluu._evaluointiArvo = beta;
+				miniPaluu = tehtava.get();
 
-				// Lisätään killer move hashmappiin
-				auto iterator = umap.find(syvyys);
-				if (iterator != umap.end())
+				// Beta leikkaus
+				// Tulee ehkä ongelma ettei palauta siirtoa..?
+				if (miniPaluu._evaluointiArvo >= beta)
 				{
-					// Löytyi jo olemassa oleva siirto tältä syvyydeltä, lisätään jatkoksi
-					iterator->second.push_back(siirto);
+					miniPaluu._evaluointiArvo = beta;
+					return miniPaluu;
 				}
-				else
+
+				if (miniPaluu._evaluointiArvo > laudanArvo)
 				{
-					// Ei löytynyt olemassa olevaa siirtoa tältä syvyydeltä, lisätään hashmappiin
-					// Meneeköhän tää oikein?
-					vector<Siirto> killerSiirrot;
-					killerSiirrot.reserve(50);
-					pair<int, vector<Siirto>> jeps(syvyys, killerSiirrot);
-					umap.insert(jeps);
-					
-					//umap.insert(make_pair<int, vector<Siirto>>(syvyys, killerSiirrot));
+					// Voisi kirjoittaa myös kopiokonstruktorin MinMaxPaluulle
+					// ja sijoittaa suoraan paluu = miniPaluu
+					laudanArvo = miniPaluu._evaluointiArvo;
+					parasSiirto = siirrot[i];
 				}
-				
-				return miniPaluu;
+
+				i++;
 			}
-
-			if (miniPaluu._evaluointiArvo > laudanArvo)
+		}
+		else
+		{
+			// Siirtoja on, käydään kaikki läpi
+			for (auto& siirto : siirrot)
 			{
-				// Voisi kirjoittaa myös kopiokonstruktorin MinMaxPaluulle
-				// ja sijoittaa suoraan paluu = miniPaluu
-				laudanArvo = miniPaluu._evaluointiArvo;
-				parasSiirto = siirto;
+				// Täytyy luoda for loopissa aina uusi asema, joka syötetään syvemmälle rekursiossa
+				rekursioAsema = *this;
+
+				rekursioAsema.paivitaAsema(&siirto);
+				miniPaluu = rekursioAsema.alphaBetaMini(alpha, beta, syvyys - 1);
+
+				// Beta leikkaus
+				// Tulee ehkä ongelma ettei palauta siirtoa..?
+				if (miniPaluu._evaluointiArvo >= beta)
+				{
+					miniPaluu._evaluointiArvo = beta;
+					return miniPaluu;
+				}
+
+				if (miniPaluu._evaluointiArvo > laudanArvo)
+				{
+					// Voisi kirjoittaa myös kopiokonstruktorin MinMaxPaluulle
+					// ja sijoittaa suoraan paluu = miniPaluu
+					laudanArvo = miniPaluu._evaluointiArvo;
+					parasSiirto = siirto;
+				}
 			}
 		}
 	}
@@ -1075,7 +1042,7 @@ MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys, std::unordered
 	return paluu;
 }
 
-MinMaxPaluu Asema::alphaBetaMini(int alpha, int beta, int syvyys, std::unordered_map<int, std::vector<Siirto>> &umap)
+MinMaxPaluu Asema::alphaBetaMini(int alpha, int beta, int syvyys)
 {
 	MinMaxPaluu paluu;
 	double laudanArvo = 10000;
@@ -1127,89 +1094,75 @@ MinMaxPaluu Asema::alphaBetaMini(int alpha, int beta, int syvyys, std::unordered
 		// Flag onko killerit käyty
 		bool onKayty = false;
 
-		// Siirtoja on, käydään kaikki läpi
-		for (auto& siirto : siirrot)
+		// Aloitetaan threadit ensimmäisellä syvyydellä
+		if (syvyys == 4)
 		{
-			
+			vector<future<MinMaxPaluu>> tehtavat;
 
-			// Tähän kohtaan if joka katsoo onko syönti siirto, jos on syönti
-			// jatketaan eteenpäin, jos ei tarkistetaan killermovet
-			if (siirto._onSyonti)
+			// Siirtoja on, käydään kaikki läpi
+			for (auto& siirto : siirrot)
 			{
-				// Siirto on syönti, käydään ne ensiksi
-			}
-			else
-			{
-				if (!onKayty)
-				{
-					// Killermoveja ei ole vielä käyty, käydään ne
+				// Täytyy luoda for loopissa aina uusi asema, joka syötetään syvemmälle rekursiossa
+				rekursioAsema = *this;
 
-					// Etsitään hash taulusta tällä syvyydellä olevat siirrot
-					// Jos siirtoja löytyy, tarkistetaan ne, muuten hypätään eteenpäin
+				rekursioAsema.paivitaAsema(&siirto);
 
-					auto iter = umap.find(syvyys);
-					if (iter != umap.end())
+				tehtavat.push_back(async(launch::async, [rekursioAsema, alpha, beta, syvyys]() mutable -> MinMaxPaluu
 					{
-						// Löytyi killer siirtoja tältä syvyydeltä, käydään ne läpi
-						for (auto& killerSiirto : iter->second)
-						{
-							// Tarkistetaan ensin löytyykö kyseistä siirtoa edes siirtotaulusta
-							for (auto& slSiirto : siirrot)
-							{
-								if (!slSiirto.onkoLyhytLinna() && !slSiirto.onkoPitkaLinna() &&
-									!killerSiirto.onkoLyhytLinna() && !killerSiirto.onkoPitkaLinna() &&
-									slSiirto.getAlkuruutu().getRivi() == killerSiirto.getAlkuruutu().getRivi() &&
-									slSiirto.getAlkuruutu().getSarake() == killerSiirto.getAlkuruutu().getSarake() &&
-									slSiirto.getLoppuruutu().getRivi() == killerSiirto.getLoppuruutu().getRivi() &&
-									slSiirto.getLoppuruutu().getSarake() == killerSiirto.getLoppuruutu().getSarake())
-								{
-									// Jos siirto ei ole linnoitussiirto (helpottaa läpikäyntiä) ja killersiirto löytyy siirtolistasta
+						Asema testi = rekursioAsema;
+						return testi.alphaBetaMaxi(alpha, beta, syvyys - 1);
+					}));
+			}
 
-									rekursioAsema = *this;
+			int i = 0;
 
-									rekursioAsema.paivitaAsema(&killerSiirto);
-									maxiPaluu = rekursioAsema.alphaBetaMaxi(alpha, beta, syvyys - 1, umap);
+			for (auto& tehtava : tehtavat)
+			{
+				maxiPaluu = tehtava.get();
 
-									if (maxiPaluu._evaluointiArvo >= beta)
-									{
-										maxiPaluu._evaluointiArvo = beta;
-										return maxiPaluu;
-									}
-
-									if (maxiPaluu._evaluointiArvo > laudanArvo)
-									{
-										laudanArvo = maxiPaluu._evaluointiArvo;
-										parasSiirto = killerSiirto;
-									}
-								}
-							}
-						}
-					}
-					onKayty = true;
+				// Alpha leikkaus, sama ongelma kuin Maxissa (ehkä)
+				if (maxiPaluu._evaluointiArvo <= alpha)
+				{
+					maxiPaluu._evaluointiArvo = alpha;
+					return maxiPaluu;
 				}
+
+				if (maxiPaluu._evaluointiArvo < laudanArvo)
+				{
+					// Voisi kirjoittaa myös kopiokonstruktorin MinMaxPaluulle
+					// ja sijoittaa suoraan paluu = miniPaluu
+					laudanArvo = maxiPaluu._evaluointiArvo;
+					parasSiirto = siirrot[i];
+				}
+
+				i++;
 			}
-			
-			
-
-			// Täytyy luoda for loopissa aina uusi asema, joka syötetään syvemmälle rekursiossa
-			rekursioAsema = *this;
-
-			rekursioAsema.paivitaAsema(&siirto);
-			maxiPaluu = rekursioAsema.alphaBetaMaxi(alpha, beta, syvyys - 1, umap);
-
-			// Alpha leikkaus, sama ongelma kuin Maxissa (ehkä)
-			if (maxiPaluu._evaluointiArvo <= alpha)
+		}
+		else
+		{
+			// Siirtoja on, käydään kaikki läpi
+			for (auto& siirto : siirrot)
 			{
-				maxiPaluu._evaluointiArvo = alpha;
-				return maxiPaluu;
-			}
+				// Täytyy luoda for loopissa aina uusi asema, joka syötetään syvemmälle rekursiossa
+				rekursioAsema = *this;
 
-			if (maxiPaluu._evaluointiArvo < laudanArvo)
-			{
-				// Voisi kirjoittaa myös kopiokonstruktorin MinMaxPaluulle
-				// ja sijoittaa suoraan paluu = miniPaluu
-				laudanArvo = maxiPaluu._evaluointiArvo;
-				parasSiirto = siirto;
+				rekursioAsema.paivitaAsema(&siirto);
+				maxiPaluu = rekursioAsema.alphaBetaMaxi(alpha, beta, syvyys - 1);
+
+				// Alpha leikkaus, sama ongelma kuin Maxissa (ehkä)
+				if (maxiPaluu._evaluointiArvo <= alpha)
+				{
+					maxiPaluu._evaluointiArvo = alpha;
+					return maxiPaluu;
+				}
+
+				if (maxiPaluu._evaluointiArvo < laudanArvo)
+				{
+					// Voisi kirjoittaa myös kopiokonstruktorin MinMaxPaluulle
+					// ja sijoittaa suoraan paluu = miniPaluu
+					laudanArvo = maxiPaluu._evaluointiArvo;
+					parasSiirto = siirto;
+				}
 			}
 		}
 	}
