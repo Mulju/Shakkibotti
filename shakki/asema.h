@@ -35,8 +35,8 @@ public:
 	Asema();												// Asettaa alkuaseman.
 	void paivitaAsema(Siirto*);								// P‰ivitt‰‰ aseman annetulla siirrolla.
 	double evaluoi();										// Aseman numeerinen arviointi.
-	MinMaxPaluu alphaBetaMaxi(int alpha, int beta, int syvyys, std::unordered_map<int, std::vector<Siirto>>&);					// Minimax (max:n siirtovuoro).
-	MinMaxPaluu alphaBetaMini(int alpha, int beta, int syvyys, std::unordered_map<int, std::vector<Siirto>>&);					// Minimax (min:n siirtovuoro).
+	MinMaxPaluu alphaBetaMaxi(int alpha, int beta, int syvyys);					// Minimax (max:n siirtovuoro).
+	MinMaxPaluu alphaBetaMini(int alpha, int beta, int syvyys);					// Minimax (min:n siirtovuoro).
 	MinMaxPaluu minimax(int syvyys);						// Minimax-algoritmi.
 	void annaLaillisetSiirrot(std::vector<Siirto>& lista);	// Siirtogeneraattori.
 	int getSiirtovuoro();									// Palauttaa siirtovuoron.

@@ -959,8 +959,6 @@ MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys)
 
 		MinMaxPaluu miniPaluu;
 		Asema rekursioAsema;
-		// Flag onko killerit käyty
-		bool onKayty = false;
 
 		// Aloitetaan threadit ensimmäisellä syvyydellä
 		if (syvyys == 4)
@@ -1091,8 +1089,6 @@ MinMaxPaluu Asema::alphaBetaMini(int alpha, int beta, int syvyys)
 
 		MinMaxPaluu maxiPaluu;
 		Asema rekursioAsema;
-		// Flag onko killerit käyty
-		bool onKayty = false;
 
 		// Aloitetaan threadit ensimmäisellä syvyydellä
 		if (syvyys == 4)
