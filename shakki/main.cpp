@@ -48,7 +48,7 @@ int main()
 		if (asema.getSiirtovuoro() == koneenVari) {
 			
 			// Ajastin debuggaukseen
-			wstring nimi = L"Koneen siirto";
+			wstring nimi = L"Koneen siirtoaika";
 			Ajastin ajastin(nimi);
 
 			MinMaxPaluu paluu;
@@ -64,9 +64,9 @@ int main()
 			siirto = Kayttoliittyma::getInstance()->
 				annaVastustajanSiirto(siirrot, siirrot.size());
 		}
+		Kayttoliittyma::getInstance()->tulostaKoneenSiirto(siirto, peli);
 		asema.paivitaAsema(&siirto);
 	}
 
-	
 	return 0;
 }

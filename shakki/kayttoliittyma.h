@@ -16,6 +16,7 @@ public:
 	void piirraLauta(std::vector<Siirto>& lista);
 	Siirto annaVastustajanSiirto(std::vector<Siirto>& lista, int size);
 	int kysyVastustajanVari();
+	void tulostaKoneenSiirto(Siirto& siirto, Peli& peli);
 
 	static Kayttoliittyma* getInstance();
 

@@ -36,7 +36,7 @@ void Kayttoliittyma::piirraLauta()
 				// Laittaa numeron laudan vasempaan reunaan valkoisella v‰rill‰
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED |
 					BACKGROUND_GREEN | BACKGROUND_BLUE);
-				wcout << 8 - i << "  ";
+				std::wcout << 8 - i << "  ";
 			}
 			
 			if ((i % 2 == 0 &&
@@ -57,18 +57,18 @@ void Kayttoliittyma::piirraLauta()
 			if (_asema->_lauta[i][j] == NULL)
 			{
 				// Tulostaa v‰lin nappuloiden v‰liin
-				wcout << "  ";
+				std::wcout << "  ";
 			}
 			else
 			{
 				// Tulostaa nappulan unicoden
-				wcout << _asema->_lauta[i][j]->getUnicode() << " ";
+				std::wcout << _asema->_lauta[i][j]->getUnicode() << " ";
 			}
 		}
-		wcout << "\n";
+		std::wcout << "\n";
 	}
 
-	wcout << "\n    a b c d e f g h\n\n";
+	std::wcout << "\n    a b c d e f g h\n";
 }
 
 void Kayttoliittyma::piirraLauta(vector<Siirto> &lista)
@@ -108,7 +108,7 @@ void Kayttoliittyma::piirraLauta(vector<Siirto> &lista)
 				// Laittaa numeron laudan vasempaan reunaan valkoisella v‰rill‰
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED |
 					BACKGROUND_GREEN | BACKGROUND_BLUE);
-				wcout << 8 - i << "  ";
+				std::wcout << 8 - i << "  ";
 			}
 
 			if (aputaulukko[i][j])
@@ -137,21 +137,21 @@ void Kayttoliittyma::piirraLauta(vector<Siirto> &lista)
 			if (_asema->_lauta[i][j] == NULL)
 			{
 				// Tulostaa v‰lin nappuloiden v‰liin
-				wcout << "  ";
+				std::wcout << "  ";
 			}
 			else
 			{
 				// Tulostaa nappulan unicoden
-				wcout << _asema->_lauta[i][j]->getUnicode() << " ";
+				std::wcout << _asema->_lauta[i][j]->getUnicode() << " ";
 			}
 		}
 		// Resettaa v‰rin ja tekee tyhj‰n v‰lin jotta ei tule tyhmi‰ v‰rityksi‰
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED |
 			BACKGROUND_GREEN | BACKGROUND_BLUE);
-		wcout << " \n";
+		std::wcout << " \n";
 	}
 
-	wcout << "\n    a b c d e f g h\n\n";
+	std::wcout << "\n    a b c d e f g h\n";
 }
 
 /*
@@ -169,8 +169,9 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(vector<Siirto>& lista, int size)
 
 	while (true)
 	{
-		wcout << "Anna siirto:" << "\n";
+		std::wcout << "Anna siirto:" << "\n";
 		cin >> syote;
+		std::wcout << "\n";
 		//system("cls");
 
 		// Upseerisiirto 
@@ -348,7 +349,7 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(vector<Siirto>& lista, int size)
 					}
 					break;
 				default:
-					wcout << "Laiton siirto! Kokeile uudelleen." << endl;
+					std::wcout << "Laiton siirto! Kokeile uudelleen." << endl;
 					break;
 			}
 
@@ -358,7 +359,7 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(vector<Siirto>& lista, int size)
 			}
 			else
 			{
-				wcout << "Laiton siirto! Kokeile uudelleen." << endl;
+				std::wcout << "Laiton siirto! Kokeile uudelleen." << endl;
 			}
 		}
 		// Sotilassiirto
@@ -400,7 +401,7 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(vector<Siirto>& lista, int size)
 							if (loppuNumero == 0 || loppuNumero == 7)
 							{
 								// Sotilas on p‰‰ssyt toiseen p‰‰h‰n. Korotetaan!
-								wcout << "Sotilas korottuu! Miksi korotetaan? (T/R/L/D)\n";
+								std::wcout << "Sotilas korottuu! Miksi korotetaan? (T/R/L/D)\n";
 								string sotilasSyote;
 								cin >> sotilasSyote;
 								if (_asema->getSiirtovuoro() == 0)
@@ -462,7 +463,7 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(vector<Siirto>& lista, int size)
 			}
 			else
 			{
-				wcout << "Laiton siirto! Kokeile uudelleen." << endl;
+				std::wcout << "Laiton siirto! Kokeile uudelleen." << endl;
 			}
 		}
 		// Lyhyt linna
@@ -479,7 +480,7 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(vector<Siirto>& lista, int size)
 				}
 			}
 
-			wcout << "Laiton siirto! Kokeile uudelleen." << endl;
+			std::wcout << "Laiton siirto! Kokeile uudelleen." << endl;
 
 		}
 		// Pitk‰ linna
@@ -496,11 +497,11 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(vector<Siirto>& lista, int size)
 				}
 			}
 
-			wcout << "Laiton siirto! Kokeile uudelleen." << endl;
+			std::wcout << "Laiton siirto! Kokeile uudelleen." << endl;
 		}
 		else 
 		{
-			wcout << "Laiton siirto! Kokeile uudelleen." << endl;
+			std::wcout << "Laiton siirto! Kokeile uudelleen." << endl;
 		}
 	}
 
@@ -511,9 +512,74 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(vector<Siirto>& lista, int size)
 	return siirto;
 }
 
+void Kayttoliittyma::tulostaKoneenSiirto(Siirto& siirto, Peli& peli)
+{
+	int siirtovuoro = _asema->getSiirtovuoro();
+
+	if (siirtovuoro == peli.getKoneenVari())
+	{
+		int aR = siirto.getAlkuruutu().getRivi();
+		int aS = siirto.getAlkuruutu().getSarake();
+		int lR = siirto.getLoppuruutu().getRivi();
+		int lS = siirto.getLoppuruutu().getSarake();
+		
+		Nappula* siirtyvaNappula = _asema->_lauta[aR][aS];
+		char etumerkki = ' ';
+
+		int muunnettuAR = 8 - aR;
+		int muunnettuAS = 97 + aS;
+		int muunnettuLR = 8 - lR;
+		int muunnettuLS = 97 + lS;
+
+		switch (siirtyvaNappula->getKoodi())
+		{
+			case MS:
+				etumerkki = ' ';
+				break;
+			case VS:
+				etumerkki = ' ';
+				break;
+			case MT:
+				etumerkki = 'T';
+				break;
+			case VT:
+				etumerkki = 'T';
+				break;
+			case MR:
+				etumerkki = 'R';
+				break;
+			case VR:
+				etumerkki = 'R';
+				break;
+			case ML:
+				etumerkki = 'L';
+				break;
+			case VL:
+				etumerkki = 'L';
+				break;
+			case MD:
+				etumerkki = 'D';
+				break;
+			case VD:
+				etumerkki = 'D';
+				break;
+			case MK:
+				etumerkki = 'K';
+				break;
+			case VK:
+				etumerkki = 'K';
+				break;
+			default:
+				break;
+		}
+		
+		std::wcout << "Koneen siirto: " << etumerkki << char(muunnettuAS) << muunnettuAR << "-" << char(muunnettuLS) << muunnettuLR << "\n";
+	}
+}
+
 int Kayttoliittyma::kysyVastustajanVari()
 {
-	wcout << "Kumpaa varia haluat pelata? (V/M)" << endl;
+	std::wcout << "Kumpaa varia haluat pelata? (V/M)" << endl;
 	string pelaajanVari;
 	
 	while (true)
@@ -530,7 +596,7 @@ int Kayttoliittyma::kysyVastustajanVari()
 		}
 		else
 		{
-			wcout << "Ei ollut vari! Ei ole vaikeaa. V tai M, kiitos :)" << endl;
+			std::wcout << "Ei ollut vari! Ei ole vaikeaa. V tai M, kiitos :)" << endl;
 		}
 	}
 

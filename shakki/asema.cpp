@@ -146,7 +146,6 @@ const int loppupelikuningasV[64] = {
 	-53, -34, -21, -11, -28, -14, -24, -43
 };
 
-
 const int keskipelisotilasM[64] = {
 	0,   0,   0,   0,   0,   0,  0,   0,
 	-35,  -1, -20, -23, -15,  24, 38, -22,
@@ -157,7 +156,6 @@ const int keskipelisotilasM[64] = {
 	98, 134,  61,  95,  68, 126, 34, -11,
 	0,   0,   0,   0,   0,   0,  0,   0,
 };
-
 
 const int loppupelisotilasM[64] = {
 	0,   0,   0,   0,   0,   0,   0,   0,
@@ -294,6 +292,7 @@ Nappula* Asema::ml = new Lahetti(L"\u265D", 1, ML);
 Nappula* Asema::mr = new Ratsu(L"\u265E", 1, MR);
 Nappula* Asema::ms = new Sotilas(L"\u265F", 1, MS);
 
+// Default asema-konstruktori
 Asema::Asema()
 {
 	// Ensin alustetaan kaikki laudan ruudut nappulla "NULL", koska muuten ruuduissa satunnaista tauhkaa
@@ -356,6 +355,60 @@ Asema::Asema()
 	_onkoValkeaDLaudalla = true;
 	_onkoMustaDLaudalla = true;
 }
+
+// Muunnettu asema-konstruktori
+/*Asema::Asema()
+{
+	// Ensin alustetaan kaikki laudan ruudut nappulla "NULL", koska muuten ruuduissa satunnaista tauhkaa
+	for (int i = 0; i < 8; ++i)
+	{
+		for (int j = 0; j < 8; ++j)
+		{
+			_lauta[i][j] = NULL;
+		}
+	}
+
+	// Asetetaan Villen asema mukaisesti nappulat ruuduille
+	_lauta[1][0] = ms;
+	_lauta[1][1] = ms;
+	_lauta[1][2] = ms;
+	_lauta[1][3] = ms;
+	_lauta[1][5] = ms;
+	_lauta[1][6] = ms;
+	_lauta[1][7] = ms;
+
+	
+	_lauta[6][1] = vs;
+	_lauta[3][3] = vs;
+	_lauta[6][4] = vs;
+	_lauta[4][5] = vs;
+
+	_lauta[0][0] = mt;
+	_lauta[0][1] = mr;
+	_lauta[0][2] = ml;
+	_lauta[4][2] = md;
+	_lauta[0][4] = mk;
+	_lauta[5][4] = ml;
+	_lauta[0][6] = mr;
+	_lauta[0][7] = mt;
+
+	_lauta[7][1] = vr;
+	_lauta[6][2] = vk;
+
+	_siirtovuoro = 0;
+
+	// Liikkumisflagit asetetaan falseksi ja asetetaan upseerien määrä ja onko daamit laudalla
+	_onkoValkeaKuningasLiikkunut = false;
+	_onkoMustaKuningasLiikkunut = false;
+	_onkoValkeaDTliikkunut = false;
+	_onkoValkeaKTliikkunut = false;
+	_onkoMustaDTliikkunut = false;
+	_onkoMustaKTliikkunut = false;
+	_valkoisetUpseerit = 8;
+	_mustatUpseerit = 8;
+	_onkoValkeaDLaudalla = true;
+	_onkoMustaDLaudalla = true;
+}*/
 
 void Asema::paivitaAsema(Siirto *siirto)
 {
