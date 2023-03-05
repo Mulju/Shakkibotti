@@ -10,6 +10,9 @@
 #include "Ajastin.h"
 #include <unordered_map>
 #include <algorithm>
+#include "vakiot.h"
+
+using namespace vakiot;
 
 const int keskipelisotilasV[64] = {
 	0, 0, 0, 0, 0, 0, 0, 0,
@@ -921,7 +924,7 @@ MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys)
 
 	annaLaillisetSiirrot(siirrot);
 	// Järjestää syönti siirrot ensimmäiseksi
-	std::sort(siirrot.begin(), siirrot.end());
+	//std::sort(siirrot.begin(), siirrot.end());
 	Ruutu kuninkaanRuutu = getKuninkaanRuutu(getSiirtovuoro());
 
 	// Otetaan negaatio siirtovuorosta. Tarvitaan onkoRuutuUhattu funktiolle
@@ -961,7 +964,7 @@ MinMaxPaluu Asema::alphaBetaMaxi(int alpha, int beta, int syvyys)
 		Asema rekursioAsema;
 
 		// Aloitetaan threadit ensimmäisellä syvyydellä
-		if (syvyys == 4)
+		if (syvyys == PELISYVYYS)
 		{
 			vector<future<MinMaxPaluu>> tehtavat;
 
@@ -1051,7 +1054,7 @@ MinMaxPaluu Asema::alphaBetaMini(int alpha, int beta, int syvyys)
 
 	annaLaillisetSiirrot(siirrot);
 	// Järjestää syönti siirrot ensimmäiseksi
-	std::sort(siirrot.begin(), siirrot.end());
+	//std::sort(siirrot.begin(), siirrot.end());
 	Ruutu kuninkaanRuutu = getKuninkaanRuutu(getSiirtovuoro());
 
 	// Otetaan negaatio siirtovuorosta. Tarvitaan onkoRuutuUhattu funktiolle
@@ -1091,7 +1094,7 @@ MinMaxPaluu Asema::alphaBetaMini(int alpha, int beta, int syvyys)
 		Asema rekursioAsema;
 
 		// Aloitetaan threadit ensimmäisellä syvyydellä
-		if (syvyys == 4)
+		if (syvyys == PELISYVYYS)
 		{
 			vector<future<MinMaxPaluu>> tehtavat;
 

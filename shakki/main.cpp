@@ -10,9 +10,11 @@
 #include <vector>
 #include "Ajastin.h"
 #include <unordered_map>
+#include "vakiot.h"
 
 using namespace std;
 using namespace std::chrono;
+using namespace vakiot;
 
 int main()
 {
@@ -51,10 +53,10 @@ int main()
 
 			MinMaxPaluu paluu;
 			if (koneenVari == 0) {
-				paluu = asema.alphaBetaMaxi(-100000, 100000, 4);
+				paluu = asema.alphaBetaMaxi(-100000, 100000, PELISYVYYS);
 			}
 			else {
-				paluu = asema.alphaBetaMini(-100000, 100000, 4);
+				paluu = asema.alphaBetaMini(-100000, 100000, PELISYVYYS);
 			}
 			siirto = paluu._parasSiirto;
 		}

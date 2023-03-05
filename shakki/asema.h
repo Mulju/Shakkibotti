@@ -7,7 +7,6 @@
 #include <vector>
 #include <unordered_map>
 
-
 // Ns. "forward declaration". Nyt Asema-luokassa voidaa esitellä Nappula-osoittimia ilman,
 // että nappula.h -tiedostoa täytyy includoida.
 class Nappula;

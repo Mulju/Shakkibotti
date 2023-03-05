@@ -42,6 +42,9 @@
     <ClCompile Include="Ajastin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="vakiot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="kayttoliittyma.h">
@@ -69,6 +72,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Ajastin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vakiot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

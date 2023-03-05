@@ -85,6 +85,7 @@
     <ClCompile Include="peli.cpp" />
     <ClCompile Include="ruutu.cpp" />
     <ClCompile Include="siirto.cpp" />
+    <ClCompile Include="vakiot.cpp" />
     <ClCompile Include="vastustaja.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -96,6 +97,7 @@
     <ClInclude Include="peli.h" />
     <ClInclude Include="ruutu.h" />
     <ClInclude Include="siirto.h" />
+    <ClInclude Include="vakiot.h" />
     <ClInclude Include="vastustaja.h" />
   </ItemGroup>
   <ItemGroup>
