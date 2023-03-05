@@ -37,13 +37,13 @@ int main()
 		siirrot.clear();
 		// Tarkasta onko peli loppu?
 		asema.annaLaillisetSiirrot(siirrot);
+		Kayttoliittyma::getInstance()->piirraLauta(siirrot);
+		wcout << "\n";
 		if (siirrot.size() == 0) {
 			lopetus = 0;
 			std::wcout << "Peli loppui";
 			continue;
 		}
-		Kayttoliittyma::getInstance()->piirraLauta(siirrot);
-		wcout << "\n";
 		Siirto siirto;
 		if (asema.getSiirtovuoro() == koneenVari) {
 			
