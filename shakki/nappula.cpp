@@ -678,8 +678,8 @@ void Kuningas::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asem
 				{
 					if (aR - 1 < 0 || aS + j < 0 || aS + j > 7)
 					{
-						// Jos mennään ylilaudan niin poistutaan loopista
-						break;
+						// Jos mennään yli laudan niin hypätään seuraavaan indeksiin loopissa
+						continue;
 					}
 				
 					if (asema->_lauta[aR - 1][aS + j] != NULL)
@@ -748,8 +748,8 @@ void Kuningas::annaSiirrot(std::vector<Siirto>& lista, Ruutu* ruutu, Asema* asem
 				{
 					if (aR + 1 > 7 || aS + j < 0 || aS + j > 7)
 					{
-						// Jos mennään ylilaudan niin poistutaan loopista
-						break;
+						// Jos mennään yli laudan niin hypätään seuraavaan indeksiin loopissa
+						continue;
 					}
 
 					if (asema->_lauta[aR + 1][aS + j] != NULL)

@@ -368,42 +368,25 @@ Asema::Asema()
 		}
 	}
 
-	// Asetetaan Villen asema mukaisesti nappulat ruuduille
-	_lauta[1][0] = ms;
-	_lauta[1][1] = ms;
-	_lauta[1][2] = ms;
-	_lauta[1][3] = ms;
-	_lauta[1][5] = ms;
-	_lauta[1][6] = ms;
-	_lauta[1][7] = ms;
+	// Asetetaan Muljun asema mukaisesti nappulat ruuduille
+	_lauta[4][2] = ms;
 
-	
-	_lauta[6][1] = vs;
-	_lauta[3][3] = vs;
-	_lauta[6][4] = vs;
-	_lauta[4][5] = vs;
+	_lauta[5][2] = vs;
 
-	_lauta[0][0] = mt;
-	_lauta[0][1] = mr;
-	_lauta[0][2] = ml;
-	_lauta[4][2] = md;
-	_lauta[0][4] = mk;
-	_lauta[5][4] = ml;
-	_lauta[0][6] = mr;
-	_lauta[0][7] = mt;
+	_lauta[4][0] = mk;
 
-	_lauta[7][1] = vr;
-	_lauta[6][2] = vk;
+	_lauta[0][7] = vl;
+	_lauta[4][4] = vk;
 
 	_siirtovuoro = 0;
 
 	// Liikkumisflagit asetetaan falseksi ja asetetaan upseerien m‰‰r‰ ja onko daamit laudalla
-	_onkoValkeaKuningasLiikkunut = false;
-	_onkoMustaKuningasLiikkunut = false;
-	_onkoValkeaDTliikkunut = false;
-	_onkoValkeaKTliikkunut = false;
-	_onkoMustaDTliikkunut = false;
-	_onkoMustaKTliikkunut = false;
+	_onkoValkeaKuningasLiikkunut = true;
+	_onkoMustaKuningasLiikkunut = true;
+	_onkoValkeaDTliikkunut = true;
+	_onkoValkeaKTliikkunut = true;
+	_onkoMustaDTliikkunut = true;
+	_onkoMustaKTliikkunut = true;
 	_valkoisetUpseerit = 8;
 	_mustatUpseerit = 8;
 	_onkoValkeaDLaudalla = true;
