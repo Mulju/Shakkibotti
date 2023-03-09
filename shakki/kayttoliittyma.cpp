@@ -518,62 +518,74 @@ void Kayttoliittyma::tulostaKoneenSiirto(Siirto& siirto, Peli& peli)
 
 	if (siirtovuoro == peli.getKoneenVari())
 	{
-		int aR = siirto.getAlkuruutu().getRivi();
-		int aS = siirto.getAlkuruutu().getSarake();
-		int lR = siirto.getLoppuruutu().getRivi();
-		int lS = siirto.getLoppuruutu().getSarake();
-		
-		Nappula* siirtyvaNappula = _asema->_lauta[aR][aS];
-		char etumerkki = ' ';
-
-		int muunnettuAR = 8 - aR;
-		int muunnettuAS = 97 + aS;
-		int muunnettuLR = 8 - lR;
-		int muunnettuLS = 97 + lS;
-
-		switch (siirtyvaNappula->getKoodi())
+		if (siirto.onkoLyhytLinna())
 		{
-			case MS:
-				etumerkki = ' ';
-				break;
-			case VS:
-				etumerkki = ' ';
-				break;
-			case MT:
-				etumerkki = 'T';
-				break;
-			case VT:
-				etumerkki = 'T';
-				break;
-			case MR:
-				etumerkki = 'R';
-				break;
-			case VR:
-				etumerkki = 'R';
-				break;
-			case ML:
-				etumerkki = 'L';
-				break;
-			case VL:
-				etumerkki = 'L';
-				break;
-			case MD:
-				etumerkki = 'D';
-				break;
-			case VD:
-				etumerkki = 'D';
-				break;
-			case MK:
-				etumerkki = 'K';
-				break;
-			case VK:
-				etumerkki = 'K';
-				break;
-			default:
-				break;
+			std::wcout << "Koneen siirto: 0-0" << "\n";
 		}
+		else if (siirto.onkoPitkaLinna())
+		{
+			std::wcout << "Koneen siirto: 0-0-0" << "\n";
+		}
+		else
+		{
+			int aR = siirto.getAlkuruutu().getRivi();
+			int aS = siirto.getAlkuruutu().getSarake();
+			int lR = siirto.getLoppuruutu().getRivi();
+			int lS = siirto.getLoppuruutu().getSarake();
 		
-		std::wcout << "Koneen siirto: " << etumerkki << char(muunnettuAS) << muunnettuAR << "-" << char(muunnettuLS) << muunnettuLR << "\n";
+			Nappula* siirtyvaNappula = _asema->_lauta[aR][aS];
+			char etumerkki = ' ';
+
+			int muunnettuAR = 8 - aR;
+			int muunnettuAS = 97 + aS;
+			int muunnettuLR = 8 - lR;
+			int muunnettuLS = 97 + lS;
+
+			switch (siirtyvaNappula->getKoodi())
+			{
+				case MS:
+					etumerkki = ' ';
+					break;
+				case VS:
+					etumerkki = ' ';
+					break;
+				case MT:
+					etumerkki = 'T';
+					break;
+				case VT:
+					etumerkki = 'T';
+					break;
+				case MR:
+					etumerkki = 'R';
+					break;
+				case VR:
+					etumerkki = 'R';
+					break;
+				case ML:
+					etumerkki = 'L';
+					break;
+				case VL:
+					etumerkki = 'L';
+					break;
+				case MD:
+					etumerkki = 'D';
+					break;
+				case VD:
+					etumerkki = 'D';
+					break;
+				case MK:
+					etumerkki = 'K';
+					break;
+				case VK:
+					etumerkki = 'K';
+					break;
+				default:
+					break;
+			}
+		
+			std::wcout << "Koneen siirto: " << etumerkki << char(muunnettuAS) << muunnettuAR << "-" << char(muunnettuLS) << muunnettuLR << "\n";
+
+		}
 	}
 }
 
