@@ -369,16 +369,30 @@ Asema::Asema()
 	}
 
 	// Asetetaan Muljun asema mukaisesti nappulat ruuduille
-	_lauta[4][2] = ms;
+	_lauta[1][0] = ms;
+	_lauta[1][1] = ms;
+	_lauta[2][2] = ms;
+	_lauta[3][3] = ms;
+	_lauta[2][4] = ms;
+	_lauta[1][5] = ms;
+	_lauta[1][6] = ms;
+	_lauta[2][7] = ms;
 
-	_lauta[5][2] = vs;
+	_lauta[0][6] = mk;
+	_lauta[0][0] = mt;
+	_lauta[0][5] = mt;
+	_lauta[4][2] = mr;
+	_lauta[6][3] = md;
 
-	_lauta[4][0] = mk;
+	_lauta[5][0] = vs;
+	_lauta[6][1] = vs;
 
-	_lauta[0][7] = vl;
-	_lauta[4][4] = vk;
+	_lauta[2][3] = vl;
+	_lauta[7][5] = vt;
+	_lauta[7][7] = vt;
+	_lauta[7][1] = vk;
 
-	_siirtovuoro = 0;
+	_siirtovuoro = 1;
 
 	// Liikkumisflagit asetetaan falseksi ja asetetaan upseerien määrä ja onko daamit laudalla
 	_onkoValkeaKuningasLiikkunut = true;
@@ -409,6 +423,9 @@ void Asema::paivitaAsema(Siirto *siirto)
 			_lauta[7][6] = vk; // Kuningas uudelle paikalle
 			_lauta[7][7] = NULL; // Tornin paikalle tyhjä
 			_lauta[7][5] = vt; // Torni uudelle paikalle
+			_onkoValkeaKuningasLiikkunut = true;
+			_onkoValkeaKTliikkunut = true;
+
 		}
 		if (_siirtovuoro == 1 )
 		{
@@ -416,6 +433,8 @@ void Asema::paivitaAsema(Siirto *siirto)
 			_lauta[0][6] = mk; // Kuningas uudelle paikalle
 			_lauta[0][7] = NULL; // Tornin paikalle tyhjä
 			_lauta[0][5] = mt; // Torni uudelle paikalle
+			_onkoMustaKuningasLiikkunut = true;
+			_onkoMustaKTliikkunut = true;
 		}
 	}
 	else if (siirto->onkoPitkaLinna()) // onko pitkä linna
@@ -426,6 +445,8 @@ void Asema::paivitaAsema(Siirto *siirto)
 			_lauta[7][2] = vk; // Kuningas uudelle paikalle
 			_lauta[7][0] = NULL; // Tornin paikalle tyhjä
 			_lauta[7][3] = vt; // Torni uudelle paikalle
+			_onkoValkeaKuningasLiikkunut = true;
+			_onkoValkeaDTliikkunut = true;
 		}
 		if (_siirtovuoro == 1 )
 		{
@@ -433,6 +454,8 @@ void Asema::paivitaAsema(Siirto *siirto)
 			_lauta[0][2] = mk; // Kuningas uudelle paikalle
 			_lauta[0][0] = NULL; // Tornin paikalle tyhjä
 			_lauta[0][3] = mt; // Torni uudelle paikalle
+			_onkoMustaKuningasLiikkunut = true;
+			_onkoMustaDTliikkunut = true;
 		}
 	}
 	else // Kaikki muut siirrot
